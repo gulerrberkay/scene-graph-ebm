@@ -129,7 +129,7 @@ SOLVER:
     FACTOR: 0.05   #0.1
     MAX_DECAY_STEP: 3
 
-  # Equivalent schedules with...
+  # Equival schedules with...
   # 1 GPU:
   #   BASE_LR: 0.0025
   #   MAX_ITER: 60000
