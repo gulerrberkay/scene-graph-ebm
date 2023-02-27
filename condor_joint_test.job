@@ -1,0 +1,40 @@
+#Normal execution
+Universe = vanilla
+
+#I need just two CPU (which is the default)
+RequestCpus    = 4
+#I need 8 GBytes of RAM (resident memory)
+RequestMemory  = 8G
+#It will not run longer than 1.5 day
++RequestWalltime = 36000
+#I need one GPU
+Request_GPUs = 1
+
+# Run only on Visics machines with a GPU with 3GB of RAM or more
+requirements =  (GPUs_GlobalMemoryMb >= 4096)
+
+
+#Mail me only if something is wrong
+Notification = Error
+
+# Codebase is here(.job file is also here)
+initialdir = /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-scene-graph
+
+# Timing
+Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
+
+# These are the arguments
+Arguments = tools/relation_test_net.py
+
+
+#Output of condors handling of the jobs, will be in 'initialdir'
+Log          = /users/students/r0879687/thesis/output/condor_outs/condor_test.log
+
+#Standard output of the 'executable', in 'initialdir'
+Output       = /users/students/r0879687/thesis/output/condor_outs/condor_test.out
+
+#Standard error of the 'executable', in 'initialdir'
+Error        = /users/students/r0879687/thesis/output/condor_outs/condor_test.err
+
+# Start just 1 instance of the job
+Queue 1

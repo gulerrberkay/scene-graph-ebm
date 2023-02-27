@@ -1,0 +1,405 @@
+2023-02-25 20:48:20,383 maskrcnn_benchmark INFO: Using 1 GPUs
+2023-02-25 20:48:20,384 maskrcnn_benchmark INFO: AMP_VERBOSE: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  NUM_WORKERS: 4
+  SIZE_DIVISIBILITY: 32
+DATASETS:
+  NUM_OBJ_CLASSES: -1
+  NUM_REL_CLASSES: -1
+  TEST: ('VG_stanford_filtered_with_attribute_test',)
+  TRAIN: ('VG_stanford_filtered_with_attribute_train',)
+  VAL: ('VG_stanford_filtered_with_attribute_val',)
+DTYPE: float32
+ENERGY_MODEL:
+  DATA_NOISE_VAR: 0.0001
+  L2COEFF: 1
+  LOSS: ContrastiveDivergence
+  META_ARCHITECTURE: GraphEnergyModel
+  TEMP: 1
+  TRAINIG_MODE: joint
+GLOVE_DIR: /users/students/r0879687/amager/vg/glove
+INPUT:
+  BRIGHTNESS: 0.0
+  CONTRAST: 0.0
+  FLIP_PROB_TRAIN: 0
+  HUE: 0.0
+  MAX_SIZE_TEST: 1000
+  MAX_SIZE_TRAIN: 1000
+  MIN_SIZE_TEST: 600
+  MIN_SIZE_TRAIN: (600,)
+  PIXEL_MEAN: [102.9801, 115.9465, 122.7717]
+  PIXEL_STD: [1.0, 1.0, 1.0]
+  SATURATION: 0.0
+  TO_BGR255: True
+  VERTICAL_FLIP_PROB_TRAIN: 0.0
+MODEL:
+  ATTRIBUTE_ON: False
+  BACKBONE:
+    CONV_BODY: R-101-FPN
+    FREEZE_CONV_BODY_AT: 2
+  BASE_ONLY: True
+  CLS_AGNOSTIC_BBOX_REG: False
+  DEVICE: cuda
+  DEV_RUN: False
+  FBNET:
+    ARCH: default
+    ARCH_DEF: 
+    BN_TYPE: bn
+    DET_HEAD_BLOCKS: []
+    DET_HEAD_LAST_SCALE: 1.0
+    DET_HEAD_STRIDE: 0
+    DW_CONV_SKIP_BN: True
+    DW_CONV_SKIP_RELU: True
+    KPTS_HEAD_BLOCKS: []
+    KPTS_HEAD_LAST_SCALE: 0.0
+    KPTS_HEAD_STRIDE: 0
+    MASK_HEAD_BLOCKS: []
+    MASK_HEAD_LAST_SCALE: 0.0
+    MASK_HEAD_STRIDE: 0
+    RPN_BN_TYPE: 
+    RPN_HEAD_BLOCKS: 0
+    SCALE_FACTOR: 1.0
+    WIDTH_DIVISOR: 1
+  FLIP_AUG: False
+  FPN:
+    USE_GN: False
+    USE_RELU: False
+  GROUP_NORM:
+    DIM_PER_GP: -1
+    EPSILON: 1e-05
+    NUM_GROUPS: 32
+  KEYPOINT_ON: False
+  MASK_ON: False
+  META_ARCHITECTURE: GeneralizedRCNN
+  PRETRAINED_DETECTOR_CKPT: /users/students/r0879687/amager/vg/pretrained-detector/pretrained_faster_rcnn/model_final.pth
+  RELATION_ON: True
+  RESNETS:
+    BACKBONE_OUT_CHANNELS: 256
+    DEFORMABLE_GROUPS: 1
+    NUM_GROUPS: 32
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STAGE_WITH_DCN: (False, False, False, False)
+    STEM_FUNC: StemWithFixedBatchNorm
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: False
+    TRANS_FUNC: BottleneckWithFixedBatchNorm
+    WIDTH_PER_GROUP: 8
+    WITH_MODULATED_DCN: False
+  RETINANET:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDES: (8, 16, 32, 64, 128)
+    ASPECT_RATIOS: (0.5, 1.0, 2.0)
+    BBOX_REG_BETA: 0.11
+    BBOX_REG_WEIGHT: 4.0
+    BG_IOU_THRESHOLD: 0.4
+    FG_IOU_THRESHOLD: 0.5
+    INFERENCE_TH: 0.05
+    LOSS_ALPHA: 0.25
+    LOSS_GAMMA: 2.0
+    NMS_TH: 0.4
+    NUM_CLASSES: 81
+    NUM_CONVS: 4
+    OCTAVE: 2.0
+    PRE_NMS_TOP_N: 1000
+    PRIOR_PROB: 0.01
+    SCALES_PER_OCTAVE: 3
+    STRADDLE_THRESH: 0
+    USE_C5: True
+  RETINANET_ON: False
+  ROI_ATTRIBUTE_HEAD:
+    ATTRIBUTE_BGFG_RATIO: 3
+    ATTRIBUTE_BGFG_SAMPLE: True
+    ATTRIBUTE_LOSS_WEIGHT: 1.0
+    FEATURE_EXTRACTOR: FPN2MLPFeatureExtractor
+    MAX_ATTRIBUTES: 10
+    NUM_ATTRIBUTES: 201
+    POS_WEIGHT: 50.0
+    PREDICTOR: FPNPredictor
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+    USE_BINARY_LOSS: True
+  ROI_BOX_HEAD:
+    CONV_HEAD_DIM: 256
+    DILATION: 1
+    FEATURE_EXTRACTOR: FPN2MLPFeatureExtractor
+    MLP_HEAD_DIM: 4096
+    NUM_CLASSES: 151
+    NUM_STACKED_CONVS: 4
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 2
+    POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
+    PREDICTOR: FPNPredictor
+    USE_GN: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    BG_IOU_THRESHOLD: 0.3
+    DETECTIONS_PER_IMG: 80
+    FG_IOU_THRESHOLD: 0.5
+    NMS: 0.3
+    NMS_FILTER_DUPLICATES: True
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_PER_CLS_TOPN: 300
+    SCORE_THRESH: 0.01
+    USE_FPN: True
+  ROI_KEYPOINT_HEAD:
+    CONV_LAYERS: (512, 512, 512, 512, 512, 512, 512, 512)
+    FEATURE_EXTRACTOR: KeypointRCNNFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    PREDICTOR: KeypointRCNNPredictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+  ROI_MASK_HEAD:
+    CONV_LAYERS: (256, 256, 256, 256)
+    DILATION: 1
+    FEATURE_EXTRACTOR: ResNet50Conv5ROIFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    POSTPROCESS_MASKS: False
+    POSTPROCESS_MASKS_THRESHOLD: 0.5
+    PREDICTOR: MaskRCNNC4Predictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+    USE_GN: False
+  ROI_RELATION_HEAD:
+    ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: True
+    BATCH_SIZE_PER_IMAGE: 1024
+    CAUSAL:
+      CONTEXT_LAYER: motifs
+      EFFECT_ANALYSIS: True
+      EFFECT_TYPE: none
+      FUSION_TYPE: sum
+      SEPARATE_SPATIAL: False
+      SPATIAL_FOR_VISION: True
+    CONTEXT_DROPOUT_RATE: 0.2
+    CONTEXT_HIDDEN_DIM: 512
+    CONTEXT_OBJ_LAYER: 1
+    CONTEXT_POOLING_DIM: 4096
+    CONTEXT_REL_LAYER: 1
+    EBM:
+      OBJ_EMBED_DIM: 512
+      OBJ_LABEL_EMBED_DIM: 512
+      POOLING_DIM: 512
+      REL_EMBED_DIM: 512
+      REL_LABEL_EMBED_DIM: 512
+    EMBED_DIM: 200
+    FEATURE_EXTRACTOR: RelationFeatureExtractor
+    LABEL_SMOOTHING_LOSS: False
+    NUM_CLASSES: 51
+    NUM_SAMPLE_PER_GT_REL: 4
+    POOLING_ALL_LEVELS: True
+    POSITIVE_FRACTION: 0.25
+    PREDICTOR: MotifPredictor
+    PREDICT_USE_BIAS: True
+    PREDICT_USE_VISION: True
+    REL_PROP: [0.01858, 0.00057, 0.00051, 0.00109, 0.0015, 0.00489, 0.00432, 0.02913, 0.00245, 0.00121, 0.00404, 0.0011, 0.00132, 0.00172, 5e-05, 0.00242, 0.0005, 0.00048, 0.00208, 0.15608, 0.0265, 0.06091, 0.009, 0.00183, 0.00225, 0.0009, 0.00028, 0.00077, 0.04844, 0.08645, 0.31621, 0.00088, 0.00301, 0.00042, 0.00186, 0.001, 0.00027, 0.01012, 0.0001, 0.01286, 0.00647, 0.00084, 0.01077, 0.00132, 0.00069, 0.00376, 0.00214, 0.11424, 0.01205, 0.02958]
+    REQUIRE_BOX_OVERLAP: False
+    TRANSFORMER:
+      DROPOUT_RATE: 0.1
+      INNER_DIM: 2048
+      KEY_DIM: 64
+      NUM_HEAD: 8
+      OBJ_LAYER: 4
+      REL_LAYER: 2
+      VAL_DIM: 64
+    USE_GT_BOX: True
+    USE_GT_OBJECT_LABEL: True
+  RPN:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDE: (4, 8, 16, 32, 64)
+    ASPECT_RATIOS: (0.23232838, 0.63365731, 1.28478321, 3.15089189)
+    BATCH_SIZE_PER_IMAGE: 256
+    BG_IOU_THRESHOLD: 0.3
+    FG_IOU_THRESHOLD: 0.7
+    FPN_POST_NMS_PER_BATCH: False
+    FPN_POST_NMS_TOP_N_TEST: 1000
+    FPN_POST_NMS_TOP_N_TRAIN: 1000
+    MIN_SIZE: 0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOP_N_TEST: 1000
+    POST_NMS_TOP_N_TRAIN: 1000
+    PRE_NMS_TOP_N_TEST: 6000
+    PRE_NMS_TOP_N_TRAIN: 6000
+    RPN_HEAD: SingleConvRPNHead
+    RPN_MID_CHANNEL: 256
+    STRADDLE_THRESH: 0
+    USE_FPN: True
+  RPN_ONLY: False
+  VGG:
+    VGG16_OUT_CHANNELS: 512
+  WEIGHT: catalog://ImageNetPretrained/FAIR/20171220/X-101-32x8d
+OUTPUT_DIR: /users/students/r0879687/amager/vg/output/relation_baseline
+PATHS_CATALOG: /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-scene-graph/maskrcnn_benchmark/config/paths_catalog.py
+PATHS_DATA: /users/students/r0879687/amager/vg/VG_100K
+SAMPLER:
+  GRAD_CLIP: 0.01
+  ITERS: 10
+  LR: 0.1
+  NAME: SGLD
+  VAR: 0.001
+SOLVER:
+  BASE_LR: 0.0025
+  BIAS_LR_FACTOR: 1
+  CHECKPOINT_PERIOD: 2000
+  CLIP_NORM: 5.0
+  GAMMA: 0.1
+  GRAD_NORM_CLIP: 5.0
+  IMS_PER_BATCH: 1
+  MAX_ITER: 60000
+  MOMENTUM: 0.9
+  PRE_VAL: False
+  PRINT_GRAD_FREQ: 4000
+  SCHEDULE:
+    COOLDOWN: 0
+    FACTOR: 0.05
+    MAX_DECAY_STEP: 3
+    PATIENCE: 2
+    THRESHOLD: 0.001
+    TYPE: WarmupReduceLROnPlateau
+  STEPS: (0, 30000, 40000)
+  TO_VAL: True
+  UPDATE_SCHEDULE_DURING_LOAD: False
+  VAL_PERIOD: 2000
+  WARMUP_FACTOR: 0.1
+  WARMUP_ITERS: 500
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0
+TEST:
+  ALLOW_LOAD_FROM_CACHE: False
+  BBOX_AUG:
+    ENABLED: False
+    H_FLIP: False
+    MAX_SIZE: 4000
+    SCALES: ()
+    SCALE_H_FLIP: False
+  DETECTIONS_PER_IMG: 100
+  EXPECTED_RESULTS: []
+  EXPECTED_RESULTS_SIGMA_TOL: 4
+  IMS_PER_BATCH: 1
+  RELATION:
+    IOU_THRESHOLD: 0.5
+    LATER_NMS_PREDICTION_THRES: 0.5
+    MULTIPLE_PREDS: False
+    REQUIRE_OVERLAP: False
+    SYNC_GATHER: True
+  SAVE_PROPOSALS: False
+WANDB:
+  MUTE: False
+2023-02-25 20:48:20,385 maskrcnn_benchmark INFO: Collecting env info (might take some time)
+2023-02-25 20:48:22,393 maskrcnn_benchmark INFO: 
+PyTorch version: 1.13.0+cu117
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Fedora Linux 37 (KDE Plasma) (x86_64)
+GCC version: (GCC) 12.2.1 20221121 (Red Hat 12.2.1-4)
+Clang version: 15.0.7 (Fedora 15.0.7-1.fc37)
+CMake version: version 3.26.0-rc3
+Libc version: glibc-2.36
+
+Python version: 3.10.8 (main, Nov 24 2022, 14:13:03) [GCC 11.2.0] (64-bit runtime)
+Python platform: Linux-6.1.11-200.fc37.x86_64-x86_64-with-glibc2.36
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: 
+GPU 0: NVIDIA GeForce RTX 3090
+GPU 1: NVIDIA GeForce RTX 3090
+GPU 2: NVIDIA GeForce RTX 3090
+
+Nvidia driver version: 525.89.02
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] numpy==1.23.5
+[pip3] torch==1.13.0
+[pip3] torch-scatter==2.1.0
+[pip3] torchaudio==0.13.0
+[pip3] torchvision==0.14.0
+[conda] Could not collect
+        Pillow (9.3.0)
+2023-02-25 20:48:22,394 maskrcnn_benchmark.modeling.detector.generalized_rcnn INFO: #################### Building Backbone ####################
+2023-02-25 20:48:24,378 maskrcnn_benchmark.modeling.detector.generalized_rcnn INFO: #################### Building RPN ####################
+2023-02-25 20:48:24,394 maskrcnn_benchmark.modeling.detector.generalized_rcnn INFO: #################### Building ROI Heads ####################
+2023-02-25 20:48:28,575 maskrcnn_benchmark.data.build INFO: ----------------------------------------------------------------------------------------------------
+2023-02-25 20:48:28,575 maskrcnn_benchmark.data.build INFO: get dataset statistics...
+2023-02-25 20:48:28,705 maskrcnn_benchmark.data.build INFO: Loading data statistics from: /users/students/r0879687/amager/vg/output/relation_baseline/VG_stanford_filtered_with_attribute_train_statistics.cache
+2023-02-25 20:48:28,706 maskrcnn_benchmark.data.build INFO: ----------------------------------------------------------------------------------------------------
+loading word vectors from /users/students/r0879687/amager/vg/glove/glove.6B.200d.pt
+__background__ -> __background__ 
+fail on __background__
+loading word vectors from /users/students/r0879687/amager/vg/glove/glove.6B.200d.pt
+__background__ -> __background__ 
+fail on __background__
+2023-02-25 20:49:44,543 maskrcnn_benchmark.utils.checkpoint INFO: Loading checkpoint from /users/students/r0879687/amager/vg/output/relation_baseline/model_0024000.pth
+2023-02-25 20:50:48,899 maskrcnn_benchmark.inference INFO: Start evaluation on VG_stanford_filtered_with_attribute_test dataset(26446 images).
+2023-02-25 21:29:22,960 maskrcnn_benchmark.inference INFO: Total run time: 0:38:34.060219 (0.08750133172544185 s / img per device, on 1 devices)
+2023-02-25 21:29:22,961 maskrcnn_benchmark.inference INFO: Model inference time: 0:33:13.163310 (0.07536728844775704 s / img per device, on 1 devices)
+creating index...
+index created!
+Loading and preparing results...
+Converting ndarray to lists...
+(325563, 7)
+0/325563
+DONE (t=3.21s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=168.72s).
+Accumulating evaluation results...
+DONE (t=24.03s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.999
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.999
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.999
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.999
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.659
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.995
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 1.000
+2023-02-25 21:51:38,549 maskrcnn_benchmark.inference INFO: 
+====================================================================================================
+Detection evaluation mAp=0.9995
+====================================================================================================
+SGG eval:   R @ 20: 0.5691;   R @ 50: 0.6405;   R @ 100: 0.6603;  for mode=predcls, type=Recall(Main).
+SGG eval: ngR @ 20: 0.6430; ngR @ 50: 0.7906; ngR @ 100: 0.8670;  for mode=predcls, type=No Graph Constraint Recall(Main).
+SGG eval:  zR @ 20: 0.0065;  zR @ 50: 0.0188;  zR @ 100: 0.0325;  for mode=predcls, type=Zero Shot Recall.
+SGG eval:  zR @ 20: 0.0793;  zR @ 50: 0.1435;  zR @ 100: 0.1825;  for mode=predcls, type=1 Shot Recall.
+ zR @ 20: 0.1028;  zR @ 50: 0.1989;  zR @ 100: 0.2445;  for mode=predcls, type=2 Shot Recall.
+ zR @ 20: 0.1194;  zR @ 50: 0.2131;  zR @ 100: 0.2624;  for mode=predcls, type=3 Shot Recall.
+ zR @ 20: 0.1711;  zR @ 50: 0.2771;  zR @ 100: 0.3266;  for mode=predcls, type=4 Shot Recall.
+ zR @ 20: 0.1682;  zR @ 50: 0.2812;  zR @ 100: 0.3319;  for mode=predcls, type=5 Shot Recall.
+ zR @ 20: 0.1962;  zR @ 50: 0.3128;  zR @ 100: 0.3748;  for mode=predcls, type=6 Shot Recall.
+ zR @ 20: 0.1568;  zR @ 50: 0.2469;  zR @ 100: 0.2929;  for mode=predcls, type=7 Shot Recall.
+ zR @ 20: 0.2010;  zR @ 50: 0.3029;  zR @ 100: 0.3613;  for mode=predcls, type=8 Shot Recall.
+ zR @ 20: 0.2256;  zR @ 50: 0.3382;  zR @ 100: 0.4013;  for mode=predcls, type=9 Shot Recall.
+ zR @ 20: 0.1861;  zR @ 50: 0.3017;  zR @ 100: 0.3451;  for mode=predcls, type=10 Shot Recall.
+ zR @ 20: 0.2285;  zR @ 50: 0.3636;  zR @ 100: 0.4248;  for mode=predcls, type=20 Shot Recall.
+ zR @ 20: 0.2198;  zR @ 50: 0.3285;  zR @ 100: 0.4098;  for mode=predcls, type=25 Shot Recall.
+ zR @ 20: 0.3396;  zR @ 50: 0.4837;  zR @ 100: 0.5428;  for mode=predcls, type=30 Shot Recall.
+ zR @ 20: 0.3381;  zR @ 50: 0.4393;  zR @ 100: 0.4757;  for mode=predcls, type=40 Shot Recall.
+ zR @ 20: 0.3515;  zR @ 50: 0.5061;  zR @ 100: 0.5704;  for mode=predcls, type=50 Shot Recall.
+ zR @ 20: 0.4299;  zR @ 50: 0.5532;  zR @ 100: 0.5978;  for mode=predcls, type=100 Shot Recall.
+ zR @ 20: 0.9451;  zR @ 50: 0.9780;  zR @ 100: 1.0000;  for mode=predcls, type=200 Shot Recall.
+SGG eval:  mR @ 20: 0.0973;  mR @ 50: 0.1240;  mR @ 100: 0.1356;  for mode=predcls, type=Mean Recall.
+(above:0.0898) (across:0.0000) (against:0.0000) (along:0.0000) (and:0.0059) (at:0.2502) (attached to:0.0000) (behind:0.5639) (belonging to:0.0000) (between:0.0069) (carrying:0.0624) (covered in:0.0143) (covering:0.0000) (eating:0.0883) (flying in:0.0000) (for:0.0102) (from:0.0141) (growing on:0.0000) (hanging from:0.0013) (has:0.8132) (holding:0.6600) (in:0.3678) (in front of:0.0528) (laying on:0.0045) (looking at:0.0134) (lying on:0.0000) (made of:0.0000) (mounted on:0.0000) (near:0.4399) (of:0.6578) (on:0.7978) (on back of:0.0000) (over:0.0223) (painted on:0.0000) (parked on:0.0000) (part of:0.0000) (playing:0.0000) (riding:0.1963) (says:0.0000) (sitting on:0.2478) (standing on:0.0047) (to:0.0000) (under:0.3041) (using:0.0063) (walking in:0.0000) (walking on:0.0067) (watching:0.0474) (wearing:0.9659) (wears:0.0000) (with:0.0661) 
+SGG eval:   A @ 20: 0.6803;   A @ 50: 0.6829;   A @ 100: 0.6829;  for mode=predcls, type=TopK Accuracy.
+====================================================================================================
+

@@ -1,0 +1,48 @@
+MIT License
+
+The code is directly modified from facebook/maskrcnn-benchmark. I don't know what kind of license should be used here.
+
+
+
+python -m torch.distributed.launch --master_port 10001 --nproc_per_node=1 \
+    tools/energy_test_net.py --config-file configs/e2e_relation_VGG16_1x.yaml \
+    MODEL.ROI_RELATION_HEAD.USE_GT_BOX True MODEL.ROI_RELATION_HEAD.USE_GT_OBJECT_LABEL True \
+    MODEL.ROI_RELATION_HEAD.PREDICTOR VCTreePredictor \
+    SOLVER.IMS_PER_BATCH 1  TEST.IMS_PER_BATCH 1 \
+    DTYPE float16 SOLVER.MAX_ITER 50000 SOLVER.VAL_PERIOD 2000 \
+    SOLVER.CHECKPOINT_PERIOD 2000 \
+    GLOVE_DIR /users/students/r0879687/amager/vg/glove \
+    MODEL.PRETRAINED_DETECTOR_CKPT /users/students/r0879687/amager/vg/pretrained_detector \
+    OUTPUT_DIR /users/students/r0879687/amager/vg/output \
+    SOLVER.BASE_LR 0.1 SAMPLER.LR 1.0 SAMPLER.ITERS 20 SAMPLER.VAR 0.001 SAMPLER.GRAD_CLIP 0.01 MODEL.DEV_RUN False
+
+
+
+
+
+#from maskrcnn_benchmark.layers import nms as _box_nms
+
+
+#def boxlist_nms(boxlist, nms_thresh, max_proposals=-1, score_field="scores"):
+    """
+    Performs non-maximum suppression on a boxlist, with scores specified
+    in a boxlist field via score_field.
+
+    Arguments:
+        boxlist(BoxList)
+        nms_thresh (float)
+        max_proposals (int): if > 0, then only the top max_proposals are kept
+            after non-maximum suppression
+        score_field (str)
+    """
+ #   if nms_thresh <= 0:
+ #       return boxlist
+  #  mode = boxlist.mode
+  #  boxlist = boxlist.convert("xyxy")
+  #  boxes = boxlist.bbox
+  #  score = boxlist.get_field(score_field)
+  #  keep = _box_nms(boxes, score, nms_thresh)
+  #  if max_proposals > 0:
+  #      keep = keep[: max_proposals]
+  #  boxlist = boxlist[keep]
+  #  return boxlist.convert(mode), keep
