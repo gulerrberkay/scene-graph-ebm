@@ -151,6 +151,31 @@ class PostProcessor(nn.Module):
         boxlist.add_field("pred_scores", scores)
         return boxlist
 
+    def my_boxlist_nms_local(self, boxlist, nms_thresh, max_proposals=-1, score_field="scores"):
+        """
+        Performs non-maximum suppression on a boxlist, with scores specified
+        in a boxlist field via score_field. LOCAL FUNCTION I DELETED official boxlis nms
+
+        Arguments:
+            boxlist(BoxList)
+            nms_thresh (float)
+            max_proposals (int): if > 0, then only the top max_proposals are kept
+                after non-maximum suppression
+            score_field (str)
+        """
+        if nms_thresh <= 0:
+            return boxlist
+        mode = boxlist.mode
+        boxlist = boxlist.convert("xyxy")
+        boxes = boxlist.bbox
+        score = boxlist.get_field(score_field)
+        keep = nms(boxes, score, nms_thresh)
+        if max_proposals > 0:
+            keep = keep[: max_proposals]
+        boxlist = boxlist[keep]
+        return boxlist.convert(mode), keep
+
+
     def filter_results(self, boxlist, num_classes):
         """Returns bounding-box detection results by thresholding on scores and
         applying non-maximum suppression (NMS).
@@ -165,14 +190,17 @@ class PostProcessor(nn.Module):
         result = []
         orig_inds = []
 
-        #import pdb; pdb.set_trace()
+        
         # Apply threshold on detection probabilities and apply NMS
         # Skip j = 0, because it's the background class
         inds_all = scores > self.score_thresh
         for j in range(1, num_classes):
-            inds = inds_all[:, j].nonzero().squeeze(1)
+            #import pdb; pdb.set_trace()
+            #inds = inds_all[:, j].squeeze()  
+            inds = inds_all[:, j].nonzero().squeeze(1) 
+
             scores_j = scores[inds, j]
-            boxes_j = boxes[inds, j * 4 : (j + 1) * 4]
+            boxes_j  = boxes[inds, j * 4 : (j + 1) * 4]
             boxlist_for_class = BoxList(boxes_j, boxlist.size, mode="xyxy")
             boxlist_for_class.add_field("pred_scores", scores_j)
 
@@ -181,18 +209,7 @@ class PostProcessor(nn.Module):
             #)
             #import pdb; pdb.set_trace()
             
-            mode = boxlist_for_class.mode
-            boxlist_for_class = boxlist_for_class.convert("xyxy")
-            boxes = boxlist_for_class.bbox
-            score = boxlist_for_class.get_field("pred_scores")
-            keep = nms(boxes, score, self.nms)
-            if self.post_nms_per_cls_topn > 0:
-                keep = keep[: self.post_nms_per_cls_topn]
-            boxlist_for_class = boxlist_for_class[keep]
-            boxes = boxlist_for_class.bbox
-            score = boxlist_for_class.get_field("pred_scores")
-            boxlist_for_class = boxlist_for_class.convert(mode)
-
+            boxlist_for_class, keep = self.my_boxlist_nms_local(boxlist_for_class, self.nms, max_proposals=self.post_nms_per_cls_topn, score_field='pred_scores')
 
             #N, C = scores_j.shape
             #print('N=',N,'C=',C)

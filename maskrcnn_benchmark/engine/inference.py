@@ -38,17 +38,14 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
                 if not cfg.MODEL.DEVICE == 'cpu':
                     torch.cuda.synchronize()
                 timer.toc()
-            #import pdb; pdb.set_trace()
             output = [o for o in output]   #output = [o.to(cpu_device) for o in output]
         if synchronize_gather:
-            #import pdb; pdb.set_trace()
             synchronize()
             multi_gpu_predictions = all_gather({img_id: result for img_id, result in zip(image_ids, output)})
             if is_main_process():
                 for p in multi_gpu_predictions:
                     results_dict.update(p)
         else:
-            #import pdb; pdb.set_trace()
             results_dict.update(
                 {img_id: result for img_id, result in zip(image_ids, output)}
             )
@@ -91,6 +88,7 @@ def compute_with_energy_on_dataset(base_model, energy_model, sampler, data_loade
                     torch.cuda.synchronize()
                 timer.toc()
             # output = [o.to(cpu_device) for o in output]
+        torch.cuda.empty_cache()
 
         if with_sample:
             #MCMC refinement
