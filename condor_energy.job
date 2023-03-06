@@ -8,11 +8,11 @@ RequestMemory  = 8G
 #It will not run longer than 1.5 day
 +RequestWalltime = 43200
 #I need one GPU
-Request_GPUs = 1
+Request_GPUs = 4
 
 # Run only on Visics machines with a GPU with 3GB of RAM or more
 #requirements =  (GPUs_GlobalMemoryMb >= 4096)
-requirements =  (GPUs_GlobalMemoryMb >= 13792)
+requirements =  (GPUs_GlobalMemoryMb >= 10192)
 #requirements =  (GPUs_GlobalMemoryMb >= 16384)
 
 
@@ -23,20 +23,22 @@ Notification = Error
 initialdir = /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-scene-graph
 
 # Timing
-Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
+#Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
+Executable = /users/students/r0879687/thesis/multi_gpu.sh
 
 # These are the arguments
-Arguments = tools/energy_joint_train_cd.py
+#Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
+#Arguments = tools/multi_gpu_energy.py
 
 #Output of condors handling of the jobs, will be in 'initialdir'
-Log          = /users/students/r0879687/thesis/output/condor_outs/condor_predcls-bs4.log
+Log          = /users/students/r0879687/thesis/output/condor_outs/condor_multi.log
 
 #Standard output of the 'executable', in 'initialdir'
-Output       = /users/students/r0879687/thesis/output/condor_outs/condor_predcls-bs4.out
+Output       = /users/students/r0879687/thesis/output/condor_outs/condor_multi.out
 
 #Standard error of the 'executable', in 'initialdir'
-Error        = /users/students/r0879687/thesis/output/condor_outs/condor_predcls-bs4.err
+Error        = /users/students/r0879687/thesis/output/condor_outs/condor_multi.err
 
 # Start just 1 instance of the job
 Queue 1

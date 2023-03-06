@@ -1,0 +1,205 @@
+000 (2142.000.000) 2023-03-05 17:15:09 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2142.000.000) 2023-03-05 17:15:15 Job executing on host: <10.87.24.132:9618?addrs=10.87.24.132-9618&alias=malachite.esat.kuleuven.be&noUDP&sock=startd_2931_002c>
+...
+006 (2142.000.000) 2023-03-05 17:15:24 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	488  -  ResidentSetSize of job (KB)
+...
+006 (2142.000.000) 2023-03-05 21:58:20 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	492  -  ResidentSetSize of job (KB)
+...
+004 (2142.000.000) 2023-03-05 21:58:20 Job was evicted.
+	(0) CPU times
+		Usr 0 00:39:37, Sys 0 00:07:39  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.04        4         4 
+	   Disk (KB)            :     17500     1048576   2537092 
+	   Gpus (Average)       : 189949220.17        1         1 "CUDA0"
+	   GpusMemory (MB)      :     12287                       
+	   Memory (MB)          :         1        8192      8192 
+...
+009 (2142.000.000) 2023-03-05 21:58:20 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2146.000.000) 2023-03-05 22:19:07 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2146.000.000) 2023-03-05 22:19:09 Job executing on host: <10.87.24.166:9618?addrs=10.87.24.166-9618+[--1]-9618&alias=qayd.esat.kuleuven.be&noUDP&sock=startd_2653_50d8>
+...
+006 (2146.000.000) 2023-03-05 22:19:18 Image size of job updated: 10911632
+	2  -  MemoryUsage of job (MB)
+	1096  -  ResidentSetSize of job (KB)
+...
+006 (2146.000.000) 2023-03-05 23:02:51 Image size of job updated: 10911632
+	2  -  MemoryUsage of job (MB)
+	1100  -  ResidentSetSize of job (KB)
+...
+004 (2146.000.000) 2023-03-05 23:02:51 Job was evicted.
+	(0) CPU times
+		Usr 5 13:34:32, Sys 1 06:28:50  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.09        4         4 
+	   Disk (KB)            :     17500     1048576   3383858 
+	   Gpus (Average)       : 119442381.45        1         1 "CUDA0"
+	   GpusMemory (MB)      :     12277                       
+	   Memory (MB)          :         2        8192      8192 
+...
+009 (2146.000.000) 2023-03-05 23:02:51 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2147.000.000) 2023-03-05 23:06:49 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+009 (2147.000.000) 2023-03-05 23:07:01 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2148.000.000) 2023-03-05 23:08:06 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2148.000.000) 2023-03-05 23:08:07 Job executing on host: <10.87.24.132:9618?addrs=10.87.24.132-9618&alias=malachite.esat.kuleuven.be&noUDP&sock=startd_2931_002c>
+...
+006 (2148.000.000) 2023-03-05 23:08:16 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	708  -  ResidentSetSize of job (KB)
+...
+006 (2148.000.000) 2023-03-05 23:40:35 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	712  -  ResidentSetSize of job (KB)
+...
+004 (2148.000.000) 2023-03-05 23:40:35 Job was evicted.
+	(0) CPU times
+		Usr 0 00:39:47, Sys 0 00:08:47  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.02        4         4 
+	   Disk (KB)            :     17500     1048576   2537092 
+	   Gpus (Average)       : 154651573.45        1         1 "CUDA0"
+	   GpusMemory (MB)      :     12255                       
+	   Memory (MB)          :         1        8192      8192 
+...
+009 (2148.000.000) 2023-03-05 23:40:35 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2149.000.000) 2023-03-05 23:47:24 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2149.000.000) 2023-03-05 23:47:44 Job executing on host: <10.87.24.132:9618?addrs=10.87.24.132-9618&alias=malachite.esat.kuleuven.be&noUDP&sock=startd_2931_002c>
+...
+006 (2149.000.000) 2023-03-05 23:47:52 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	708  -  ResidentSetSize of job (KB)
+...
+006 (2149.000.000) 2023-03-06 00:01:19 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	712  -  ResidentSetSize of job (KB)
+...
+004 (2149.000.000) 2023-03-06 00:01:19 Job was evicted.
+	(0) CPU times
+		Usr 0 00:39:47, Sys 0 00:08:47  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.03        4         4 
+	   Disk (KB)            :     17500     1048576   2537092 
+	   Gpus (Average)       : 142357563.89        1         1 "CUDA0"
+	   GpusMemory (MB)      :     12285                       
+	   Memory (MB)          :         1        8192      8192 
+...
+009 (2149.000.000) 2023-03-06 00:01:19 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2150.000.000) 2023-03-06 00:06:34 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2150.000.000) 2023-03-06 00:06:36 Job executing on host: <10.87.24.132:9618?addrs=10.87.24.132-9618&alias=malachite.esat.kuleuven.be&noUDP&sock=startd_2931_002c>
+...
+006 (2150.000.000) 2023-03-06 00:06:45 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	708  -  ResidentSetSize of job (KB)
+...
+006 (2150.000.000) 2023-03-06 00:20:48 Image size of job updated: 3146000
+	1  -  MemoryUsage of job (MB)
+	712  -  ResidentSetSize of job (KB)
+...
+004 (2150.000.000) 2023-03-06 00:20:48 Job was evicted.
+	(0) CPU times
+		Usr 0 00:39:47, Sys 0 00:08:47  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.00        4         4 
+	   Disk (KB)            :     17500     1048576   2537092 
+	   Gpus (Average)       : 139320138.46        1         1 "CUDA0"
+	   GpusMemory (MB)      :     12209                       
+	   Memory (MB)          :         1        8192      8192 
+...
+009 (2150.000.000) 2023-03-06 00:20:48 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2151.000.000) 2023-03-06 00:21:46 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2151.000.000) 2023-03-06 00:21:56 Job executing on host: <10.87.24.25:9618?addrs=10.87.24.25-9618&alias=estragon.esat.kuleuven.be&noUDP&sock=startd_996654_5308>
+...
+006 (2151.000.000) 2023-03-06 00:22:04 Image size of job updated: 29504360
+	1  -  MemoryUsage of job (MB)
+	632  -  ResidentSetSize of job (KB)
+...
+006 (2151.000.000) 2023-03-06 00:30:23 Image size of job updated: 29504360
+	1  -  MemoryUsage of job (MB)
+	636  -  ResidentSetSize of job (KB)
+...
+004 (2151.000.000) 2023-03-06 00:30:23 Job was evicted.
+	(0) CPU times
+		Usr 1 02:42:49, Sys 7 19:39:15  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.15        4         4 
+	   Disk (KB)            : 17500     1048576   6370730 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   111                       
+	   Memory (MB)          :     1        8192      8192 
+...
+009 (2151.000.000) 2023-03-06 00:30:23 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2152.000.000) 2023-03-06 00:42:07 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2152.000.000) 2023-03-06 00:42:17 Job executing on host: <10.87.24.25:9618?addrs=10.87.24.25-9618&alias=estragon.esat.kuleuven.be&noUDP&sock=startd_996654_5308>
+...
+006 (2152.000.000) 2023-03-06 00:42:26 Image size of job updated: 29504360
+	376  -  MemoryUsage of job (MB)
+	384568  -  ResidentSetSize of job (KB)
+...
+006 (2152.000.000) 2023-03-06 00:47:27 Image size of job updated: 29504360
+	1722  -  MemoryUsage of job (MB)
+	1762864  -  ResidentSetSize of job (KB)
+...
+006 (2152.000.000) 2023-03-06 00:52:28 Image size of job updated: 29504360
+	2048  -  MemoryUsage of job (MB)
+	2096840  -  ResidentSetSize of job (KB)
+...
+004 (2152.000.000) 2023-03-06 00:56:53 Job was evicted.
+	(0) CPU times
+		Usr 1 02:50:45, Sys 7 19:42:59  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.15        4         4 
+	   Disk (KB)            : 17500     1048576   6370730 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   111                       
+	   Memory (MB)          :  2048        8192      8192 
+...
+009 (2152.000.000) 2023-03-06 00:56:53 Job was aborted.
+	via condor_rm (by user r0879687)
+...

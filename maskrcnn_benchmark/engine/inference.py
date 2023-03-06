@@ -21,10 +21,12 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
     model.eval()
     results_dict = {}
     cpu_device = torch.device("cpu")
+    gc.collect()
     torch.cuda.empty_cache()
+    
     for itx, batch in enumerate(tqdm(data_loader)):
         with torch.no_grad():
-            torch.cuda.empty_cache()
+            #torch.cuda.empty_cache()
             images, targets, image_ids = batch
             targets = [target.to(device) for target in targets]
             if timer:

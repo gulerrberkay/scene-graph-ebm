@@ -14,6 +14,7 @@ MODEL:
     STRIDE_IN_1X1: False
     NUM_GROUPS: 32
     WIDTH_PER_GROUP: 8
+  BASE_ONLY: False           # When training energy model set this to false.
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
@@ -56,9 +57,9 @@ MODEL:
     ATTRIBUTE_BGFG_SAMPLE: True    
     ATTRIBUTE_BGFG_RATIO: 3        
   ROI_RELATION_HEAD:
-    USE_GT_BOX: False
+    USE_GT_BOX: True
     USE_GT_OBJECT_LABEL: False
-    REQUIRE_BOX_OVERLAP: True              # for sgdet, during training, only train pairs with overlap
+    REQUIRE_BOX_OVERLAP: False              # for sgdet, during training, only train pairs with overlap
     ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: True    # for sgdet only, in case some gt boxes are missing
     NUM_CLASSES: 51                 # 51 for VG, 201 for GQA (not contain "to the left of" & "to the right of")
     BATCH_SIZE_PER_IMAGE: 1024      # sample as much as possible
@@ -96,11 +97,11 @@ MODEL:
       INNER_DIM: 2048
     ############### Parameters for Energy Model ##############
     EBM:
-      OBJ_EMBED_DIM: 512
-      REL_EMBED_DIM: 512
-      OBJ_LABEL_EMBED_DIM: 512
-      REL_LABEL_EMBED_DIM: 512
-      POOLING_DIM: 512
+      OBJ_EMBED_DIM: 384
+      REL_EMBED_DIM: 384
+      OBJ_LABEL_EMBED_DIM: 384
+      REL_LABEL_EMBED_DIM: 384
+      POOLING_DIM: 384
 DATASETS:
   TRAIN: ("VG_stanford_filtered_with_attribute_train",)
   VAL: ("VG_stanford_filtered_with_attribute_val",)
@@ -109,9 +110,9 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
 SOLVER:
   PRE_VAL: False
-  IMS_PER_BATCH: 4
+  IMS_PER_BATCH: 16
   BIAS_LR_FACTOR: 1
-  BASE_LR: 0.0025
+  BASE_LR: 0.01
   WARMUP_FACTOR: 0.1
   WEIGHT_DECAY: 0.0001
   MOMENTUM: 0.9
@@ -131,14 +132,15 @@ SOLVER:
     FACTOR: 0.05   #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs4'
+#OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_energy_bs4'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sggcls_energy_bs4_multi'
+#OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sggdet_energy_bs2'
+
 TEST:
-  BBOX_AUG:
-    ENABLED: False
-  IMS_PER_BATCH: 2
+  IMS_PER_BATCH: 4
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:
-    SYNC_GATHER: True      # turn on will slow down the evaluation to solve the sgdet test out of memory problem
+    SYNC_GATHER: False      # turn on will slow down the evaluation to solve the sgdet test out of memory problem
     REQUIRE_OVERLAP: False
     LATER_NMS_PREDICTION_THRES: 0.5
 

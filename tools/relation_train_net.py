@@ -12,6 +12,8 @@ import os
 import time
 import datetime
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+
 import torch
 from torch.nn.utils import clip_grad_norm_
 import wandb
@@ -148,7 +150,7 @@ def train(cfg, local_rank, distributed, logger):
         targets = [target.to(device) for target in targets]
         
         
-        
+
         loss_dict, _, _ = model(images, targets)
         #import pdb; pdb.set_trace()
         losses = sum(loss for loss in loss_dict.values())
@@ -384,7 +386,7 @@ def main():
     model = train(cfg, args.local_rank, args.distributed, logger)
 
     #if not args.skip_test:
-    #    run_test(cfg, model, args.distributed, logger)
+    run_test(cfg, model, args.distributed, logger)
 
 
 if __name__ == "__main__":

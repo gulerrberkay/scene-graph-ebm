@@ -87,19 +87,19 @@ def train(cfg, local_rank, distributed, logger):
     num_batch = cfg.SOLVER.IMS_PER_BATCH
 
     #Build Optimier
-    base_optimizer = make_optimizer(cfg, base_model, logger, slow_heads=slow_heads, slow_ratio=10.0, rl_factor=float(num_batch))
+    #base_optimizer = make_optimizer(cfg, base_model, logger, slow_heads=slow_heads, slow_ratio=10.0, rl_factor=float(num_batch))
     energy_optimizer = make_optimizer(cfg, energy_model, logger, slow_heads=[], slow_ratio=10.0, rl_factor=float(num_batch))
 
     #Build scheduler
-    base_scheduler = make_lr_scheduler(cfg, base_optimizer, logger)
+    #base_scheduler = make_lr_scheduler(cfg, base_optimizer, logger)
     energy_scheduler = make_lr_scheduler(cfg, energy_optimizer, logger)
 
     debug_print(logger, 'end optimizer and scheduler')
 
     # Initialize mixed-precision training
-    use_mixed_precision = cfg.DTYPE == "float16"
-    amp_opt_level = 'O1' if use_mixed_precision else 'O0'
-    [base_model, energy_model] , energy_optimizer = amp.initialize([base_model, energy_model], energy_optimizer, opt_level=amp_opt_level)
+    #use_mixed_precision = cfg.DTYPE == "float16"
+    #amp_opt_level = 'O1' if use_mixed_precision else 'O0'
+    #[base_model, energy_model] , energy_optimizer = amp.initialize([base_model, energy_model], energy_optimizer, opt_level=amp_opt_level)
 
     if distributed:
         # base_model = torch.nn.parallel.DistributedDataParallel(
@@ -187,7 +187,7 @@ def train(cfg, local_rank, distributed, logger):
         detections = base_model(images, targets)
         pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(images, detections, base_model, cfg.DATASETS.NUM_OBJ_CLASSES, mode)
         gt_im_graph, gt_scene_graph, gt_bbox = gt2graph(images, targets, base_model, cfg.DATASETS.NUM_OBJ_CLASSES, cfg.DATASETS.NUM_REL_CLASSES)
-        import ipdb; ipdb.set_trace()
+        #import ipdb; ipdb.set_trace()
         
         positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
@@ -208,8 +208,9 @@ def train(cfg, local_rank, distributed, logger):
         energy_optimizer.zero_grad()
         # Note: If mixed precision is not used, this ends up doing nothing
         # Otherwise apply loss scaling for mixed-precision recipe
-        with amp.scale_loss(losses, energy_optimizer) as scaled_losses:
-            scaled_losses.backward()
+        losses.backward()
+        #with amp.scale_loss(losses, energy_optimizer) as scaled_losses:
+        #    scaled_losses.backward()
         # add clip_grad_norm from MOTIFS, tracking gradient, used for debug
         verbose = (iteration % cfg.SOLVER.PRINT_GRAD_FREQ) == 0 or print_first_grad # print grad or not
         print_first_grad = False
@@ -381,7 +382,7 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Relation Detection Training")
     parser.add_argument(
         "--config-file",
-        default="configs/e2e_relation_X_101_32_8_FPN_1x.yaml",
+        default="configs/e2e_relation_X_101_32_8_FPN_1x_energy.yaml",
         metavar="FILE",
         help="path to config file",
         type=str,
@@ -426,8 +427,8 @@ def main():
     cfg.freeze()
 
     if get_rank() == 0:
-        if cfg.MODEL.DEV_RUN:
-            os.environ['WANDB_MODE'] = 'dryrun'
+        #if cfg.MODEL.DEV_RUN:
+        #    os.environ['WANDB_MODE'] = 'dryrun'
 
         wandb.init(project="sgebm")
         wandb.config.update(cfg)
@@ -452,8 +453,8 @@ def main():
 
     base_model, energy_model, sampler = train(cfg, args.local_rank, args.distributed, logger)
     
-    if not args.skip_test:
-        run_test(cfg, base_model, energy_model, sampler, args.distributed, logger)
+    #if not args.skip_test:
+    run_test(cfg, base_model, energy_model, sampler, args.distributed, logger)
 
 
 if __name__ == "__main__":

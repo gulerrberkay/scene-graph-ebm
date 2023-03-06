@@ -1,0 +1,31 @@
+000 (2153.000.000) 2023-03-06 10:58:42 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2741_ad2e>
+...
+001 (2153.000.000) 2023-03-06 10:58:43 Job executing on host: <10.87.24.25:9618?addrs=10.87.24.25-9618&alias=estragon.esat.kuleuven.be&noUDP&sock=startd_996654_5308>
+...
+006 (2153.000.000) 2023-03-06 10:58:52 Image size of job updated: 1
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2153.000.000) 2023-03-06 11:07:13 Image size of job updated: 256
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2153.000.000) 2023-03-06 11:07:13 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     3.33        4         4 
+	   Disk (KB)            :     1     1048576   6370730 
+	   Gpus (Average)       :     0.00        4         4 "CUDA0,CUDA1,CUDA2,CUDA3"
+	   GpusMemory (MB)      :   481                       
+	   Memory (MB)          :     1        8192      8192 
+
+	Job terminated of its own accord at 2023-03-06T10:07:13Z with exit-code 1.
+...

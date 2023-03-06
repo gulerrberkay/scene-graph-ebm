@@ -6,6 +6,8 @@ from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:sk
 import argparse
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+
 import torch
 import wandb
 

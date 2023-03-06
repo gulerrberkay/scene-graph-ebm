@@ -7,7 +7,8 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3,4,5,6,7,8,9"
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 import torch
 from torch.nn.utils import clip_grad_norm_
 import wandb
@@ -260,8 +261,10 @@ def train(cfg, local_rank, distributed, logger):
         # Note: If mixed precision is not used, this ends up doing nothing
         # Otherwise apply loss scaling for mixed-precision recipe
         # start_time = timer()
-        
+
         total_losses.backward()
+       
+
         #with amp.scale_loss(total_losses, [base_optimizer, energy_optimizer]) as scaled_task_losses:
         #    scaled_task_losses.backward()
         # end_time = timer()
@@ -279,6 +282,8 @@ def train(cfg, local_rank, distributed, logger):
         print_first_grad = False
         clip_grad_norm([(n, p) for n, p in energy_model.named_parameters() if p.requires_grad], max_norm=cfg.SOLVER.GRAD_NORM_CLIP, logger=logger, verbose=verbose, clip=True)
         clip_grad_norm([(n, p) for n, p in base_model.named_parameters() if p.requires_grad], max_norm=cfg.SOLVER.GRAD_NORM_CLIP, logger=logger, verbose=verbose, clip=True)
+        
+        #clip_grad_norm([(n, p) for n, p in energy_model.named_parameters() if p.requires_grad], max_norm=cfg.SOLVER.GRAD_NORM_CLIP, logger=logger, verbose=verbose, clip=True)
 
         # start_time = timer()
         base_optimizer.step()
@@ -289,7 +294,9 @@ def train(cfg, local_rank, distributed, logger):
         batch_time = time.time() - end
         end = time.time()
         meters.update(time=batch_time, data=data_time)
-        # import ipdb; ipdb.set_trace()
+        
+        #import pdb; pdb.set_trace()
+        
         eta_seconds = meters.time.global_avg * (max_iter - iteration)
         eta_string = str(datetime.timedelta(seconds=int(eta_seconds)))
 
@@ -497,7 +504,7 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Relation Detection Training")
     parser.add_argument(
         "--config-file",
-        default="configs/e2e_relation_X_101_32_8_FPN_1x.yaml",
+        default="configs/e2e_relation_X_101_32_8_FPN_1x_energy.yaml",
         metavar="FILE",
         help="path to config file",
         type=str,
@@ -524,6 +531,8 @@ def main():
     #Distributed Setup
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     args.distributed = num_gpus > 1
+    #print("numgpu=",num_gpus)
+    #print("distributed is on? = ", args.distributed)
 
     if args.distributed:
         torch.cuda.set_device(args.local_rank)
@@ -548,10 +557,9 @@ def main():
     ###################################################################################################
     #Wandb Setup
     if get_rank() == 0:
-        if cfg.MODEL.DEV_RUN or cfg.WANDB.MUTE:
-            os.environ['WANDB_MODE'] = 'dryrun'
-
-        wandb.init(project="sgebm", id=str(args.slurm_id))
+        #if cfg.MODEL.DEV_RUN or cfg.WANDB.MUTE:
+        #    os.environ['WANDB_MODE'] = 'dryrun'
+        wandb.init(project="ebm-part")
     ###################################################################################################
     ###################################################################################################
     logger = setup_logger("maskrcnn_benchmark", output_dir, get_rank())
@@ -575,8 +583,8 @@ def main():
 
     base_model, energy_model, sampler = train(cfg, args.local_rank, args.distributed, logger)
     
-    if not args.skip_test:
-        run_test(cfg, base_model, energy_model, sampler, args.distributed, logger)
+    #if not args.skip_test:
+    run_test(cfg, base_model, energy_model, sampler, args.distributed, logger)
 
 
 if __name__ == "__main__":
