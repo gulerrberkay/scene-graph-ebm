@@ -97,7 +97,7 @@ _C.INPUT.SATURATION = 0.0
 _C.INPUT.HUE = 0.0
 
 _C.INPUT.VERTICAL_FLIP_PROB_TRAIN = 0.0
-_C.INPUT.FLIP_PROB_TRAIN = 0  # was 0.5  originally
+_C.INPUT.FLIP_PROB_TRAIN = 0.5  # was 0.5  originally
 # -----------------------------------------------------------------------------
 # Dataset
 # -----------------------------------------------------------------------------
@@ -313,7 +313,7 @@ _C.MODEL.ROI_KEYPOINT_HEAD.MLP_HEAD_DIM = 1024
 _C.MODEL.ROI_KEYPOINT_HEAD.CONV_LAYERS = tuple(512 for _ in range(8))
 _C.MODEL.ROI_KEYPOINT_HEAD.RESOLUTION = 14
 _C.MODEL.ROI_KEYPOINT_HEAD.NUM_CLASSES = 17
-_C.MODEL.ROI_KEYPOINT_HEAD.SHARE_BOX_FEATURE_EXTRACTOR = True
+_C.MODEL.ROI_KEYPOINT_HEAD.SHARE_BOX_FEATURE_EXTRACTOR = False   #False for neural motifs
 
 
 _C.MODEL.ROI_RELATION_HEAD = CN()
@@ -558,7 +558,7 @@ _C.SOLVER.PRINT_GRAD_FREQ = 5000
 # whether validate and validate period
 _C.SOLVER.TO_VAL = True
 _C.SOLVER.PRE_VAL = False
-_C.SOLVER.VAL_PERIOD = 200
+_C.SOLVER.VAL_PERIOD = 2000
 
 # update schedule
 # when load from a previous model, if set to True
@@ -582,7 +582,7 @@ _C.TEST.EXPECTED_RESULTS_SIGMA_TOL = 4
 # see 2 images per batch
 _C.TEST.IMS_PER_BATCH = 1  #8
 # Number of detections per image
-_C.TEST.DETECTIONS_PER_IMG = 100
+_C.TEST.DETECTIONS_PER_IMG = 64
 
 # ---------------------------------------------------------------------------- #
 # Test-time augmentations for bounding box detection

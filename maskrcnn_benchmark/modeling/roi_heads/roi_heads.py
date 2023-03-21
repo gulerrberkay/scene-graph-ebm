@@ -25,6 +25,7 @@ class CombinedROIHeads(torch.nn.ModuleDict):
     def forward(self, features, proposals, targets=None, logger=None):
         losses = {}
         x, detections, loss_box = self.box(features, proposals, targets)
+        #import pdb; pdb.set_trace()
         if not self.cfg.MODEL.RELATION_ON:
             # During the relationship training stage, the bbox_proposal_network should be fixed, and no loss. 
             losses.update(loss_box)

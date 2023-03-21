@@ -58,7 +58,7 @@ class GeneralizedRCNN(nn.Module):
         features = self.backbone(images.tensors)
 
         proposals, proposal_losses = self.rpn(images, features, targets)
-        #import ipdb; ipdb.set_trace()
+        #import pdb; pdb.set_trace()
         if self.roi_heads:
             x, result, detector_losses = self.roi_heads(features, proposals, targets, logger)
         else:

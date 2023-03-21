@@ -4,14 +4,14 @@ Universe = vanilla
 #I need just two CPU (which is the default)
 RequestCpus    = 4
 #I need 8 GBytes of RAM (resident memory)
-RequestMemory  = 8G
+RequestMemory  = 16G
 #It will not run longer than 1.5 day
 +RequestWalltime = 18000
 #I need one GPU
 Request_GPUs = 1
 
 # Run only on Visics machines with a GPU with 3GB of RAM or more
-#requirements =  (GPUs_GlobalMemoryMb >= 8192)
+#requirements =  (GPUs_GlobalMemoryMb >= 1192)
 requirements =  (GPUs_GlobalMemoryMb >= 16384)
 
 
@@ -26,6 +26,7 @@ Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
 
 # These are the arguments
 Arguments = tools/relation_test_net.py
+#Arguments = tools/energy_test_net.py
 
 
 #Output of condors handling of the jobs, will be in 'initialdir'

@@ -6,6 +6,7 @@ import argparse
 import os
 import time
 import datetime
+os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3"
 
 import torch
 from torch.nn.utils import clip_grad_norm_
@@ -42,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
-        default="/private/home/fmassa/github/detectron.pytorch_v2/configs/e2e_faster_rcnn_R_50_C4_1x_caffe2.yaml",
+        default="configs/e2e_relation_X_101_32_8_FPN_1x_energy.yaml",
         metavar="FILE",
         help="path to config file",
     )
@@ -76,7 +77,7 @@ def main():
         if cfg.MODEL.DEV_RUN or cfg.WANDB.MUTE:
             os.environ['WANDB_MODE'] = 'dryrun'
 
-        wandb.init(project="sgebm")
+        wandb.init(project="ebm-test")
 
     cfg.DATASETS.NUM_OBJ_CLASSES = cfg.MODEL.ROI_BOX_HEAD.NUM_CLASSES
     cfg.DATASETS.NUM_REL_CLASSES = cfg.MODEL.ROI_RELATION_HEAD.NUM_CLASSES
@@ -100,8 +101,8 @@ def main():
     sampler = build_sampler(cfg)
 
     # Initialize mixed-precision if necessary
-    use_mixed_precision = cfg.DTYPE == 'float16'
-    amp_handle = amp.init(enabled=use_mixed_precision, verbose=cfg.AMP_VERBOSE)
+    #use_mixed_precision = cfg.DTYPE == 'float16'
+    #amp_handle = amp.init(enabled=use_mixed_precision, verbose=cfg.AMP_VERBOSE)
 
     output_dir = cfg.OUTPUT_DIR
 
@@ -111,8 +112,11 @@ def main():
         base_scheduler=None, energy_scheduler=None, 
         save_dir=output_dir
     )
-
-    _ = checkpointer.load(cfg.MODEL.WEIGHT)
+    if checkpointer.has_checkpoint():
+        extra_checkpoint_data = checkpointer.load(cfg.MODEL.PRETRAINED_DETECTOR_CKPT)
+    else:
+        #Load the detector
+        _ = checkpointer.load(cfg.MODEL.WEIGHT)
 
     iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:

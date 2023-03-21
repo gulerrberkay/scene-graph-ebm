@@ -53,6 +53,7 @@ class ROIRelationHead(torch.nn.Module):
             losses (dict[Tensor]): During training, returns the losses for the
                 head. During testing, returns an empty dict.
         """
+        #import pdb; pdb.set_trace()
         if self.training:
             # relation subsamples and assign ground truth label during training
             with torch.no_grad():

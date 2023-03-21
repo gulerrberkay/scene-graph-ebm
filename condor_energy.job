@@ -4,16 +4,16 @@ Universe = vanilla
 #I need just two CPU (which is the default)
 RequestCpus    = 4
 #I need 8 GBytes of RAM (resident memory)
-RequestMemory  = 8G
+RequestMemory  = 16G
 #It will not run longer than 1.5 day
 +RequestWalltime = 43200
 #I need one GPU
-Request_GPUs = 4
+Request_GPUs = 2
 
 # Run only on Visics machines with a GPU with 3GB of RAM or more
 #requirements =  (GPUs_GlobalMemoryMb >= 4096)
-requirements =  (GPUs_GlobalMemoryMb >= 10192)
-#requirements =  (GPUs_GlobalMemoryMb >= 16384)
+#requirements =  (GPUs_GlobalMemoryMb >= 14192)
+requirements =  (GPUs_GlobalMemoryMb >= 16384)
 
 
 #Mail me only if something is wrong
@@ -27,7 +27,7 @@ initialdir = /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-s
 Executable = /users/students/r0879687/thesis/multi_gpu.sh
 
 # These are the arguments
-#Arguments = tools/energy_joint_train_cd.py
+Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 #Arguments = tools/multi_gpu_energy.py
 

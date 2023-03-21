@@ -1,0 +1,948 @@
+000 (3066.000.000) 2023-03-07 15:44:42 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618+[--1]-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2704_4c2d>
+...
+009 (3066.000.000) 2023-03-07 23:21:20 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (3072.000.000) 2023-03-08 13:51:38 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3072.000.000) 2023-03-08 13:51:40 Job executing on host: <10.87.24.4:9618?addrs=10.87.24.4-9618&alias=aristoteles.esat.kuleuven.be&noUDP&sock=startd_2706_ab5d>
+...
+006 (3072.000.000) 2023-03-08 13:51:48 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3072.000.000) 2023-03-09 03:49:17 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+009 (3072.000.000) 2023-03-09 03:49:17 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobStatus == 5 && CurrentTime - EnteredCurrentStatus > 3600 * 24 * 30) || (JobStatus == 4 && CurrentTime - EnteredCurrentStatus > 3600 * 24 * 30) || (JobStatus == 1 && CurrentTime - EnteredCurrentStatus > 3600 * 24 * 90) || (JobStatus == 2 && (ProportionalSetSizeKb > (1024 * My.RequestMemory))) || (JobStatus == 2 && ((RemoteWallClockTime - CumulativeSuspensionTime) > My.RequestWalltime))' evaluated to TRUE
+...
+000 (3075.000.000) 2023-03-09 10:02:19 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3075.000.000) 2023-03-09 10:02:21 Job executing on host: <10.87.24.4:9618?addrs=10.87.24.4-9618&alias=aristoteles.esat.kuleuven.be&noUDP&sock=startd_2706_ab5d>
+...
+006 (3075.000.000) 2023-03-09 10:02:29 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3075.000.000) 2023-03-09 10:07:13 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (3075.000.000) 2023-03-09 10:07:13 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.93        4         4 
+	   Disk (KB)            : 17500     1048576   1430127 
+	   Gpus (Average)       :     0           1         1 "CUDA7"
+	   GpusMemory (MB)      :   838                       
+	   Memory (MB)          :     1        8192      8192 
+
+	Job terminated of its own accord at 2023-03-09T09:07:13Z with exit-code 1.
+...
+000 (3076.000.000) 2023-03-09 10:10:10 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3076.000.000) 2023-03-09 10:10:28 Job executing on host: <10.87.24.140:9618?addrs=10.87.24.140-9618&alias=hawberry.esat.kuleuven.be&noUDP&sock=startd_1119515_c04f>
+...
+006 (3076.000.000) 2023-03-09 10:10:37 Image size of job updated: 343684
+	329  -  MemoryUsage of job (MB)
+	335876  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:15:38 Image size of job updated: 6318488
+	6167  -  MemoryUsage of job (MB)
+	6314336  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:20:39 Image size of job updated: 6438308
+	6241  -  MemoryUsage of job (MB)
+	6390432  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:25:39 Image size of job updated: 6482400
+	6330  -  MemoryUsage of job (MB)
+	6481500  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:30:40 Image size of job updated: 6552920
+	6374  -  MemoryUsage of job (MB)
+	6526380  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:35:41 Image size of job updated: 6630868
+	6475  -  MemoryUsage of job (MB)
+	6629820  -  ResidentSetSize of job (KB)
+...
+006 (3076.000.000) 2023-03-09 10:38:33 Image size of job updated: 6675780
+	6475  -  MemoryUsage of job (MB)
+	6629820  -  ResidentSetSize of job (KB)
+...
+004 (3076.000.000) 2023-03-09 10:38:33 Job was evicted.
+	(0) CPU times
+		Usr 0 00:27:46, Sys 0 00:00:57  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.07        4         4 
+	   Disk (KB)            : 17500     1048576   1972331 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :  6475        8192      8192 
+...
+001 (3076.000.000) 2023-03-09 10:43:38 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2274_5a74>
+...
+005 (3076.000.000) 2023-03-09 10:46:59 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:27:46, Sys 0 00:00:57  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.24        4         4 
+	   Disk (KB)            : 17500     1048576   3285216 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   320                       
+	   Memory (MB)          :  7325        8192      8192 
+
+	Job terminated of its own accord at 2023-03-09T09:46:59Z with exit-code 1.
+...
+000 (3078.000.000) 2023-03-09 10:52:33 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3078.000.000) 2023-03-09 10:52:47 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2274_5a74>
+...
+006 (3078.000.000) 2023-03-09 10:52:56 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3078.000.000) 2023-03-09 10:56:06 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (3078.000.000) 2023-03-09 10:56:06 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3285216 
+	   Gpus (Average)       :                 1         1 "CUDA1"
+	   Memory (MB)          :        1     8192      8192 
+
+	Job terminated of its own accord at 2023-03-09T09:56:06Z with exit-code 1.
+...
+000 (3079.000.000) 2023-03-09 10:58:16 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3079.000.000) 2023-03-09 10:58:34 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2274_5a74>
+...
+006 (3079.000.000) 2023-03-09 10:58:43 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3079.000.000) 2023-03-09 11:01:25 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (3079.000.000) 2023-03-09 11:01:25 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3285216 
+	   Gpus (Average)       :                 1         1 "CUDA1"
+	   Memory (MB)          :        1     8192      8192 
+
+	Job terminated of its own accord at 2023-03-09T10:01:25Z with exit-code 1.
+...
+000 (3080.000.000) 2023-03-09 11:11:51 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3080.000.000) 2023-03-09 11:12:10 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2274_5a74>
+...
+006 (3080.000.000) 2023-03-09 11:12:19 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3080.000.000) 2023-03-09 11:15:26 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (3080.000.000) 2023-03-09 11:15:26 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3285216 
+	   Gpus (Average)       :                 1         1 "CUDA1"
+	   Memory (MB)          :        1     8192      8192 
+
+	Job terminated of its own accord at 2023-03-09T10:15:26Z with exit-code 1.
+...
+000 (3081.000.000) 2023-03-09 11:18:27 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+009 (3081.000.000) 2023-03-09 11:26:44 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (3082.000.000) 2023-03-09 11:29:38 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3082.000.000) 2023-03-09 11:29:48 Job executing on host: <10.87.24.28:9618?addrs=10.87.24.28-9618&alias=z4-demo.esat.kuleuven.be&noUDP&sock=startd_3816_097d>
+...
+006 (3082.000.000) 2023-03-09 11:29:57 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3082.000.000) 2023-03-09 11:34:58 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+004 (3082.000.000) 2023-03-09 11:34:58 Job was evicted.
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated Assigned
+	   Cpus                 :       1.02        4         4 
+	   Disk (KB)            :   17500     1048576   1965756 
+	   Gpus (Average)       : 4895210.43        1         1 "CUDA0"
+	   GpusMemory (MB)      :    3112                       
+	   Memory (MB)          :       1        8192      8192 
+...
+009 (3082.000.000) 2023-03-09 11:34:58 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (3083.000.000) 2023-03-09 11:36:21 Job submitted from host: <10.87.24.180:9618?addrs=10.87.24.180-9618&alias=amager.esat.kuleuven.be&noUDP&sock=schedd_2716_8750>
+...
+001 (3083.000.000) 2023-03-09 11:36:35 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (3083.000.000) 2023-03-09 11:36:45 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (3083.000.000) 2023-03-10 11:15:20 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (3083.000.000) 2023-03-10 11:15:20 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.00        4         4 
+	   Disk (KB)            :     17500     1048576   3630023 
+	   Gpus (Average)       : 144157136.34        1         1 "CUDA0"
+	   GpusMemory (MB)      :      9318                       
+	   Memory (MB)          :         1        8192      8192 
+
+	Job terminated of its own accord at 2023-03-10T10:15:20Z with exit-code 0.
+...
+000 (2168.000.000) 2023-03-10 12:33:47 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2168.000.000) 2023-03-10 12:33:48 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2232_8b79>
+...
+006 (2168.000.000) 2023-03-10 12:33:57 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2168.000.000) 2023-03-10 12:37:33 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2168.000.000) 2023-03-10 12:37:33 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :        0        4         4 
+	   Disk (KB)            :    17500  1048576   3285216 
+	   Gpus (Average)       :                 1         1 "CUDA1"
+	   Memory (MB)          :        1     8192      8192 
+
+	Job terminated of its own accord at 2023-03-10T11:37:33Z with exit-code 1.
+...
+000 (2169.000.000) 2023-03-10 12:38:23 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2169.000.000) 2023-03-10 12:38:25 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2232_8b79>
+...
+006 (2169.000.000) 2023-03-10 12:38:34 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2169.000.000) 2023-03-10 12:40:37 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2169.000.000) 2023-03-10 12:40:37 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.79        4         4 
+	   Disk (KB)            : 17500     1048576   3285216 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   320                       
+	   Memory (MB)          :     1        8192      8192 
+
+	Job terminated of its own accord at 2023-03-10T11:40:37Z with exit-code 1.
+...
+000 (2170.000.000) 2023-03-10 14:11:45 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2170.000.000) 2023-03-10 14:11:47 Job executing on host: <10.87.24.125:9618?addrs=10.87.24.125-9618&alias=diamond.esat.kuleuven.be&noUDP&sock=startd_2878_a5a7>
+...
+006 (2170.000.000) 2023-03-10 14:11:56 Image size of job updated: 6976488
+	1  -  MemoryUsage of job (MB)
+	156  -  ResidentSetSize of job (KB)
+...
+006 (2170.000.000) 2023-03-11 12:01:18 Image size of job updated: 6976488
+	1  -  MemoryUsage of job (MB)
+	160  -  ResidentSetSize of job (KB)
+...
+005 (2170.000.000) 2023-03-11 12:01:18 Job terminated.
+	(0) Abnormal termination (signal 2)
+	(0) No core file
+		Usr 0 00:00:33, Sys 0 00:00:11  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:33, Sys 0 00:00:11  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :        Usage  Request Allocated Assigned
+	   Cpus                 :         1.05        4         4 
+	   Disk (KB)            :     17500     1048576   2330315 
+	   Gpus (Average)       : 118246036.35        1         1 "CUDA0"
+	   GpusMemory (MB)      :     24240                       
+	   Memory (MB)          :         1        8192      8192 
+
+	Job terminated of its own accord at 2023-03-11T11:01:18Z with signal 2.
+...
+000 (2180.000.000) 2023-03-12 16:08:55 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2180.000.000) 2023-03-12 16:08:58 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2180.000.000) 2023-03-12 16:09:06 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2180.000.000) 2023-03-12 16:12:50 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2180.000.000) 2023-03-12 16:12:50 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.11        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:12:50Z with exit-code 1.
+...
+000 (2181.000.000) 2023-03-12 16:15:02 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2181.000.000) 2023-03-12 16:15:17 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2181.000.000) 2023-03-12 16:15:25 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2181.000.000) 2023-03-12 16:17:38 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2181.000.000) 2023-03-12 16:17:38 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.01        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:17:38Z with exit-code 1.
+...
+000 (2182.000.000) 2023-03-12 16:20:27 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2182.000.000) 2023-03-12 16:20:36 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2182.000.000) 2023-03-12 16:20:45 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2182.000.000) 2023-03-12 16:22:41 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2182.000.000) 2023-03-12 16:22:41 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.90        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:22:41Z with exit-code 1.
+...
+000 (2183.000.000) 2023-03-12 16:24:32 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2183.000.000) 2023-03-12 16:24:33 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2183.000.000) 2023-03-12 16:24:42 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2183.000.000) 2023-03-12 16:26:33 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2183.000.000) 2023-03-12 16:26:33 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.02        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:26:33Z with exit-code 1.
+...
+000 (2184.000.000) 2023-03-12 16:27:44 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2184.000.000) 2023-03-12 16:27:54 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2184.000.000) 2023-03-12 16:28:03 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2184.000.000) 2023-03-12 16:29:56 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2184.000.000) 2023-03-12 16:29:56 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :        1    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:29:56Z with exit-code 1.
+...
+000 (2185.000.000) 2023-03-12 16:30:30 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+000 (2186.000.000) 2023-03-12 16:32:44 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2186.000.000) 2023-03-12 16:32:52 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2186.000.000) 2023-03-12 16:33:01 Image size of job updated: 1172152
+	1145  -  MemoryUsage of job (MB)
+	1171984  -  ResidentSetSize of job (KB)
+...
+006 (2186.000.000) 2023-03-12 16:34:51 Image size of job updated: 4645216
+	1145  -  MemoryUsage of job (MB)
+	1171984  -  ResidentSetSize of job (KB)
+...
+005 (2186.000.000) 2023-03-12 16:34:51 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:01:29, Sys 0 00:00:11  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:29, Sys 0 00:00:11  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :     1145    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:34:51Z with exit-code 1.
+...
+009 (2185.000.000) 2023-03-12 16:36:03 Job was aborted.
+	via condor_rm (by user r0879687)
+...
+000 (2187.000.000) 2023-03-12 16:37:06 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2187.000.000) 2023-03-12 16:37:11 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2187.000.000) 2023-03-12 16:37:16 Image size of job updated: 213396
+	2  -  MemoryUsage of job (MB)
+	1060  -  ResidentSetSize of job (KB)
+...
+005 (2187.000.000) 2023-03-12 16:37:16 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:02, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:02, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :        2    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:37:16Z with exit-code 1.
+...
+000 (2188.000.000) 2023-03-12 16:38:17 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2188.000.000) 2023-03-12 16:38:32 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2188.000.000) 2023-03-12 16:38:36 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2188.000.000) 2023-03-12 16:38:36 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :        1    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:38:36Z with exit-code 1.
+...
+000 (2189.000.000) 2023-03-12 16:40:21 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2189.000.000) 2023-03-12 16:40:23 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2189.000.000) 2023-03-12 16:40:31 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2189.000.000) 2023-03-12 16:42:25 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2189.000.000) 2023-03-12 16:42:25 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.01        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:42:25Z with exit-code 1.
+...
+000 (2190.000.000) 2023-03-12 16:44:19 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2190.000.000) 2023-03-12 16:44:20 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2190.000.000) 2023-03-12 16:44:29 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2190.000.000) 2023-03-12 16:46:21 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2190.000.000) 2023-03-12 16:46:21 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.50        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:46:21Z with exit-code 1.
+...
+000 (2191.000.000) 2023-03-12 16:55:43 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2191.000.000) 2023-03-12 16:55:45 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2191.000.000) 2023-03-12 16:55:53 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2191.000.000) 2023-03-12 16:59:22 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2191.000.000) 2023-03-12 16:59:22 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.24        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T15:59:22Z with exit-code 1.
+...
+000 (2192.000.000) 2023-03-12 17:02:00 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2192.000.000) 2023-03-12 17:02:05 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2192.000.000) 2023-03-12 17:02:14 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2192.000.000) 2023-03-12 17:04:29 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2192.000.000) 2023-03-12 17:04:29 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :        1    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:04:29Z with exit-code 1.
+...
+000 (2193.000.000) 2023-03-12 17:10:14 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2193.000.000) 2023-03-12 17:10:15 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2193.000.000) 2023-03-12 17:10:24 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2193.000.000) 2023-03-12 17:12:16 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2193.000.000) 2023-03-12 17:12:16 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.02        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:12:16Z with exit-code 1.
+...
+000 (2194.000.000) 2023-03-12 17:13:35 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2194.000.000) 2023-03-12 17:13:36 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2194.000.000) 2023-03-12 17:13:45 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+000 (2195.000.000) 2023-03-12 17:13:52 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2195.000.000) 2023-03-12 17:13:56 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2232_8b79>
+...
+006 (2195.000.000) 2023-03-12 17:14:05 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2194.000.000) 2023-03-12 17:15:38 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2194.000.000) 2023-03-12 17:15:38 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3630023 
+	   Gpus (Average)       :                 1         1 "CUDA2"
+	   Memory (MB)          :        1    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:15:38Z with exit-code 1.
+...
+006 (2195.000.000) 2023-03-12 17:17:03 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2195.000.000) 2023-03-12 17:17:03 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.29        4         4 
+	   Disk (KB)            : 17500     1048576   3285216 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   320                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:17:03Z with exit-code 1.
+...
+000 (2196.000.000) 2023-03-12 17:24:32 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2196.000.000) 2023-03-12 17:24:33 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2196.000.000) 2023-03-12 17:24:42 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+000 (2197.000.000) 2023-03-12 17:26:58 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2197.000.000) 2023-03-12 17:26:59 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2232_8b79>
+...
+006 (2197.000.000) 2023-03-12 17:27:08 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2196.000.000) 2023-03-12 17:28:18 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2196.000.000) 2023-03-12 17:28:18 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.32        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:28:18Z with exit-code 1.
+...
+006 (2197.000.000) 2023-03-12 17:30:11 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2197.000.000) 2023-03-12 17:30:11 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     1.01        4         4 
+	   Disk (KB)            : 17500     1048576   3285216 
+	   Gpus (Average)       :     0           1         1 "CUDA1"
+	   GpusMemory (MB)      :   320                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:30:11Z with exit-code 1.
+...
+000 (2198.000.000) 2023-03-12 17:37:47 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2198.000.000) 2023-03-12 17:37:48 Job executing on host: <10.87.24.101:9618?addrs=10.87.24.101-9618&alias=etrog.esat.kuleuven.be&noUDP&sock=startd_2398_6832>
+...
+006 (2198.000.000) 2023-03-12 17:37:57 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+000 (2199.000.000) 2023-03-12 17:39:32 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+001 (2199.000.000) 2023-03-12 17:39:34 Job executing on host: <10.87.24.138:9618?addrs=10.87.24.138-9618&alias=grape.esat.kuleuven.be&noUDP&sock=startd_2232_8b79>
+...
+006 (2199.000.000) 2023-03-12 17:39:43 Image size of job updated: 17500
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+006 (2198.000.000) 2023-03-12 17:41:23 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2198.000.000) 2023-03-12 17:41:23 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :     0.73        4         4 
+	   Disk (KB)            : 17500     1048576   3630023 
+	   Gpus (Average)       :     0           1         1 "CUDA2"
+	   GpusMemory (MB)      :   321                       
+	   Memory (MB)          :     1       16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:41:23Z with exit-code 1.
+...
+006 (2199.000.000) 2023-03-12 17:42:41 Image size of job updated: 17500
+	1  -  MemoryUsage of job (MB)
+	8  -  ResidentSetSize of job (KB)
+...
+005 (2199.000.000) 2023-03-12 17:42:41 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :                 4         4 
+	   Disk (KB)            :    17500  1048576   3285216 
+	   Gpus (Average)       :                 1         1 "CUDA1"
+	   Memory (MB)          :        1    16384     16384 
+
+	Job terminated of its own accord at 2023-03-12T16:42:41Z with exit-code 1.
+...
+000 (2200.000.000) 2023-03-12 17:57:17 Job submitted from host: <10.87.24.181:9618?addrs=10.87.24.181-9618&alias=bornholm.esat.kuleuven.be&noUDP&sock=schedd_2713_7887>
+...
+009 (2200.000.000) 2023-03-12 22:58:22 Job was aborted.
+	via condor_rm (by user r0879687)
+...

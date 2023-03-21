@@ -7,8 +7,9 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3,4,5,6,7,8,9"
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3"
+#local_rank = int(os.environ["LOCAL_RANK"])
+#os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 import torch
 from torch.nn.utils import clip_grad_norm_
 import wandb
@@ -263,7 +264,8 @@ def train(cfg, local_rank, distributed, logger):
         # start_time = timer()
 
         total_losses.backward()
-       
+        #task_losses.backward(retain_graph=True)
+        #energy_losses.backward()
 
         #with amp.scale_loss(total_losses, [base_optimizer, energy_optimizer]) as scaled_task_losses:
         #    scaled_task_losses.backward()
@@ -277,6 +279,7 @@ def train(cfg, local_rank, distributed, logger):
         # with amp.scale_loss(energy_losses, energy_optimizer, loss_id=0) as scaled_energy_losses:
         #     scaled_energy_losses.backward()
         # energy_optimizer.step()
+
          # add clip_grad_norm from MOTIFS, tracking gradient, used for debug
         verbose = (iteration % cfg.SOLVER.PRINT_GRAD_FREQ) == 0 or print_first_grad # print grad or not
         print_first_grad = False
@@ -556,6 +559,8 @@ def main():
     ###################################################################################################
     ###################################################################################################
     #Wandb Setup
+    #import time
+    #ttime = time.asctime()
     if get_rank() == 0:
         #if cfg.MODEL.DEV_RUN or cfg.WANDB.MUTE:
         #    os.environ['WANDB_MODE'] = 'dryrun'

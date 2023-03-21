@@ -40,7 +40,7 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
                 if not cfg.MODEL.DEVICE == 'cpu':
                     torch.cuda.synchronize()
                 timer.toc()
-            output = [o for o in output]   #output = [o.to(cpu_device) for o in output]
+            output = [o.to(cpu_device) for o in output]   #output = [o.to(cpu_device) for o in output]
         if synchronize_gather:
             synchronize()
             multi_gpu_predictions = all_gather({img_id: result for img_id, result in zip(image_ids, output)})
@@ -51,7 +51,7 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
             results_dict.update(
                 {img_id: result for img_id, result in zip(image_ids, output)}
             )
-            
+    gc.collect()
     torch.cuda.empty_cache()
     return results_dict
 

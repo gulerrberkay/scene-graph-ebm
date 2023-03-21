@@ -12,7 +12,7 @@ import os
 import time
 import datetime
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+#os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 import torch
 from torch.nn.utils import clip_grad_norm_
