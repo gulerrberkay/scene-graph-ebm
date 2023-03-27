@@ -2,7 +2,7 @@
 # Modifications Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 import torch
 from torch import nn
-
+from itertools import product
 from maskrcnn_benchmark.structures.boxlist_ops import boxlist_iou
 from ..attribute_head.roi_attribute_feature_extractors import make_roi_attribute_feature_extractor
 from ..box_head.roi_box_feature_extractors import make_roi_box_feature_extractor
@@ -54,19 +54,42 @@ class ROIRelationHead(torch.nn.Module):
                 head. During testing, returns an empty dict.
         """
         #import pdb; pdb.set_trace()
-        if self.training:
-            # relation subsamples and assign ground truth label during training
+        if self.training and not self.cfg.MODEL.WEAKLY_ON:
+          # relation subsamples and assign ground truth label during training
             with torch.no_grad():
                 if self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
                     proposals, rel_labels, rel_pair_idxs, rel_binarys = self.samp_processor.gtbox_relsample(proposals, targets)
                 else:
                     proposals, rel_labels, rel_pair_idxs, rel_binarys = self.samp_processor.detect_relsample(proposals, targets)
         else:
-            rel_labels, rel_binarys = None, None
-            rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
+            #import pdb; pdb.set_trace()
+            if self.training and self.cfg.MODEL.WEAKLY_ON:
+                rel_binarys = None
+                rel_labels  = [target.get_field('relation') for target in targets]
+                #rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
+                rel_pair_idxs = []
+                for proposal in proposals:
+                    t = proposal.get_field('pred_scores')
+                    size_t = t.size(dim=0)
+                    if t.size(dim=0) <30:
+                        print("proposal number is less than 30")
+                        _, indices = torch.topk(t,int(size_t),dim=0)
+                    else: 
+                        _, indices = torch.topk(t,30,dim=0)
+                    indices = indices.tolist()
+                    indices.sort()
+                    tmp = list(product(indices,indices))
+                    tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                    rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device))
 
+                
+                #import pdb; pdb.set_trace()
+            else:
+                rel_labels, rel_binarys = None, None
+                rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
         # use box_head to extract features that will be fed to the later predictor processing
         roi_features = self.box_feature_extractor(features, proposals)
+        #import pdb; pdb.set_trace()
 
         if self.cfg.MODEL.ATTRIBUTE_ON:
             att_features = self.att_feature_extractor(features, proposals)
@@ -80,6 +103,7 @@ class ROIRelationHead(torch.nn.Module):
         # final classifier that converts the features into predictions
         # should corresponding to all the functions and layers after the self.context class
         refine_logits, relation_logits, add_losses = self.predictor(proposals, rel_pair_idxs, rel_labels, rel_binarys, roi_features, union_features, logger)
+        #import pdb; pdb.set_trace()
         # for test
         if not self.training:
             if self.cfg.MODEL.BASE_ONLY:
@@ -89,6 +113,7 @@ class ROIRelationHead(torch.nn.Module):
             return roi_features, result, {}
 
         loss_relation, loss_refine = self.loss_evaluator(proposals, rel_labels, relation_logits, refine_logits)
+        #import pdb; pdb.set_trace()
 
         if self.cfg.MODEL.ATTRIBUTE_ON and isinstance(loss_refine, (list, tuple)):
             output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine[0], loss_refine_att=loss_refine[1])

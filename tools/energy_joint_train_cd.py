@@ -232,7 +232,10 @@ def train(cfg, local_rank, distributed, logger):
         ########################################################################
         ########################################################################
         #Loss Computation
-        positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
+        if cfg.MODEL.WEAKLY_ON:
+            positive_energy = energy_model(gt_im_graph, gt_scene_graph, pred_bbox)
+        else:
+            positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
 
         energy_loss_dict = loss_function(cfg, positive_energy, negative_energy)

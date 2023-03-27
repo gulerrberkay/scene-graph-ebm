@@ -18,6 +18,7 @@ MODEL:
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
+  WEAKLY_ON: True
   RPN:
     USE_FPN: True
     ANCHOR_SIZES: (32, 64, 128, 256, 512)
@@ -60,7 +61,7 @@ MODEL:
     USE_GT_BOX: False
     USE_GT_OBJECT_LABEL: False
     REQUIRE_BOX_OVERLAP: False              # for sgdet, during training, only train pairs with overlap
-    ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: True    # for sgdet only, in case some gt boxes are missing
+    ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: False    # for sgdet only, in case some gt boxes are missing
     NUM_CLASSES: 51                 # 51 for VG, 201 for GQA (not contain "to the left of" & "to the right of")
     BATCH_SIZE_PER_IMAGE: 128      # sample as much as possible
     POSITIVE_FRACTION: 0.25
@@ -141,14 +142,14 @@ SOLVER:
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_energy_bs4'
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgcls_energy_bs4'
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_energy_bs44'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_energy_bs4_weakly_2'
 
 TEST:
   IMS_PER_BATCH: 1
   DETECTIONS_PER_IMG: 50
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:
-    SYNC_GATHER: True      # turn on will slow down the evaluation to solve the sgdet test out of memory problem
+    SYNC_GATHER: False      # turn on will slow down the evaluation to solve the sgdet test out of memory problem
     REQUIRE_OVERLAP: False
     LATER_NMS_PREDICTION_THRES: 0.5
 

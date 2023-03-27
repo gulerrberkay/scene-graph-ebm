@@ -131,6 +131,12 @@ class FastRCNNSampling(object):
             proposals[img_idx].add_field("labels", labels_per_image)
             proposals[img_idx].add_field("attributes", attris_per_image)
         return proposals
+    def assign_label_from_scores_to_proposals(self, proposals):
+        import pdb; pdb.set_trace()
+        pass
+        pass
+        return proposals
+
 
 
 def make_roi_box_samp_processor(cfg):

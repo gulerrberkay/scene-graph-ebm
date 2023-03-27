@@ -146,6 +146,7 @@ class DecoderRNN(nn.Module):
         out_commitments = []
 
         end_ind = 0
+        
         for i, l_batch in enumerate(batch_lengths):
             start_ind = end_ind
             end_ind = end_ind + l_batch
@@ -365,7 +366,10 @@ class LSTMContext(nn.Module):
     def forward(self, x, proposals, rel_pair_idxs, logger=None, all_average=False, ctx_average=False):
         # labels will be used in DecoderRNN during training (for nms)
         if self.training or self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
-            obj_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
+            if 0:
+                obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+            else:
+                obj_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
         else:
             obj_labels = None
 

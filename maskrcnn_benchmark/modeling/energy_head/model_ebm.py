@@ -66,7 +66,12 @@ class GraphEnergyModel(nn.Module):
         self.rel_embeding = nn.Linear(self.rel_dim, self.rel_embed_dim)
 
         #Embedding for the scene graph representaions
-        self.obj_label_embedding = nn.Linear(self.num_obj_classes + 128, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
+
+        if 0:
+            self.obj_label_embedding = nn.Linear(self.num_obj_classes, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
+        else:
+            self.obj_label_embedding = nn.Linear(self.num_obj_classes + 128, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
+
         self.rel_label_embedding = nn.Linear(self.num_rel_classes, self.rel_label_embed_dim)
 
         # position embedding
@@ -130,7 +135,10 @@ class GraphEnergyModel(nn.Module):
         sg_edge_batch_list = scene_graph.get_edge_batch_list()
 
         #Obtain the states of the scene graph
-        sg_node_states = self.obj_label_embedding(cat((sg_node_states, pos_embed), -1))
+        if 0:
+            sg_node_states = self.obj_label_embedding(sg_node_states)
+        else:
+            sg_node_states = self.obj_label_embedding(cat((sg_node_states, pos_embed), -1))
         sg_edge_states = self.rel_label_embedding(sg_edge_states)
 
         

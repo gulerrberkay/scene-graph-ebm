@@ -33,6 +33,7 @@ _C.MODEL.META_ARCHITECTURE = "GeneralizedRCNN"
 _C.MODEL.CLS_AGNOSTIC_BBOX_REG = False
 _C.MODEL.DEV_RUN = False
 _C.MODEL.BASE_ONLY = False
+_C.MODEL.WEAKLY_ON = False
 # If the WEIGHT starts with a catalog://, like :R-50, the code will look for
 # the path in paths_catalog. Else, it will use it as the specified absolute
 # path

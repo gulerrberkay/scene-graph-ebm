@@ -14,6 +14,7 @@ MODEL:
     STRIDE_IN_1X1: False
     NUM_GROUPS: 32
     WIDTH_PER_GROUP: 8
+  WEAKLY_ON: True
   BASE_ONLY: True
   RELATION_ON: True
   ATTRIBUTE_ON: False
@@ -60,9 +61,9 @@ MODEL:
     USE_GT_BOX: False
     USE_GT_OBJECT_LABEL: False
     REQUIRE_BOX_OVERLAP: False              # for sgdet, during training, only train pairs with overlap
-    ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: True    # for sgdet only, in case some gt boxes are missing
+    ADD_GTBOX_TO_PROPOSAL_IN_TRAIN: False    # for sgdet only, in case some gt boxes are missing
     NUM_CLASSES: 51                 # 51 for VG, 201 for GQA (not contain "to the left of" & "to the right of")
-    BATCH_SIZE_PER_IMAGE: 128      # sample as much as possible
+    BATCH_SIZE_PER_IMAGE: 128      # sample as much as possible 128 idi.
     POSITIVE_FRACTION: 0.25
     CONTEXT_POOLING_DIM: 4096
     CONTEXT_HIDDEN_DIM: 512         #1024 for VCTree
@@ -110,7 +111,7 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
 SOLVER:
   PRE_VAL: False
-  IMS_PER_BATCH: 2
+  IMS_PER_BATCH: 4
   BIAS_LR_FACTOR: 1
   BASE_LR: 0.0025
   WARMUP_FACTOR: 0.1
@@ -134,7 +135,7 @@ SOLVER:
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_bs4_v2'
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgcls_bs4_v2'
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs2_weakly'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs4_weakly2'
 
 TEST:
   BBOX_AUG:

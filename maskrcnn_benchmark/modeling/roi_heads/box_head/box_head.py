@@ -64,6 +64,10 @@ class ROIBoxHead(torch.nn.Module):
                     return x, proposals, {}
             else:
                 # mode==sgdet
+                
+                #if self.cfg.MODEL.WEAKLY_ON:   # In weakly settings assign labels depending on scores.
+                #    proposals = self.samp_processor.assign_label_from_scores_to_proposals(proposals)
+                #else:
                 proposals = self.samp_processor.assign_label_to_proposals(proposals, targets)
                 x = self.feature_extractor(features, proposals)
                 class_logits, box_regression = self.predictor(x)

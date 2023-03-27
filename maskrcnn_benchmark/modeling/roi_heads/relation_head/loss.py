@@ -19,6 +19,7 @@ class RelationLossComputation(object):
 
     def __init__(
         self,
+        weakly_on,
         attri_on,
         num_attri_cat,
         max_num_attri,
@@ -32,6 +33,7 @@ class RelationLossComputation(object):
             bbox_proposal_matcher (Matcher)
             rel_fg_bg_sampler (RelationPositiveNegativeSampler)
         """
+        self.weakly_on = weakly_on
         self.attri_on = attri_on
         self.num_attri_cat = num_attri_cat
         self.max_num_attri = max_num_attri
@@ -44,6 +46,7 @@ class RelationLossComputation(object):
             self.criterion_loss = Label_Smoothing_Regression(e=0.01)
         else:
             self.criterion_loss = nn.CrossEntropyLoss()
+            self.criterion_loss_binary = nn.BCEWithLogitsLoss()
 
 
     def __call__(self, proposals, rel_labels, relation_logits, refine_logits):
@@ -69,14 +72,102 @@ class RelationLossComputation(object):
         else:
             refine_obj_logits = refine_logits
 
-        relation_logits = cat(relation_logits, dim=0)
-        refine_obj_logits = cat(refine_obj_logits, dim=0)
+        #relation_logits = cat(relation_logits, dim=0)
+        #refine_obj_logits = cat(refine_obj_logits, dim=0)
 
-        fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
-        rel_labels = cat(rel_labels, dim=0)
+        #fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
+        #rel_labels = cat(rel_labels, dim=0)
+        
+        
+        # If weakly setting on, change loss function
+        if self.weakly_on:
+            """
+            relation_logits = cat(relation_logits, dim=0)
+            device = relation_logits[0].device
+            target_rels = torch.zeros(51, device=device)
+            target_rels[0] = 1
+            
+            fg_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+            #loss_rel_img = 0
+            for k in range(len(rel_labels)):
+                #target_rels = torch.zeros(51, device=device)
+                #target_rels[0] = 1
+                idx = rel_labels[k].nonzero()
+                for x in idx:
+                    #target_rels.append(rel_labels[k][tuple(x)])
+                    target_rels[rel_labels[k][tuple(x)]] = 1
 
-        loss_relation = self.criterion_loss(relation_logits, rel_labels.long())
-        loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
+            
+            values, indices = torch.max(relation_logits,dim=0)           
+            loss_relation = self.criterion_loss(values, target_rels.float())
+            #values_obj, indices_obj = torch.max(refine_obj_logits,dim=0)
+            loss_refine_obj = 0 #self.criterion_loss(values_obj, target_obj_list.float())
+            """
+            
+
+            ############################################################  Third try ########################################
+
+
+#            import pdb; pdb.set_trace()
+            device = relation_logits[0].device
+            #fg_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+            tgt_per_img = []
+            inp_per_img = []
+            loss_per_img = []
+            for k in range(len(rel_labels)):
+                target_rels = torch.zeros((51), device=device)
+                target_rels[0] = 1
+                idx = rel_labels[k].nonzero()
+                for x in idx:
+                    target_rels[rel_labels[k][tuple(x)]] = 1
+
+
+                values, _ = torch.max(relation_logits[k],dim=0)
+                tgt_per_img.append(target_rels.reshape(1,51))
+                inp_per_img.append(values.reshape(1,51))
+
+#            import pdb; pdb.set_trace()            
+            
+            loss_relation = self.criterion_loss_binary(torch.cat(inp_per_img,0),torch.cat(tgt_per_img,0).float())
+            
+            refine_obj_logits = cat(refine_obj_logits, dim=0)
+            fg_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+            loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
+            
+
+
+            ########################################################### Second try ##########################################
+            #rel_probs = F.softmax(relation_logits, dim=0)
+            #values, indices = torch.max(rel_probs,1)
+
+            #values = values[indices.nonzero().squeeze()]  # [0.4 0.5  0.3]
+            #indices = indices[indices.nonzero().squeeze()] # [19 21 29]
+            
+            #values, idx = torch.sort(values)
+            #indices = indices[idx]
+
+
+            #loss_out=[]
+            #for i, k in enumerate(indices):
+             #   if (k in target_rels):
+             #       target_rels.remove(k)
+             #       loss_out.append(F.binary_cross_entropy(values[i], torch.tensor(1.0, device=device)))
+             #   else:
+             #       loss_out.append(F.binary_cross_entropy(values[i], torch.tensor(0.0, device=device)))
+
+            #loss_relation = sum(loss_out)
+        else:
+           # import pdb; pdb.set_trace()
+            relation_logits = cat(relation_logits, dim=0)
+            refine_obj_logits = cat(refine_obj_logits, dim=0)
+            fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
+            rel_labels = cat(rel_labels, dim=0)
+            loss_relation = self.criterion_loss(relation_logits, rel_labels.long())
+            loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
+        
+
+        #loss_relation = self.criterion_loss(relation_logits, rel_labels.long())
+        #loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
 
         # The following code is used to calcaulate sampled attribute loss
         if self.attri_on:
@@ -165,6 +256,7 @@ class FocalLoss(nn.Module):
 def make_roi_relation_loss_evaluator(cfg):
 
     loss_evaluator = RelationLossComputation(
+        cfg.MODEL.WEAKLY_ON,
         cfg.MODEL.ATTRIBUTE_ON,
         cfg.MODEL.ROI_ATTRIBUTE_HEAD.NUM_ATTRIBUTES,
         cfg.MODEL.ROI_ATTRIBUTE_HEAD.MAX_ATTRIBUTES,
