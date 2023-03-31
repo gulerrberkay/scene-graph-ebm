@@ -14,11 +14,12 @@ MODEL:
     STRIDE_IN_1X1: False
     NUM_GROUPS: 32
     WIDTH_PER_GROUP: 8
+  WEAKLY_ON: True
   BASE_ONLY: False           # When training energy model set this to false.
+  IMAGE_GRAPH_ON: False       # for ablation study
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
-  WEAKLY_ON: True
   RPN:
     USE_FPN: True
     ANCHOR_SIZES: (32, 64, 128, 256, 512)
@@ -37,7 +38,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 50
+    DETECTIONS_PER_IMG: 30
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -111,7 +112,7 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
 SAMPLER:
   NAME: 'SGLD'
-  LR: 0.25                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
+  LR: 1.0                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
   ITERS: 1
   GRAD_CLIP: 0.01
@@ -142,11 +143,11 @@ SOLVER:
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_energy_bs4'
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgcls_energy_bs4'
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_energy_bs4_weakly_2'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_energy_bs4_weakly_no_imgraph'
 
 TEST:
   IMS_PER_BATCH: 1
-  DETECTIONS_PER_IMG: 50
+  DETECTIONS_PER_IMG: 30
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:
     SYNC_GATHER: False      # turn on will slow down the evaluation to solve the sgdet test out of memory problem

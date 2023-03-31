@@ -13,7 +13,7 @@ Request_GPUs = 1
 # Run only on Visics machines with a GPU with 3GB of RAM or more
 #requirements =  (GPUs_GlobalMemoryMb >= 4096)
 #requirements =  (GPUs_GlobalMemoryMb >= 7792)
-requirements  =  (GPUs_GlobalMemoryMb >= 17384)
+requirements  =  (GPUs_GlobalMemoryMb >= 21384)
 
 
 #Mail me only if something is wrong
@@ -30,13 +30,13 @@ Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 
 #Output of condors handling of the jobs, will be in 'initialdir'
-Log          = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en2-2.log
+Log          = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en-img.log
 
 #Standard output of the 'executable', in 'initialdir'
-Output       = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en2-2.out
+Output       = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en-img.out
 
 #Standard error of the 'executable', in 'initialdir'
-Error        = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en2-2.err
+Error        = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-weakly-en-img.err
 
 # Start just 1 instance of the job
 Queue 1

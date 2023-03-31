@@ -203,7 +203,11 @@ class DecoderRNN(nn.Module):
             out_commitments = out_commitments
         else:
             out_commitments = torch.cat(out_commitments, 0)
-
+        #print(torch.cat(out_dists, 0))
+        #print(torch.cat(out_dists, 0).shape)
+        #print(out_commitments)
+        #print(out_commitments.shape)
+        #import pdb; pdb.set_trace()
         return torch.cat(out_dists, 0), out_commitments
 
 
@@ -319,20 +323,46 @@ class LSTMContext(nn.Module):
         
         # Decode in order
         if self.mode != 'predcls':
-            decoder_inp = PackedSequence(decoder_inp, ls_transposed)
-            obj_dists, obj_preds = self.decoder_rnn(
-                decoder_inp, #obj_dists[perm],
-                labels=obj_labels[perm] if obj_labels is not None else None,
-                boxes_for_nms=boxes_per_cls[perm] if boxes_per_cls is not None else None,
-                )
-            obj_preds = obj_preds[inv_perm]
-            obj_dists = obj_dists[inv_perm]
+            if not self.cfg.MODEL.WEAKLY_ON:
+                decoder_inp = PackedSequence(decoder_inp, ls_transposed)
+                obj_dists, obj_preds = self.decoder_rnn(
+                    decoder_inp, #obj_dists[perm],
+                    labels=obj_labels[perm] if obj_labels is not None else None,
+                    boxes_for_nms=boxes_per_cls[perm] if boxes_per_cls is not None else None,
+                    )
+                obj_preds = obj_preds[inv_perm]
+                obj_dists = obj_dists[inv_perm]
+                #print("decoder obj preds:")
+                #print(obj_preds)
+                #print(obj_preds.shape)
+
+                #print("decoder  obj dist:")
+                #print(obj_dists)
+                #print(obj_dists.shape)
+                #import pdb;pdb.set_trace()
+            else:
+                if self.cfg.MODEL.BASE_ONLY:
+                    obj_preds = obj_labels
+                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0).detach() 
+                else:
+                    obj_preds = obj_labels
+                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0).detach()
+                    
+                    # Needed for energy model sampler. Activate leaf nodes' grads. Normally you do not need this but not using DecoderRNN makes this necessary.
+                    obj_dists.requires_grad = True
+                #print("new obj preds:")
+                #print(obj_preds)
+                #print(obj_preds.shape)
+
+                #print("new obj dist:")
+                #print(obj_dists)
+                #print(obj_dists.shape)
         else:
             assert obj_labels is not None
             obj_preds = obj_labels
             obj_dists = to_onehot(obj_preds, self.num_obj_classes)
         encoder_rep = encoder_rep[inv_perm]
-
+        
         return obj_dists, obj_preds, encoder_rep, perm, inv_perm, ls_transposed
 
     def edge_ctx(self, inp_feats, perm, inv_perm, ls_transposed):
@@ -366,12 +396,15 @@ class LSTMContext(nn.Module):
     def forward(self, x, proposals, rel_pair_idxs, logger=None, all_average=False, ctx_average=False):
         # labels will be used in DecoderRNN during training (for nms)
         if self.training or self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
-            if 0:
+            if self.cfg.MODEL.WEAKLY_ON:
                 obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
             else:
                 obj_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
         else:
-            obj_labels = None
+            if self.cfg.MODEL.WEAKLY_ON:  # I deleted DecoderRNN so I need these predıcted labels in inference.
+                obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+            else:
+                obj_labels = None
 
         if self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_OBJECT_LABEL:
             obj_embed = self.obj_embed1(obj_labels.long())

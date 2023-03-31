@@ -66,21 +66,21 @@ class ROIRelationHead(torch.nn.Module):
             if self.training and self.cfg.MODEL.WEAKLY_ON:
                 rel_binarys = None
                 rel_labels  = [target.get_field('relation') for target in targets]
-                #rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
-                rel_pair_idxs = []
-                for proposal in proposals:
-                    t = proposal.get_field('pred_scores')
-                    size_t = t.size(dim=0)
-                    if t.size(dim=0) <30:
-                        print("proposal number is less than 30")
-                        _, indices = torch.topk(t,int(size_t),dim=0)
-                    else: 
-                        _, indices = torch.topk(t,30,dim=0)
-                    indices = indices.tolist()
-                    indices.sort()
-                    tmp = list(product(indices,indices))
-                    tgts = [list(k) for k in tmp if not k[0]==k[1]]
-                    rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device))
+                rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
+                #rel_pair_idxs = []
+                #for proposal in proposals:
+                #    t = proposal.get_field('pred_scores')
+                #    size_t = t.size(dim=0)
+                #    if t.size(dim=0) <5:
+                #        print("proposal number is less than 30")
+                #        _, indices = torch.topk(t,int(size_t),dim=0)
+                #    else: 
+                #        _, indices = torch.topk(t,5,dim=0)
+                #    indices = indices.tolist()
+                #    indices.sort()
+                #    tmp = list(product(indices,indices))
+                #    tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                #    rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device))
 
                 
                 #import pdb; pdb.set_trace()
@@ -118,7 +118,10 @@ class ROIRelationHead(torch.nn.Module):
         if self.cfg.MODEL.ATTRIBUTE_ON and isinstance(loss_refine, (list, tuple)):
             output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine[0], loss_refine_att=loss_refine[1])
         else:
-            output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine)
+            if self.cfg.MODEL.WEAKLY_ON:
+                output_losses = dict(loss_rel=loss_relation)
+            else:
+                output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine)
 
         output_losses.update(add_losses)
 

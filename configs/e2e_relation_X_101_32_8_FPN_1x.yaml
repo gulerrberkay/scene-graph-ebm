@@ -16,6 +16,7 @@ MODEL:
     WIDTH_PER_GROUP: 8
   WEAKLY_ON: True
   BASE_ONLY: True
+  IMAGE_GRAPH_ON: True       # for ablation study
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false

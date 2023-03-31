@@ -67,7 +67,8 @@ class GraphEnergyModel(nn.Module):
 
         #Embedding for the scene graph representaions
 
-        if 0:
+
+        if self.config.MODEL.WEAKLY_ON:
             self.obj_label_embedding = nn.Linear(self.num_obj_classes, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
         else:
             self.obj_label_embedding = nn.Linear(self.num_obj_classes + 128, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
@@ -82,16 +83,29 @@ class GraphEnergyModel(nn.Module):
         ##########################################################################################
 
         self.sg_layer = EGNNLayer(self.obj_label_embed_dim, self.rel_label_embed_dim)
-        self.im_layer = GNNLayer(self.obj_embed_dim)
+        #self.im_layer = GNNLayer(self.obj_embed_dim)
 
         self.sg_pooler = EdgeGatedPooling(self.obj_label_embed_dim, self.rel_label_embed_dim, self.pooling_dim)
-        self.im_pooler = GatedPooling(self.obj_embed_dim, self.pooling_dim)
 
-        self.energy = nn.Sequential(
-            nn.Linear(self.pooling_dim*2, self.pooling_dim),
-            nn.ReLU(), 
-            nn.Linear(self.pooling_dim, 1)
-        )
+        if self.config.MODEL.IMAGE_GRAPH_ON:
+            self.im_layer = GNNLayer(self.obj_embed_dim)
+            self.im_pooler = GatedPooling(self.obj_embed_dim, self.pooling_dim)
+        else:
+            self.im_layer = None
+            self.im_pooler = None
+        
+        if self.config.MODEL.IMAGE_GRAPH_ON:
+            self.energy = nn.Sequential(
+                nn.Linear(self.pooling_dim*2, self.pooling_dim),
+                nn.ReLU(), 
+                nn.Linear(self.pooling_dim, 1)
+            )
+        else:
+            self.energy = nn.Sequential(
+                nn.Linear(self.pooling_dim, self.pooling_dim),
+                nn.ReLU(),
+                nn.Linear(self.pooling_dim, 1)
+            )
 
         self.post_processor = make_roi_relation_post_processor(config)
     # def get_contiguous_rel_pair_idx(self, rel_pair_idxs, proposals):
@@ -121,13 +135,28 @@ class GraphEnergyModel(nn.Module):
         #Embedding the bounding boxes
         pos_embed = self.pos_embed(bbox)
         
-        im_node_states, _ = im_graph.get_states()
-        im_adj_matrix = im_graph.pair2matrix()
-        im_batch_list = im_graph.get_batch_list()
+        # =========================      IMAGE GRAPH CALCULATIONS =========================
+        if self.config.MODEL.IMAGE_GRAPH_ON:
+            im_node_states, _ = im_graph.get_states()
+            im_adj_matrix = im_graph.pair2matrix()
+            im_batch_list = im_graph.get_batch_list()
 
-        #Obtain the states for the image graph
-        im_node_states = self.obj_emdedding(im_node_states)
+            #Obtain the states for the image graph
+            im_node_states = self.obj_emdedding(im_node_states)
 
+            #Refine the states of the image graph
+            im_node_states = self.im_layer(im_node_states, im_adj_matrix)
+
+            #Pooling the states
+            #import pdb;pdb.set_trace()
+            #print(im_node_states.shape)
+            #print(im_batch_list.shape)
+            im_pooled = self.im_pooler(im_node_states, im_batch_list)
+
+
+
+        # ==========================    SCENE GRAPH CALCULATIONS ===============================
+        
         #Extract sg states form the graph object
         sg_node_states, sg_edge_states = scene_graph.get_states()
         sg_adj_list = scene_graph.get_adj()
@@ -135,28 +164,31 @@ class GraphEnergyModel(nn.Module):
         sg_edge_batch_list = scene_graph.get_edge_batch_list()
 
         #Obtain the states of the scene graph
-        if 0:
+        if self.config.MODEL.WEAKLY_ON:
             sg_node_states = self.obj_label_embedding(sg_node_states)
         else:
             sg_node_states = self.obj_label_embedding(cat((sg_node_states, pos_embed), -1))
         sg_edge_states = self.rel_label_embedding(sg_edge_states)
 
-        
         sg_edge_states = torch.sparse.FloatTensor(sg_adj_list.t(), sg_edge_states, torch.Size([sg_node_states.shape[0], sg_node_states.shape[0], sg_edge_states.shape[-1]])).to_dense()
         
         #Refine the states of the image graph
-        im_node_states = self.im_layer(im_node_states, im_adj_matrix)
-        #Refine the states of the scene graph
+        #im_node_states = self.im_layer(im_node_states, im_adj_matrix)
         
+        #Refine the states of the scene graph
         sg_adj_matrix = scene_graph.pair2matrix()
         sg_node_states, sg_edge_states = self.sg_layer(sg_node_states, sg_edge_states, sg_adj_matrix)
         sg_edge_states = sg_edge_states[sg_adj_list[:,0], sg_adj_list[:,1]]
         
-        
         #Pooling the states
-        im_pooled = self.im_pooler(im_node_states, im_batch_list)
+        #im_pooled = self.im_pooler(im_node_states, im_batch_list)
         sg_pooled = self.sg_pooler(sg_node_states, sg_edge_states, sg_batch_list, sg_edge_batch_list)
         
-        energy = self.energy(cat((im_pooled, sg_pooled), -1))
+
+        # Calculate energy value for image
+        if self.config.MODEL.IMAGE_GRAPH_ON:
+            energy = self.energy(cat((im_pooled, sg_pooled), -1))
+        else:
+            energy = self.energy(sg_pooled)
 
         return energy

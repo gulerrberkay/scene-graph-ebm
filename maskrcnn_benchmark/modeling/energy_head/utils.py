@@ -17,7 +17,7 @@ def normalize_states(states):
     states = states/torch.max(states, dim=1, keepdim=True)[0]
     return states
 
-def get_predicted_sg(detections, num_obj_classes, mode, noise_var):
+def get_predicted_sg(cfg, detections, num_obj_classes, mode, noise_var):
     '''
     This function converts the detction in scene grpah strucuter 
     Parameters:
@@ -36,8 +36,17 @@ def get_predicted_sg(detections, num_obj_classes, mode, noise_var):
     # rel_list = rel_list/torch.max(rel_list, dim=1, keepdim=True)[0]
     # if detach:
     #     rel_list.detach()
+    #import pdb; pdb.set_trace()
+    
+    if cfg.MODEL.WEAKLY_ON:
+        node_list=[]
+        for i in range(len(detections[0])):
+            indices = detections[2][i].unique().tolist()
+            node_list.append(detections[1][i][indices][:])
+        node_list = torch.cat(node_list, dim= 0)
+    else:
+        node_list = torch.cat(detections[1], dim= 0)
 
-    node_list = torch.cat(detections[1], dim= 0)
     if mode == 'predcls':
         #Add small noise to the input
         node_noise = torch.rand_like(node_list).normal_(0, noise_var)
@@ -48,12 +57,18 @@ def get_predicted_sg(detections, num_obj_classes, mode, noise_var):
     # if detach:
     #     node_list.detach()
     ################################################################################################
-
-    for i in range(len(detections[0])):
-        pair_list.append(detections[2][i] + offset)
-        batch_list.append(torch.full((detections[1][i].shape[0], ) , i, dtype=torch.long))
-        edge_batch_list.append(torch.full( (detections[0][i].shape[0], ), i, dtype=torch.long))
-        offset += detections[1][i].shape[0]
+    if 1:
+        for i in range(len(detections[0])):
+            pair_list.append(detections[2][i] + offset)
+            batch_list.append(torch.full((detections[1][i].shape[0], ) , i, dtype=torch.long))
+            edge_batch_list.append(torch.full( (detections[0][i].shape[0], ), i, dtype=torch.long))
+            offset += detections[1][i].shape[0]
+    else:
+        for i in range(len(detections[0])):
+            pair_list.append(detections[2][i] + offset)
+            batch_list.append(torch.full((detections[2][i].unique().shape[0], ),  i, dtype=torch.long))
+            edge_batch_list.append(torch.full( (detections[0][i].shape[0], ), i, dtype=torch.long))
+            offset += detections[2][i].unique().shape[0]
     
     pair_list = torch.cat(pair_list, dim=0)
     batch_list = torch.cat(batch_list, dim=0).to(node_list.device)
@@ -109,26 +124,38 @@ def get_gt_im_graph(node_states, images, detections, base_model, noise_var):
     if node_states is None:
         features = base_model.backbone(images.tensors)
         node_states = base_model.roi_heads.relation.box_feature_extractor(features, detections)
-
+    #import pdb; pdb.set_trace()
     node_noise = torch.rand_like(node_states).normal_(0, noise_var)
     node_states.data.add_(node_noise)
 
     return node_states
 
-def get_pred_im_graph(node_states, images, detections, base_model, noise_var, detach=True):
+def get_pred_im_graph(cfg, node_states, images, detections, base_model, noise_var, detach=True):
     #Extract region feature from the predictions
     if node_states is None:
         features = base_model.backbone(images.tensors)
         node_states = base_model.roi_heads.relation.box_feature_extractor(features, detections[-1])
 
+    #import pdb; pdb.set_trace()
     node_noise = torch.rand_like(node_states).normal_(0, noise_var)
     node_states.data.add_(node_noise)
     if detach:
         node_states.detach()
+    
+    # If weakly on only use objects with high scores. Just as relation_head part topK selections K = 30.
+    if 1:
+        offset = 0
+        out_indices = []
+        for i in range(len(detections[2])):
+            indices = detections[2][i].unique().tolist()
+            out_indices = out_indices + [k+offset for k in indices]
+            offset = offset + len(indices)
+        node_states = node_states[out_indices,:]
+        return node_states
+    else:
+        return node_states
 
-    return node_states
-
-def detection2graph(node_states, images, detections, base_model, num_obj_classes, mode, noise_var):
+def detection2graph(cfg, node_states, images, detections, base_model, num_obj_classes, mode, noise_var):
 
     '''
     Create image graph and scene graph given the detections
@@ -145,17 +172,21 @@ def detection2graph(node_states, images, detections, base_model, num_obj_classes
     '''
     #Scene graph Creation
     
-    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list = get_predicted_sg(detections, num_obj_classes, mode, noise_var)
+    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list = get_predicted_sg(cfg, detections, num_obj_classes, mode, noise_var)
         
     #Iage graph generation
-    im_node_states = get_pred_im_graph(node_states, images, detections, base_model, noise_var)
+    if cfg.MODEL.IMAGE_GRAPH_ON:
+        im_node_states = get_pred_im_graph(cfg, node_states, images, detections, base_model, noise_var)
+        im_graph = Graph(im_node_states, adj_matrix, batch_list)
+    else:
+        im_graph = None
     
     scene_graph = Graph(sg_node_states, adj_matrix, batch_list, sg_rel_states, edge_batch_list)
-    im_graph = Graph(im_node_states, adj_matrix, batch_list)
+    #im_graph = Graph(im_node_states, adj_matrix, batch_list)
 
     return im_graph, scene_graph, encode_box_info(detections[-1])
 
-def gt2graph(node_states, images, targets, base_model, num_obj_classes, num_rel_classes, noise_var):
+def gt2graph(cfg,node_states, images, targets, base_model, num_obj_classes, num_rel_classes, noise_var):
 
     '''
     Create image graph and scene graph given the detections
@@ -172,10 +203,14 @@ def gt2graph(node_states, images, targets, base_model, num_obj_classes, num_rel_
     '''
 
     sg_node_states, sg_edge_states, adj_matrix, batch_list, edge_batch_list = get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var)
-
-    im_node_states = get_gt_im_graph(node_states, images, targets, base_model, noise_var)
+    
+    if cfg.MODEL.IMAGE_GRAPH_ON:
+        im_node_states = get_gt_im_graph(node_states, images, targets, base_model, noise_var)
+        im_graph = Graph(im_node_states, adj_matrix, batch_list)
+    else:
+        im_graph = None
 
     sg_graph = Graph(sg_node_states, adj_matrix, batch_list, sg_edge_states, edge_batch_list)
-    im_graph = Graph(im_node_states, adj_matrix, batch_list)
+    #im_graph = Graph(im_node_states, adj_matrix, batch_list)
     
     return im_graph, sg_graph, encode_box_info(targets),

@@ -50,7 +50,7 @@ class SGLD(object):
 
                 scene_graph.edge_states.data.add_(noise.data)
                 scene_graph.node_states.data.add_(noise2.data)
-
+                #import pdb;pdb.set_trace()
                 edge_states_grads, node_states_grads = torch.autograd.grad(model(im_graph, scene_graph, bbox).sum(), [scene_graph.edge_states, scene_graph.node_states], retain_graph=False)
                 edge_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)
                 node_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)

@@ -76,7 +76,7 @@ class PostProcessor(nn.Module):
                 obj_pred = obj_pred + 1
             else:
                 # NOTE: by kaihua, apply late nms for object prediction
-                obj_pred = obj_prediction_nms(box.get_field('boxes_per_cls'), obj_logit, self.later_nms_pred_thres)
+                obj_pred = obj_prediction_nms(box.get_field('boxes_per_cls'), obj_logit.detach(), self.later_nms_pred_thres)
                 obj_score_ind = torch.arange(num_obj_bbox, device=obj_logit.device) * num_obj_class + obj_pred
                 obj_scores = obj_class_prob.view(-1)[obj_score_ind]
             

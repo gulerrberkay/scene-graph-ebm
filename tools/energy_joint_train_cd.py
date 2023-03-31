@@ -213,16 +213,16 @@ def train(cfg, local_rank, distributed, logger):
             gt_node_states = None
             pred_node_states = roi_features
 
-        gt_im_graph, gt_scene_graph, gt_bbox = gt2graph(gt_node_states, images, targets, base_model_module, 
+        gt_im_graph, gt_scene_graph, gt_bbox = gt2graph(cfg, gt_node_states, images, targets, base_model_module, 
                                                         cfg.DATASETS.NUM_OBJ_CLASSES, cfg.DATASETS.NUM_REL_CLASSES, 
                                                         cfg.ENERGY_MODEL.DATA_NOISE_VAR)
 
-        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(pred_node_states, images, detections, base_model_module, 
+        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(cfg, pred_node_states, images, detections, base_model_module, 
                                                                     cfg.DATASETS.NUM_OBJ_CLASSES, mode, 
                                                                     cfg.ENERGY_MODEL.DATA_NOISE_VAR)
         # end_time = timer()
         # print("pred-graph time {}".format(end_time - start_time))
-        
+        #import pdb; pdb.set_trace() 
         #MCMC Step for Contrastive Loss
         # start_time = timer()
         pred_scene_graph = sampler.sample(energy_model, pred_im_graph, pred_scene_graph, pred_bbox.detach(), mode, set_grad=False)
@@ -232,10 +232,10 @@ def train(cfg, local_rank, distributed, logger):
         ########################################################################
         ########################################################################
         #Loss Computation
-        if cfg.MODEL.WEAKLY_ON:
-            positive_energy = energy_model(gt_im_graph, gt_scene_graph, pred_bbox)
-        else:
-            positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
+        #if cfg.MODEL.WEAKLY_ON:
+        #    positive_energy = energy_model(gt_im_graph, gt_scene_graph, pred_bbox)
+        #else:
+        positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
 
         energy_loss_dict = loss_function(cfg, positive_energy, negative_energy)
