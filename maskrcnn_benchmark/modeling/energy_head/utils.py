@@ -4,7 +4,7 @@ import time
 
 import torch
 from torch_scatter import scatter
-
+from itertools import product
 from maskrcnn_benchmark.modeling.energy_head.graph import Graph
 from maskrcnn_benchmark.modeling.roi_heads.relation_head.utils_motifs import (
     encode_box_info, to_onehot)
@@ -17,63 +17,134 @@ def normalize_states(states):
     states = states/torch.max(states, dim=1, keepdim=True)[0]
     return states
 
-def get_predicted_sg(cfg, detections, num_obj_classes, mode, noise_var):
+def prepare_test_pairs( size_len ,dev):
+    # prepare object pairs for relation prediction
+    rel_pair_idxs = []
+    indices = [k for k in range(0, size_len, 1)]
+    tmp = list(product(indices,indices))
+    tgts = [list(k) for k in tmp if not k[0]==k[1]]
+    
+    return torch.tensor(tgts, device=dev, dtype=torch.long)
+
+def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
     '''
     This function converts the detction in scene grpah strucuter 
     Parameters:
     -----------
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
-    offset = 0
-    pair_list = []
-    batch_list = []
-    edge_batch_list = []
+    #import pdb; pdb.set_trace()
+    if cfg.MODEL.WEAKLY_ON and 0:
+        relation_logits = list(detections[0])
+        object_logits = list(detections[1])
+        rel_pair_idxs = detections[2]
+
+        for i, (proposal,target) in enumerate(zip(detections[3],targets)):
+            keep_idxs = []
+            delete_idxs = []
+            gt_labels = target.get_field('labels').tolist()
+            pred_labels = proposal.get_field('pred_labels').tolist()
+            for j, k in enumerate(pred_labels):
+                if k in gt_labels:
+                    keep_idxs.append(j)
+                else:
+                    delete_idxs.append(j)  # [0,2,3]
+            
+     #       import pdb; pdb.set_trace()
+            if not keep_idxs:
+                keep_idxs = [k for k in range(len(pred_labels))]
+            
+            object_logits[i] = object_logits[i][keep_idxs,:] 
+
+
+            new_idxs2=[]
+            pair_list_loop = rel_pair_idxs[i].tolist()
+            
+            for j, pair in enumerate(pair_list_loop):
+                if (pair[0] in keep_idxs) and (pair[1] in keep_idxs):
+                    new_idxs2.append(j)
+
+            new_idxs2.sort()
+       
+            relation_logits[i] = relation_logits[i][new_idxs2,:]
+            rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
+            #print("rel_list",relation_logits[i].shape,"object_list",object_logits[i].shape,"rel_pair_idxs",rel_pair_idxs[i].shape)
+            #import pdb; pdb.set_trace()
+        
+        offset = 0
+        pair_list = []
+        batch_list = []
+        edge_batch_list = []
+
+        ################################################################################################
+        rel_list = torch.cat(relation_logits, dim= 0)
+        rel_list = normalize_states(rel_list)       
+
+        node_list = torch.cat(object_logits, dim= 0)
+        node_list = normalize_states(node_list)
+
+        ################################################################################################
+
+        for i in range(len(rel_pair_idxs)):
+            pair_list.append(rel_pair_idxs[i] + offset)
+            batch_list.append(torch.full((object_logits[i].shape[0], ) , i, dtype=torch.long))
+            edge_batch_list.append(torch.full( (relation_logits[i].shape[0], ), i, dtype=torch.long))
+            offset += object_logits[i].shape[0]
+     
+        pair_list = torch.cat(pair_list, dim=0)
+        batch_list = torch.cat(batch_list, dim=0).to(node_list.device)
+        edge_batch_list = torch.cat(edge_batch_list, dim=0).to(node_list.device)
+
+
+    else:
+        offset = 0
+        pair_list = []
+        batch_list = []
+        edge_batch_list = []
 
     ################################################################################################
-    rel_list = torch.cat(detections[0], dim= 0)
-    rel_list = normalize_states(rel_list)
+        rel_list = torch.cat(detections[0], dim= 0)
+        rel_list = normalize_states(rel_list)
     # rel_list = (rel_list - torch.min(rel_list, dim=-1, keepdim=True)[0])
     # rel_list = rel_list/torch.max(rel_list, dim=1, keepdim=True)[0]
     # if detach:
     #     rel_list.detach()
-    #import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
     
-    if cfg.MODEL.WEAKLY_ON:
-        node_list=[]
-        for i in range(len(detections[0])):
-            indices = detections[2][i].unique().tolist()
-            node_list.append(detections[1][i][indices][:])
-        node_list = torch.cat(node_list, dim= 0)
-    else:
+    #if 0:
+    #    node_list=[]
+    #    for i in range(len(detections[0])):
+    #        indices = detections[2][i].unique().tolist()
+    #        node_list.append(detections[1][i][indices][:])
+    #    node_list = torch.cat(node_list, dim= 0)
+    #else:
         node_list = torch.cat(detections[1], dim= 0)
 
-    if mode == 'predcls':
+        if mode == 'predcls':
         #Add small noise to the input
-        node_noise = torch.rand_like(node_list).normal_(0, noise_var)
-        node_list.data.add_(node_noise)
-    else:
-        node_list = normalize_states(node_list)
+            node_noise = torch.rand_like(node_list).normal_(0, noise_var)
+            node_list.data.add_(node_noise)
+        else:
+            node_list = normalize_states(node_list)
 
     # if detach:
     #     node_list.detach()
     ################################################################################################
-    if 1:
+    
         for i in range(len(detections[0])):
             pair_list.append(detections[2][i] + offset)
             batch_list.append(torch.full((detections[1][i].shape[0], ) , i, dtype=torch.long))
             edge_batch_list.append(torch.full( (detections[0][i].shape[0], ), i, dtype=torch.long))
             offset += detections[1][i].shape[0]
-    else:
-        for i in range(len(detections[0])):
-            pair_list.append(detections[2][i] + offset)
-            batch_list.append(torch.full((detections[2][i].unique().shape[0], ),  i, dtype=torch.long))
-            edge_batch_list.append(torch.full( (detections[0][i].shape[0], ), i, dtype=torch.long))
-            offset += detections[2][i].unique().shape[0]
     
-    pair_list = torch.cat(pair_list, dim=0)
-    batch_list = torch.cat(batch_list, dim=0).to(node_list.device)
-    edge_batch_list = torch.cat(edge_batch_list, dim=0).to(node_list.device)
-
+    
+        pair_list = torch.cat(pair_list, dim=0)
+        batch_list = torch.cat(batch_list, dim=0).to(node_list.device)
+        edge_batch_list = torch.cat(edge_batch_list, dim=0).to(node_list.device)
+        
+        #print(node_list)
+        #print(torch.max(node_list,dim=1))
+        #import pdb; pdb.set_trace()
     return node_list, rel_list, pair_list, batch_list, edge_batch_list
 
 def get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var):
@@ -143,19 +214,19 @@ def get_pred_im_graph(cfg, node_states, images, detections, base_model, noise_va
         node_states.detach()
     
     # If weakly on only use objects with high scores. Just as relation_head part topK selections K = 30.
-    if 1:
-        offset = 0
-        out_indices = []
-        for i in range(len(detections[2])):
-            indices = detections[2][i].unique().tolist()
-            out_indices = out_indices + [k+offset for k in indices]
-            offset = offset + len(indices)
-        node_states = node_states[out_indices,:]
-        return node_states
-    else:
-        return node_states
+    #if 1:
+    #    offset = 0
+    #    out_indices = []
+    #    for i in range(len(detections[2])):
+    #        indices = detections[2][i].unique().tolist()
+    #        out_indices = out_indices + [k+offset for k in indices]
+    #        offset = offset + len(indices)
+    #    node_states = node_states[out_indices,:]
+    #    return node_states
+    #else:
+    return node_states
 
-def detection2graph(cfg, node_states, images, detections, base_model, num_obj_classes, mode, noise_var):
+def detection2graph(targets, cfg, node_states, images, detections, base_model, num_obj_classes, mode, noise_var):
 
     '''
     Create image graph and scene graph given the detections
@@ -172,7 +243,7 @@ def detection2graph(cfg, node_states, images, detections, base_model, num_obj_cl
     '''
     #Scene graph Creation
     
-    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list = get_predicted_sg(cfg, detections, num_obj_classes, mode, noise_var)
+    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list = get_predicted_sg(targets, cfg, detections, num_obj_classes, mode, noise_var)
         
     #Iage graph generation
     if cfg.MODEL.IMAGE_GRAPH_ON:

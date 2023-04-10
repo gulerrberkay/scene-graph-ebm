@@ -61,26 +61,60 @@ class ROIRelationHead(torch.nn.Module):
                     proposals, rel_labels, rel_pair_idxs, rel_binarys = self.samp_processor.gtbox_relsample(proposals, targets)
                 else:
                     proposals, rel_labels, rel_pair_idxs, rel_binarys = self.samp_processor.detect_relsample(proposals, targets)
+                    ###import pdb; pdb.set_trace()
         else:
             #import pdb; pdb.set_trace()
             if self.training and self.cfg.MODEL.WEAKLY_ON:
                 rel_binarys = None
                 rel_labels  = [target.get_field('relation') for target in targets]
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
+                
                 #rel_pair_idxs = []
                 #for proposal in proposals:
                 #    t = proposal.get_field('pred_scores')
                 #    size_t = t.size(dim=0)
-                #    if t.size(dim=0) <5:
-                #        print("proposal number is less than 30")
+                #    if t.size(dim=0) <10:
+                #        print("proposal number is less than 10")
                 #        _, indices = torch.topk(t,int(size_t),dim=0)
                 #    else: 
-                #        _, indices = torch.topk(t,5,dim=0)
+                #        _, indices = torch.topk(t,10,dim=0)
                 #    indices = indices.tolist()
-                #    indices.sort()
+                    #indices.sort()
                 #    tmp = list(product(indices,indices))
                 #    tgts = [list(k) for k in tmp if not k[0]==k[1]]
                 #    rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device))
+                #rel_pair_idxs = []                
+                for proposal,target in zip(proposals,targets):
+                    filtered_labels = []
+                    pred_labe   = proposal.get_field('pred_labels').tolist()
+                    tgt_label   = target.get_field('labels').tolist()
+                    pred_scores = proposal.get_field('pred_scores').tolist()
+                    
+
+                    for i,label in enumerate(pred_labe):
+                        if label in tgt_label:
+                            filtered_labels.append(label)
+                        else:
+                            filtered_labels.append(0)
+                    # Filter by lowest score
+                    for i,label in enumerate(filtered_labels):
+                        if pred_scores[i]<0.3:
+                            filtered_labels[i]=0
+                        else:
+                            pass
+                    #import pdb;pdb.set_trace()
+                    filtered_labels = torch.tensor(filtered_labels, device=features[0].device)
+                    #rel_indexes = filtered_labels.nonzero().squeeze(-1).tolist()
+                    #if rel_indexes:
+                    #    tmp = list(product(rel_indexes,rel_indexes))
+                    #else:
+                    #    tmp = [k for k in range(len(pred_labe))]
+                    #    tmp = list(product(tmp,tmp))
+                    #tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                    #rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device))
+
+                    proposal.add_field("filtered_labels",filtered_labels)
+                    #print("filtered labels = ",filtered_labels,"pred_labels = ",pred_labe,"target = ", tgt_label,"gt_labels=",proposal.get_field('labels').tolist())
 
                 
                 #import pdb; pdb.set_trace()
@@ -118,7 +152,7 @@ class ROIRelationHead(torch.nn.Module):
         if self.cfg.MODEL.ATTRIBUTE_ON and isinstance(loss_refine, (list, tuple)):
             output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine[0], loss_refine_att=loss_refine[1])
         else:
-            if self.cfg.MODEL.WEAKLY_ON:
+            if 0:
                 output_losses = dict(loss_rel=loss_relation)
             else:
                 output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine)

@@ -16,7 +16,7 @@ MODEL:
     WIDTH_PER_GROUP: 8
   WEAKLY_ON: True
   BASE_ONLY: True
-  IMAGE_GRAPH_ON: True       # for ablation study
+  IMAGE_GRAPH_ON: False       # for ablation study
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
@@ -38,7 +38,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 50
+    DETECTIONS_PER_IMG: 30
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -136,13 +136,13 @@ SOLVER:
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_bs4_v2'
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgcls_bs4_v2'
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs4_weakly2'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs4_weakly_refine'
 
 TEST:
   BBOX_AUG:
     ENABLED: False
   IMS_PER_BATCH: 1
-  DETECTIONS_PER_IMG: 50
+  DETECTIONS_PER_IMG: 30
 
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:

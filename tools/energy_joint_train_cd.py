@@ -7,7 +7,7 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3"
+os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 #local_rank = int(os.environ["LOCAL_RANK"])
 #os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 import torch
@@ -217,7 +217,7 @@ def train(cfg, local_rank, distributed, logger):
                                                         cfg.DATASETS.NUM_OBJ_CLASSES, cfg.DATASETS.NUM_REL_CLASSES, 
                                                         cfg.ENERGY_MODEL.DATA_NOISE_VAR)
 
-        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(cfg, pred_node_states, images, detections, base_model_module, 
+        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(targets, cfg, pred_node_states, images, detections, base_model_module, 
                                                                     cfg.DATASETS.NUM_OBJ_CLASSES, mode, 
                                                                     cfg.ENERGY_MODEL.DATA_NOISE_VAR)
         # end_time = timer()
@@ -237,7 +237,9 @@ def train(cfg, local_rank, distributed, logger):
         #else:
         positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
-
+        #print(negative_energy,negative_energy.shape)
+        #print(positive_energy,positive_energy.shape)
+        
         energy_loss_dict = loss_function(cfg, positive_energy, negative_energy)
         #If the iteration is training ebm then only use ebm loss else add ebm loss to the task loss
 

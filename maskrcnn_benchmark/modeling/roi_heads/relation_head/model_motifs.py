@@ -323,7 +323,7 @@ class LSTMContext(nn.Module):
         
         # Decode in order
         if self.mode != 'predcls':
-            if not self.cfg.MODEL.WEAKLY_ON:
+            if 1:
                 decoder_inp = PackedSequence(decoder_inp, ls_transposed)
                 obj_dists, obj_preds = self.decoder_rnn(
                     decoder_inp, #obj_dists[perm],
@@ -397,11 +397,11 @@ class LSTMContext(nn.Module):
         # labels will be used in DecoderRNN during training (for nms)
         if self.training or self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
             if self.cfg.MODEL.WEAKLY_ON:
-                obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
+                obj_labels = cat([proposal.get_field("filtered_labels") for proposal in proposals], dim=0)  # pred_labels idi -> filtered_labels yaptık.
             else:
                 obj_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
         else:
-            if self.cfg.MODEL.WEAKLY_ON:  # I deleted DecoderRNN so I need these predıcted labels in inference.
+            if 0:  # I deleted DecoderRNN so I need these predıcted labels in inference.
                 obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
             else:
                 obj_labels = None
