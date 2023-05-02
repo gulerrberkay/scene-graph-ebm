@@ -38,7 +38,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 30
+    DETECTIONS_PER_IMG: 40
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -136,13 +136,13 @@ SOLVER:
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_bs4_v2'
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgcls_bs4_v2'
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_bs4_weakly_refine'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_sgdet_nmsbaseModel'
 
 TEST:
   BBOX_AUG:
     ENABLED: False
   IMS_PER_BATCH: 1
-  DETECTIONS_PER_IMG: 30
+  DETECTIONS_PER_IMG: 40
 
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:

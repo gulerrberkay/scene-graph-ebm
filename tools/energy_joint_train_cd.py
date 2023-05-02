@@ -7,9 +7,8 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "2"
-#local_rank = int(os.environ["LOCAL_RANK"])
-#os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2"
+
 import torch
 from torch.nn.utils import clip_grad_norm_
 import wandb
@@ -245,7 +244,7 @@ def train(cfg, local_rank, distributed, logger):
 
         task_losses = sum(loss for loss in task_loss_dict.values())
         energy_losses = sum(loss for loss in energy_loss_dict.values())
-        total_losses = task_losses + energy_losses
+        total_losses = task_losses + energy_losses*(cfg.MODEL.ENERGY_LOSS_WEIGHT)
         loss_dict = {**task_loss_dict, **energy_loss_dict}
         
         if get_rank() == 0:

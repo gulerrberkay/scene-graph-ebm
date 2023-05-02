@@ -7,7 +7,7 @@ from torch.nn.utils.rnn import PackedSequence
 from torch.nn import functional as F
 from maskrcnn_benchmark.modeling.utils import cat
 from .utils_motifs import obj_edge_vectors, center_x, sort_by_score, to_onehot, get_dropout_mask, nms_overlaps, encode_box_info
-
+from .utils_relation import obj_prediction_nms
 
 class FrequencyBias(nn.Module):
     """
@@ -184,6 +184,7 @@ class DecoderRNN(nn.Module):
                 previous_obj_embed = self.obj_embed(best_ind+1)
 
         # Do NMS here as a post-processing step
+        #import pdb; pdb.set_trace()
         if boxes_for_nms is not None and not self.training:
             is_overlap = nms_overlaps(boxes_for_nms).view(
                 boxes_for_nms.size(0), boxes_for_nms.size(0), boxes_for_nms.size(1)
@@ -290,6 +291,23 @@ class LSTMContext(nn.Module):
         # leftright order
         scores = c_x / (c_x.max() + 1)
         return sort_by_score(proposals, scores)
+    
+    def nms_per_cls_added(self, out_dists, out_commitments, boxes_per_nms):
+        
+        is_overlap = nms_overlaps(boxes_for_nms).view(boxes_for_nms.size(0), boxes_for_nms.size(0), boxes_for_nms.size(1)).cpu().numpy() >= self.nms_thresh
+        out_dists_sampled = F.softmax(torch.cat(out_dists,0), 1).cpu().numpy()
+        out_dists_sampled[:,0] = 0
+
+        out_commitments = out_commitments[0].new(len(out_commitments)).fill_(0)
+
+        for i in range(out_commitments.size(0)):   # detection kadar dönüyor.
+            box_ind, cls_ind = np.unravel_index(out_dists_sampled.argmax(), out_dists_sampled.shape)
+            out_commitments[int(box_ind)] = int(cls_ind)
+            out_dists_sampled[is_overlap[box_ind,:,cls_ind], cls_ind] = 0.0
+            out_dists_sampled[box_ind] = -1.0 # This way we won't re-sample
+        out_commitments = out_commitments
+        return out_commitments
+
 
     def obj_ctx(self, obj_feats, proposals, obj_labels=None, boxes_per_cls=None, ctx_average=False):
         """
@@ -323,7 +341,7 @@ class LSTMContext(nn.Module):
         
         # Decode in order
         if self.mode != 'predcls':
-            if 1:
+            if 0:
                 decoder_inp = PackedSequence(decoder_inp, ls_transposed)
                 obj_dists, obj_preds = self.decoder_rnn(
                     decoder_inp, #obj_dists[perm],
@@ -343,13 +361,30 @@ class LSTMContext(nn.Module):
             else:
                 if self.cfg.MODEL.BASE_ONLY:
                     obj_preds = obj_labels
-                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0).detach() 
+                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0) 
+                    
+                    if (not self.training):
+                        preds = []
+                        for proposal in proposals:
+                            boxes_clss = proposal.get_field('boxes_per_cls')
+                            obj_pred = obj_prediction_nms(boxes_clss, proposal.get_field("predict_logits"), 0.3)
+                            preds.append(obj_pred)
+                        obj_preds = cat(preds,dim=0)
                 else:
                     obj_preds = obj_labels
-                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0).detach()
+                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0)
                     
-                    # Needed for energy model sampler. Activate leaf nodes' grads. Normally you do not need this but not using DecoderRNN makes this necessary.
-                    obj_dists.requires_grad = True
+                    if (not self.training):
+                        preds = []
+                        for proposal in proposals:
+                            boxes_clss = proposal.get_field('boxes_per_cls')
+                            obj_pred = obj_prediction_nms(boxes_clss, proposal.get_field("predict_logits"), 0.3)
+                            preds.append(obj_pred)
+                        obj_preds = cat(preds,dim=0)
+
+                    obj_dists.requires_grad = True  # Needed for energy model sampler. Activate leaf nodes' grads. Normally you do not need this but not using DecoderRNN makes this necessary.
+
+                
                 #print("new obj preds:")
                 #print(obj_preds)
                 #print(obj_preds.shape)
@@ -397,11 +432,11 @@ class LSTMContext(nn.Module):
         # labels will be used in DecoderRNN during training (for nms)
         if self.training or self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
             if self.cfg.MODEL.WEAKLY_ON:
-                obj_labels = cat([proposal.get_field("filtered_labels") for proposal in proposals], dim=0)  # pred_labels idi -> filtered_labels yaptık.
+                obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)  # pred_labels idi -> filtered_labels yaptık.
             else:
                 obj_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
         else:
-            if 0:  # I deleted DecoderRNN so I need these predıcted labels in inference.
+            if self.cfg.MODEL.WEAKLY_ON:  # I deleted DecoderRNN so I need these predıcted labels in inference.
                 obj_labels = cat([proposal.get_field("pred_labels") for proposal in proposals], dim=0)
             else:
                 obj_labels = None

@@ -29,14 +29,13 @@ Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
 Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 
-#Output of condors handling of the jobs, will be in 'initialdir'
-Log          = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-withrefine-en2.log
-
+#Output of condors handling of the jobs, will be in 'initialdir'2
+Log          = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.log
 #Standard output of the 'executable', in 'initialdir'
-Output       = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-withrefine-en2.out
+Output       = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.out
 
 #Standard error of the 'executable', in 'initialdir'
-Error        = /users/students/r0879687/thesis/output/condor_outs/condor_sgdet-bs4-withrefine-en2.err
+Error        = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.err
 
 # Start just 1 instance of the job
 Queue 1

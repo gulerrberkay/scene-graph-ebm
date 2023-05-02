@@ -47,7 +47,7 @@ class RelationLossComputation(object):
         else:
             self.criterion_loss = nn.CrossEntropyLoss()
             self.criterion_loss_binary = nn.BCEWithLogitsLoss()
-
+            self.criterion_loss_binary_probs = nn.BCELoss()
 
     def __call__(self, proposals, rel_labels, relation_logits, refine_logits):
         """
@@ -84,11 +84,18 @@ class RelationLossComputation(object):
             for k in range(len(rel_labels)):
                 target_rels = torch.zeros((51), device=device)
                 target_rels[0] = 1
-                idx = rel_labels[k].nonzero()
-                for x in idx:
-                    target_rels[rel_labels[k][tuple(x)]] = 1
+                idx = rel_labels[k].unique()
+                target_rels[idx] = 1
+                #for x in idx:
+                #    target_rels[rel_labels[k][tuple(x)]] = 1
 
-
+                
+                # values_rel = F.softmax(relation_logits[k],dim=0)
+                # values_det = F.softmax(relation_logits[k],dim=1)
+                # values_img = torch.mul(values_rel,values_det)
+                # values = torch.sum(values_img,dim=0)
+                # values = torch.clamp(values, min=0., max=1.)
+                #print(values)
                 values, _ = torch.max(relation_logits[k],dim=0)
                 tgt_per_img.append(target_rels.reshape(1,51))
                 inp_per_img.append(values.reshape(1,51))
@@ -97,12 +104,15 @@ class RelationLossComputation(object):
                 
             inpp = torch.cat(inp_per_img,0) # 4x51
             tgtt = torch.cat(tgt_per_img,0)
-
+            
+            #print(inpp,tgtt)
+            #loss_relation = self.criterion_loss_binary_probs(inpp,tgtt.float())
             loss_relation = self.criterion_loss_binary(inpp,tgtt.float())
+            
             #loss_relation = self.criterion_loss_binary(inpp[:,1:],tgtt[:,1:].float())      # NEW LOSS WITHOUT BACKGROUND CLASS
-            fg_labels = cat([proposal.get_field("filtered_labels") for proposal in proposals], dim=0)
-            refine_obj_logits = cat(refine_obj_logits, dim=0)
-            loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
+            #fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
+            #refine_obj_logits = cat(refine_obj_logits, dim=0)
+            loss_refine_obj = 0 #self.criterion_loss(refine_obj_logits, fg_labels.long())
         else:
            # import pdb; pdb.set_trace()
             relation_logits = cat(relation_logits, dim=0)
