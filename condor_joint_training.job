@@ -6,7 +6,7 @@ RequestCpus    = 4
 #I need 8 GBytes of RAM (resident memory)
 RequestMemory  = 16G
 #It will not run longer than 1.5 day
-+RequestWalltime = 130200
++RequestWalltime = 100200
 #I need one GPU
 Request_GPUs = 1
 
@@ -30,12 +30,12 @@ Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 
 #Output of condors handling of the jobs, will be in 'initialdir'2
-Log          = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.log
+Log          = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEnall2322222.log
 #Standard output of the 'executable', in 'initialdir'
-Output       = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.out
+Output       = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEnall2322222.out
 
 #Standard error of the 'executable', in 'initialdir'
-Error        = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEn222222.err
+Error        = /users/students/r0879687/thesis/output/condor_outs/energy-revisedEnall2322222.err
 
 # Start just 1 instance of the job
 Queue 1

@@ -1,7 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT
 import time
-
+from collections import Counter
+from random import shuffle
 import torch
 from torch_scatter import scatter
 from itertools import product
@@ -34,16 +35,27 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
 
-    if cfg.MODEL.WEAKLY_ON and 0:
+    if cfg.MODEL.WEAKLY_ON and 1:
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
-        confident = []
         for i, (proposal,target) in enumerate(zip(detections[3],targets)):
-            keep_idxs = []
-            delete_idxs = []
+            rel_pair_all = rel_pair_idxs
+            flag = 0 
+            filtered_labels = []
+            pred_labe   = proposal.get_field('pred_labels').tolist()
+            tgt_label   = target.get_field('labels').tolist()
+            pred_scores = proposal.get_field('pred_scores')
+
+            deleted_idxs = []
+            for p,label in enumerate(pred_labe):
+                if label in tgt_label:
+                    filtered_labels.append(label)
+                else:
+                    filtered_labels.append(0)
             
-            '''
+
+
             rel = target.get_field('relation')
             rel_pair_idxs_tgts = torch.nonzero(rel).tolist()
             gt_labels_tgts = target.get_field('labels').tolist()
@@ -56,90 +68,128 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 new_element.append(gt_labels_tgts[head_idx])
                 new_element.append(gt_labels_tgts[tail_idx])
                 gt_obj_classes.append(new_element)
-
-
-
-            gt_labels = proposal.get_field('filtered_labels').tolist()
+            
             # import pdb; pdb.set_trace()
             new_rel_pair = []
-            for j,label1 in enumerate(gt_labels):
+            new_rel_not_pair = []
+            for j,label1 in enumerate(filtered_labels):
                 if label1 == 0:
                     continue 
-                for k,label2 in enumerate(gt_labels):
+                for k,label2 in enumerate(filtered_labels):
                     if label2 == 0:
                         continue
-                    for t, obj_classes in enumerate(gt_obj_classes):
-                        if [label1, label2] == obj_classes:
-                            new_rel_pair.append([j,k])
+                    if [label1, label2] in gt_obj_classes:
+                        new_rel_pair.append([j,k])
+                    else:
+                        new_rel_not_pair.append([j,k])
+            res = []
+            [res.append(x) for x in new_rel_pair if x not in res and x[0]!=x[1]] 
+            new_rel_pair = res 
             
             res = []
-            [res.append(x) for x in new_rel_pair if x not in res and x[0]!=x[1]]
-
-            if not res:
-                rel_indexes = gt_labels.nonzero().squeeze(-1).tolist()
-                if rel_indexes and not len(rel_indexes)==1:
-                    tmp = list(product(rel_indexes,rel_indexes))
-                else:
-                    tmp = [k for k in range(len(gt_labels))]
-                    tmp = list(product(tmp,tmp))
-                tgts = [list(k) for k in tmp if not k[0]==k[1]]
-                rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
-            else:
-                rel_pair_idxs[i] = torch.tensor(res, device=detections[0][0].device, dtype=torch.long)
-            '''
-            # import pdb; pdb.set_trace()
-
-            #keep_idxs = torch.tensor(res, device=detections[0][0].device, dtype=torch.long).unique().tolist()
-            #object_logits[i] = object_logits[i][keep_idxs,:]
+            [res.append(x) for x in new_rel_not_pair if x not in res and x[0]!=x[1]]
+            new_rel_not_pair = res
             
-            #new_idxs2=[]
-            #pair_list_loop = rel_pair_idxs[i].tolist()
-            
-            #for j, pair in enumerate(pair_list_loop):
-            #    if pair in res:
-            #        new_idxs2.append(j)
-
-            #new_idxs2.sort()
-       
-            #relation_logits[i] = relation_logits[i][new_idxs2,:]
-            
-
+            shuffle(new_rel_not_pair)
             #import pdb; pdb.set_trace()
-            # print('sa xd')
-            gt_labels   = proposal.get_field('filtered_labels').tolist()
-            pred_labels = proposal.get_field('pred_labels').tolist()
-            for j, k in enumerate(gt_labels):
+
+            indices = []
+            for j,k in enumerate(filtered_labels):
                 if int(k) != 0:
-                    keep_idxs.append(j)
+                    indices.append(j)
                 else:
-                    delete_idxs.append(j)  # [0,2,3]
-            
-            #import pdb; pdb.set_trace()
-            if not keep_idxs:
-                keep_idxs = [k for k in range(len(pred_labels))]
-            
-            object_logits[i] = object_logits[i][keep_idxs,:] 
+                    deleted_idxs.append(j)
+                    
+            if indices:
+                if len(indices) == 1:
+                    print('len(indices)=1')
+                    _, indices = torch.topk(pred_scores,5,dim=0)
+                    indices = indices.tolist()
+                    indices.sort()
+                    #tmp = list(product(indices,indices))
+                    #tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                    #rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))
+                    #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
+                else:
+
+                    n = int(len(new_rel_pair))
+                    n_bg = int(len(new_rel_not_pair))
+
+                    if n_bg >= 3*n:
+                        new_rel_not_pair = new_rel_not_pair[0:3*n]
+                        print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
+                    else:
+                        pass
+                    #import pdb; pdb.set_trace()
+                    new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
+                    new_new_rel_pair_idxs.sort()
+                    unique_data = torch.tensor(new_new_rel_pair_idxs, device=detections[0][0].device)
+                    indices = unique_data.unique().tolist()
+                    indices2 = indices
+                    
+                    new_new_rel_pair_idxs2 = []
+                    print(deleted_idxs)
+                    print(new_new_rel_pair_idxs)
+                    for t2, pair in enumerate(new_new_rel_pair_idxs):
+                        a = pair[0]
+                        b = pair[1]
+                        for t1,idxs1 in enumerate(deleted_idxs):
+                            if  idxs1 < pair[0]:
+                                a = a - 1
+                            else:
+                                pass
+
+                            if idxs1 < pair[1]:
+                                b = b - 1
+                            else:
+                                pass
+
+                        new_new_rel_pair_idxs2.append([a,b])
+                    print(new_new_rel_pair_idxs2 )
+                    new_new_rel_pair_idxs2.sort()                
+                    flag = -1
 
 
-            new_idxs2=[]
-            pair_list_loop = rel_pair_idxs[i].tolist()
-            
-            for j, pair in enumerate(pair_list_loop):
-                if (pair[0] in keep_idxs) and (pair[1] in keep_idxs):
-                    new_idxs2.append(j)
 
-            new_idxs2.sort()
-       
-            relation_logits[i] = relation_logits[i][new_idxs2,:]
-            rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
+            else:
+                size_t = pred_scores.size(dim=0)
+                if pred_scores.size(dim=0) < 4:
+                    print("proposal number is less than 4, filtered labels is empty")
+                    _, indices = torch.topk(pred_scores,int(size_t),dim=0)
+                else:
+                    print("proposal number is more than 4, filtered labels is empty")
+                    _, indices = torch.topk(pred_scores,4,dim=0)
+                indices = indices.tolist()
+                indices.sort()
 
-            confident_score = proposal.get_field("pred_scores")
-            confident.append(confident_score[keep_idxs])
+            if flag == -1:
+                object_logits[i] = object_logits[i][indices,:]
+
+                new_idxs2=[]
+                for j, pair in enumerate(rel_pair_all[i].tolist()):
+                    if pair in new_new_rel_pair_idxs:
+                        new_idxs2.append(j)
+                
+                print(indices)
+                print(new_idxs2) 
+                relation_logits[i] = relation_logits[i][new_idxs2,:]
+                rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs2, device=detections[0][0].device, dtype=torch.long)
+                flag = 0
+            else:
+                object_logits[i] = object_logits[i][indices,:] 
+
+                new_idxs2=[]
+                pair_list_loop = rel_pair_idxs[i].tolist()
             
-            #print("rel_list",relation_logits[i].shape,"object_list",object_logits[i].shape,"rel_pair_idxs",rel_pair_idxs[i].shape)
-            #import pdb; pdb.set_trace()
+                for j, pair in enumerate(rel_pair_all[i].tolist()):
+                    if (pair[0] in indices) and (pair[1] in indices):
+                        new_idxs2.append(j)
+
+                relation_logits[i] = relation_logits[i][new_idxs2,:]
+                rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
+
+            
         
-        confident = torch.cat(confident,0)
         
         offset = 0
         pair_list = []

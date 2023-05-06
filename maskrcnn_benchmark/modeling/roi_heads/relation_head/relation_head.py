@@ -68,9 +68,9 @@ class ROIRelationHead(torch.nn.Module):
             if self.training and self.cfg.MODEL.WEAKLY_ON:
                 rel_binarys = None
                 rel_labels  = [target.get_field('relation') for target in targets]
-                #rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
+                rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
                 
-                rel_pair_idxs = []
+                #rel_pair_idxs = []
                 #for proposal in proposals:
                 #    t = proposal.get_field('pred_scores')
                 #    size_t = t.size(dim=0)
@@ -87,7 +87,7 @@ class ROIRelationHead(torch.nn.Module):
                 #rel_pair_idxs = []                
                 
 
-                
+                '''
                 for proposal,target in zip(proposals,targets):
                     filtered_labels = []
                     pred_labe   = proposal.get_field('pred_labels').tolist()
@@ -145,23 +145,34 @@ class ROIRelationHead(torch.nn.Module):
                         if int(k) != 0:
                             indices.append(j)
                     
-                    if not indices:
-                        tmp = list(product(indices,indices))
-                        tgts = [list(k) for k in tmp if not k[0]==k[1]]
-                        rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))   
+                    if indices:
+                        if len(indices) == 1:
+                            print('len(indices)=1')
+                            _, indices = torch.topk(pred_scores,10,dim=0) 
+                            indices = indices.tolist()
+                            indices.sort()
+                            tmp = list(product(indices,indices))
+                            tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                            rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))
+                        else:    
+                            tmp = list(product(indices,indices))
+                            tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                            rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))   
                     else:
                         size_t = pred_scores.size(dim=0)
                         if pred_scores.size(dim=0) <10:
                             print("proposal number is less than 10")
                             _, indices = torch.topk(pred_scores,int(size_t),dim=0)
                         else:
+                            print("proposal number is more than 10")
                             _, indices = torch.topk(pred_scores,10,dim=0)
-                            indices = indices.tolist()
+                        indices = indices.tolist()
                         indices.sort()
                         tmp = list(product(indices,indices))
                         tgts = [list(k) for k in tmp if not k[0]==k[1]]
                         rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))
-                    '''
+                '''
+                '''
                     rel = target.get_field('relation')
                     rel_pair_idxs_tgts = torch.nonzero(rel).tolist()
                     gt_labels_tgts = target.get_field('labels').tolist()
@@ -204,7 +215,7 @@ class ROIRelationHead(torch.nn.Module):
                         rel_pair_idxs[i] = torch.tensor(res,  device=features[0].device, dtype=torch.long)
 
                 #import pdb; pdb.set_trace()
-                    '''
+                '''
             else:
                 rel_labels, rel_binarys = None, None
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)

@@ -7,7 +7,7 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2"
+os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4"
 
 import torch
 from torch.nn.utils import clip_grad_norm_

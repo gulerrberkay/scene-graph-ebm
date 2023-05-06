@@ -131,7 +131,7 @@ SOLVER:
     PATIENCE: 2
     THRESHOLD: 0.001
     COOLDOWN: 0
-    FACTOR: 0.05   #0.1
+    FACTOR: 0.1   #0.1
     MAX_DECAY_STEP: 3
 
 #OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_baseline_predcls_bs4_v2'
