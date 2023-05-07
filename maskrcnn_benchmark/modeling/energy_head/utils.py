@@ -115,21 +115,18 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
-                    if n_bg >= 3*n:
-                        new_rel_not_pair = new_rel_not_pair[0:3*n]
-                        print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
+                    if n_bg >= 10*n and 10*n != 0:
+                        new_rel_not_pair = new_rel_not_pair[0:10*n]
+                        #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     else:
                         pass
                     #import pdb; pdb.set_trace()
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     new_new_rel_pair_idxs.sort()
-                    unique_data = torch.tensor(new_new_rel_pair_idxs, device=detections[0][0].device)
-                    indices = unique_data.unique().tolist()
-                    indices2 = indices
                     
                     new_new_rel_pair_idxs2 = []
-                    print(deleted_idxs)
-                    print(new_new_rel_pair_idxs)
+                    #print(deleted_idxs)
+                    #print(new_new_rel_pair_idxs)
                     for t2, pair in enumerate(new_new_rel_pair_idxs):
                         a = pair[0]
                         b = pair[1]
@@ -145,11 +142,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                                 pass
 
                         new_new_rel_pair_idxs2.append([a,b])
-                    print(new_new_rel_pair_idxs2 )
+                    #print(new_new_rel_pair_idxs2 )
                     new_new_rel_pair_idxs2.sort()                
                     flag = -1
 
-
+                    #import pdb; pdb.set_trace()
 
             else:
                 size_t = pred_scores.size(dim=0)
@@ -170,8 +167,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     if pair in new_new_rel_pair_idxs:
                         new_idxs2.append(j)
                 
-                print(indices)
-                print(new_idxs2) 
+                #print(indices)
+                #print(new_idxs2) 
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
                 rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs2, device=detections[0][0].device, dtype=torch.long)
                 flag = 0

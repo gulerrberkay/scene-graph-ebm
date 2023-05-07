@@ -7,7 +7,7 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4"
+os.environ['CUDA_VISIBLE_DEVICES'] = "1,2,3,4"
 
 import torch
 from torch.nn.utils import clip_grad_norm_
@@ -251,7 +251,6 @@ def train(cfg, local_rank, distributed, logger):
             log_dict = {k: v.item() for k, v in loss_dict.items()}
             wandb.log(log_dict)
             wandb.log({'Positive Energy': positive_energy.mean().item(), 'Negative Energy': negative_energy.mean().item()})
-        
         # reduce losses over all GPUs for logging purposes
         loss_dict_reduced = reduce_loss_dict(loss_dict)
         losses_reduced = sum(loss for loss in loss_dict_reduced.values())
@@ -340,6 +339,7 @@ def train(cfg, local_rank, distributed, logger):
                                         distributed, logger)
 
             logger.info("Validation Result: %.4f" % val_result)
+            wandb.log({'Recall @100':val_result})
         ########################################################################
         ########################################################################
 
