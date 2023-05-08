@@ -7,7 +7,7 @@ import os
 import time
 import datetime
 from timeit import default_timer as timer
-os.environ['CUDA_VISIBLE_DEVICES'] = "1,2,3,4"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0,1,2,3,4"
 
 import torch
 from torch.nn.utils import clip_grad_norm_
@@ -382,7 +382,8 @@ def run_energy_val(cfg, base_model, energy_model, sampler, val_data_loaders, dis
         energy_model = energy_model.module
 
     torch.cuda.empty_cache()
-    iou_types = ("bbox",)
+    #iou_types = ("bbox",)
+    iou_types = ()
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
     if cfg.MODEL.KEYPOINT_ON:
@@ -447,7 +448,8 @@ def run_test(cfg, base_model, energy_model, sampler, distributed, logger):
         energy_model = energy_model.module
 
     torch.cuda.empty_cache()
-    iou_types = ("bbox",)
+    iou_types = ()
+    #iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
     if cfg.MODEL.KEYPOINT_ON:
