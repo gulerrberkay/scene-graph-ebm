@@ -362,7 +362,7 @@ class LSTMContext(nn.Module):
                 if self.cfg.MODEL.BASE_ONLY:
                     obj_preds = obj_labels
                     obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0) 
-                    '''
+                    
                     if (not self.training):
                         preds = []
                         for proposal in proposals:
@@ -370,11 +370,11 @@ class LSTMContext(nn.Module):
                             obj_pred = obj_prediction_nms(boxes_clss, proposal.get_field("predict_logits"), 0.3)
                             preds.append(obj_pred)
                         obj_preds = cat(preds,dim=0)
-                    '''
+                    
                 else:
                     obj_preds = obj_labels
                     obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0)
-                    '''
+                    
                     if (not self.training):
                         preds = []
                         for proposal in proposals:
@@ -382,7 +382,7 @@ class LSTMContext(nn.Module):
                             obj_pred = obj_prediction_nms(boxes_clss, proposal.get_field("predict_logits"), 0.3)
                             preds.append(obj_pred)
                         obj_preds = cat(preds,dim=0)
-                    '''
+                    
                     obj_dists.requires_grad = True  # Needed for energy model sampler. Activate leaf nodes' grads. Normally you do not need this but not using DecoderRNN makes this necessary.
 
                 

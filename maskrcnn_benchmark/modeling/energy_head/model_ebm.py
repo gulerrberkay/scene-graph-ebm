@@ -78,7 +78,7 @@ class GraphEnergyModel(nn.Module):
         # position embedding
         self.pos_embed = nn.Sequential(*[
             nn.Linear(9, 32), nn.BatchNorm1d(32, momentum= 0.001),
-            nn.Linear(32, 128), nn.ReLU(inplace=True),
+            nn.Linear(32, 512), nn.ReLU(inplace=True), nn.Dropout(0.7)
         ])
         ##########################################################################################
 
@@ -133,8 +133,11 @@ class GraphEnergyModel(nn.Module):
     def forward(self, im_graph, scene_graph, bbox):
         
         #Embedding the bounding boxes
+
+        #if flag:
         pos_embed = self.pos_embed(bbox)
-        
+        #else:
+        #    pass
         # =========================      IMAGE GRAPH CALCULATIONS =========================
         if self.config.MODEL.IMAGE_GRAPH_ON:
             im_node_states, _ = im_graph.get_states()
@@ -166,6 +169,8 @@ class GraphEnergyModel(nn.Module):
         #Obtain the states of the scene graph
         if self.config.MODEL.WEAKLY_ON:
             sg_node_states = self.obj_label_embedding(sg_node_states)
+            #if flag:
+            #    sg_node_states = pos_embed + sg_node_states
         else:
             sg_node_states = self.obj_label_embedding(cat((sg_node_states, pos_embed), -1))
         sg_edge_states = self.rel_label_embedding(sg_edge_states)

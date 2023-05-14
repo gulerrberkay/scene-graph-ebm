@@ -221,9 +221,9 @@ def train(cfg, local_rank, distributed, logger):
                                                                     cfg.ENERGY_MODEL.DATA_NOISE_VAR)
         # end_time = timer()
         # print("pred-graph time {}".format(end_time - start_time))
-        #import pdb; pdb.set_trace() 
         #MCMC Step for Contrastive Loss
         # start_time = timer()
+        
         pred_scene_graph = sampler.sample(energy_model, pred_im_graph, pred_scene_graph, pred_bbox.detach(), mode, set_grad=False)
         # end_time = timer()
         # print("sampler time {}".format(end_time - start_time))
@@ -232,8 +232,7 @@ def train(cfg, local_rank, distributed, logger):
         ########################################################################
         #Loss Computation
         #if cfg.MODEL.WEAKLY_ON:
-        #    positive_energy = energy_model(gt_im_graph, gt_scene_graph, pred_bbox)
-        #else:
+
         positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
         #print(negative_energy,negative_energy.shape)
@@ -339,7 +338,7 @@ def train(cfg, local_rank, distributed, logger):
                                         distributed, logger)
 
             logger.info("Validation Result: %.4f" % val_result)
-            wandb.log({'Recall @100':val_result})
+            #wandb.log({'Recall @100':val_result})
         ########################################################################
         ########################################################################
 

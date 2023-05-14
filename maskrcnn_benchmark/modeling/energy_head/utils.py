@@ -34,7 +34,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
     -----------
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
-
+    indices_list = []
     if cfg.MODEL.WEAKLY_ON and 1:
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
@@ -115,12 +115,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
-                    if n_bg >= 50-n:
-                        new_rel_not_pair = new_rel_not_pair[0:50-n]
+                    if n_bg >= 75-n:
+                        new_rel_not_pair = new_rel_not_pair[0:75-n]
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     else:
                         pass
-                    #import pdb; pdb.set_trace()
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     new_new_rel_pair_idxs.sort()
                     
@@ -150,12 +149,12 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
 
             else:
                 size_t = pred_scores.size(dim=0)
-                if pred_scores.size(dim=0) < 4:
-                    print("proposal number is less than 4, filtered labels is empty")
+                if pred_scores.size(dim=0) < 3:
+                    print("proposal number is less than 3, filtered labels is empty")
                     _, indices = torch.topk(pred_scores,int(size_t),dim=0)
                 else:
-                    print("proposal number is more than 4, filtered labels is empty")
-                    _, indices = torch.topk(pred_scores,4,dim=0)
+                    print("proposal number is more than 3, filtered labels is empty")
+                    _, indices = torch.topk(pred_scores,3,dim=0)
                 indices = indices.tolist()
                 indices.sort()
 
@@ -168,7 +167,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         new_idxs2.append(j)
                 
                 #print(indices)
-                #print(new_idxs2) 
+                #print(new_idxs2)
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
                 rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs2, device=detections[0][0].device, dtype=torch.long)
                 flag = 0
@@ -184,7 +183,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
 
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
                 rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
-
+                #tmp = list(product(indices,indices)) 
+                #tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
+            
+            #indices_list.append(indices)
             
         
         
@@ -212,7 +215,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         pair_list = torch.cat(pair_list, dim=0)
         batch_list = torch.cat(batch_list, dim=0).to(node_list.device)
         edge_batch_list = torch.cat(edge_batch_list, dim=0).to(node_list.device)
-
 
     else:
         offset = 0
@@ -361,8 +363,18 @@ def detection2graph(targets, cfg, node_states, images, detections, base_model, n
     '''
     #Scene graph Creation
     
-    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list = get_predicted_sg(targets, cfg, detections, num_obj_classes, mode, noise_var)
-        
+    sg_node_states, sg_rel_states, adj_matrix, batch_list, edge_batch_list  = get_predicted_sg(targets, cfg, detections, num_obj_classes, mode, noise_var)
+    
+    if 0:
+        bboxes = encode_box_info(detections[-1])
+        bboxes = bboxes.split(30, dim=0)
+        tmp_boxes = []
+        for k in range(len(bboxes)):
+            tmp = bboxes[k]
+            tmp_boxes.append(tmp[indices_list[k],:])
+        bboxes = torch.cat(tmp_boxes,dim=0)
+    else:
+        bboxes = encode_box_info(detections[-1])
     #Iage graph generation
     if cfg.MODEL.IMAGE_GRAPH_ON:
         im_node_states = get_pred_im_graph(cfg, node_states, images, detections, base_model, noise_var)
@@ -373,7 +385,7 @@ def detection2graph(targets, cfg, node_states, images, detections, base_model, n
     scene_graph = Graph(sg_node_states, adj_matrix, batch_list, sg_rel_states, edge_batch_list)
     #im_graph = Graph(im_node_states, adj_matrix, batch_list)
 
-    return im_graph, scene_graph, encode_box_info(detections[-1])
+    return im_graph, scene_graph, bboxes
 
 def gt2graph(cfg,node_states, images, targets, base_model, num_obj_classes, num_rel_classes, noise_var):
 

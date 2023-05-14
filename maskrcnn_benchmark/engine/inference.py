@@ -21,12 +21,9 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
     model.eval()
     results_dict = {}
     cpu_device = torch.device("cpu")
-    gc.collect()
-    torch.cuda.empty_cache()
-    
+    torch.cuda.empty_cache() 
     for itx, batch in enumerate(tqdm(data_loader)):
         with torch.no_grad():
-            #torch.cuda.empty_cache()
             images, targets, image_ids = batch
             targets = [target.to(device) for target in targets]
             if timer:
@@ -51,7 +48,6 @@ def compute_on_dataset(model, data_loader, device, synchronize_gather=True, time
             results_dict.update(
                 {img_id: result for img_id, result in zip(image_ids, output)}
             )
-    gc.collect()
     torch.cuda.empty_cache()
     return results_dict
 
@@ -90,7 +86,6 @@ def compute_with_energy_on_dataset(base_model, energy_model, sampler, data_loade
                     torch.cuda.synchronize()
                 timer.toc()
             # output = [o.to(cpu_device) for o in output]
-        torch.cuda.empty_cache()
 
         if with_sample:
             #MCMC refinement
