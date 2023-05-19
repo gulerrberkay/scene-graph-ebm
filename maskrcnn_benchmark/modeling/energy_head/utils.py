@@ -101,7 +101,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             #import pdb; pdb.set_trace()
 
             indices = []
-            for j,k in enumerate(prop_gt_labels):
+            for j,k in enumerate(filtered_labels):
                 if int(k) != 0:
                     indices.append(j)
                 else:
