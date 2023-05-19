@@ -78,7 +78,7 @@ class GraphEnergyModel(nn.Module):
         # position embedding
         self.pos_embed = nn.Sequential(*[
             nn.Linear(9, 32), nn.BatchNorm1d(32, momentum= 0.001),
-            nn.Linear(32, 512), nn.ReLU(inplace=True),
+            nn.Linear(32, 128), nn.ReLU(inplace=True),
         ])
         ##########################################################################################
 
