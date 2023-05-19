@@ -113,16 +113,16 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
 SAMPLER:
   NAME: 'SGLD'
-  LR: 1.0                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
+  LR: 0.25                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
-  ITERS: 5
+  ITERS: 1
   GRAD_CLIP: 0.01
 
 SOLVER:
   PRE_VAL: False
   IMS_PER_BATCH: 4
   BIAS_LR_FACTOR: 1
-  BASE_LR: 0.00125          # 0.001/4 = 0.00025 For energy learning
+  BASE_LR: 0.00025          # 0.001/4 = 0.00025 For energy learning
   WARMUP_FACTOR: 0.1
   WEIGHT_DECAY: 0.0001
   MOMENTUM: 0.9
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.1   #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/relation_sgdet_energy_filtered_testNo16'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test41'
 
 TEST:
   IMS_PER_BATCH: 1

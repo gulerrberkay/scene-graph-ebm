@@ -8,7 +8,7 @@ def ContrastiveDivergence(cfg, positive_energy, negative_energy):
 
     pos_loss = torch.mean(cfg.ENERGY_MODEL.TEMP * positive_energy)
     neg_loss = torch.mean(cfg.ENERGY_MODEL.TEMP * negative_energy)
-    loss_ml =  pos_loss - neg_loss + torch.sum(positive_energy**2 + negative_energy**2)
+    loss_ml =  pos_loss - neg_loss + (torch.sum(positive_energy**2 + negative_energy**2))
 
     return {'ML Loss (cd)': loss_ml}
 

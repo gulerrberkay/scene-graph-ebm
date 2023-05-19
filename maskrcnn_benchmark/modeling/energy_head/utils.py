@@ -39,10 +39,15 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
+        mask = torch.ones(51,device=detections[0][0].device)
+        mask[0]=0
+        
         for i, (proposal,target) in enumerate(zip(detections[3],targets)):
             rel_pair_all = rel_pair_idxs
             flag = 0 
             filtered_labels = []
+            
+            prop_gt_labels =  proposal.get_field('labels').tolist()
             pred_labe   = proposal.get_field('pred_labels').tolist()
             tgt_label   = target.get_field('labels').tolist()
             pred_scores = proposal.get_field('pred_scores')
@@ -94,7 +99,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             #import pdb; pdb.set_trace()
 
             indices = []
-            for j,k in enumerate(filtered_labels):
+            for j,k in enumerate(prop_gt_labels):
                 if int(k) != 0:
                     indices.append(j)
                 else:
@@ -103,8 +108,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             if indices:
                 if len(indices) == 1:
                     print('len(indices)=1')
-                    _, indices = torch.topk(pred_scores,5,dim=0)
-                    indices = indices.tolist()
+                    _, indices2 = torch.topk(pred_scores,3,dim=0)
+                    indices2 = indices2.tolist()
+                    if indices[0] in indices2:
+                        indices2.remove(indices[0])
+                    indices = indices + indices2
                     indices.sort()
                     #tmp = list(product(indices,indices))
                     #tgts = [list(k) for k in tmp if not k[0]==k[1]]
@@ -115,8 +123,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
-                    if n_bg >= 75-n:
-                        new_rel_not_pair = new_rel_not_pair[0:75-n]
+                    if n_bg >= 10*n and n != 0:
+                        new_rel_not_pair = new_rel_not_pair[0:10*n]
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     else:
                         pass
@@ -158,8 +166,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 indices = indices.tolist()
                 indices.sort()
 
-            if flag == -1:
-                object_logits[i] = object_logits[i][indices,:]
+            if 0:
+                #object_logits[i] = object_logits[i][indices,:]
 
                 new_idxs2=[]
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
@@ -169,10 +177,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 #print(indices)
                 #print(new_idxs2)
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
-                rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs2, device=detections[0][0].device, dtype=torch.long)
+                #relation_logits[i] = torch.mul(mask,relation_logits[i])
+                rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs, device=detections[0][0].device, dtype=torch.long)
                 flag = 0
             else:
-                object_logits[i] = object_logits[i][indices,:] 
+                #object_logits[i] = object_logits[i][indices,:] 
 
                 new_idxs2=[]
                 pair_list_loop = rel_pair_idxs[i].tolist()
@@ -182,10 +191,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         new_idxs2.append(j)
 
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
-                rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
-                #tmp = list(product(indices,indices)) 
-                #tgts = [list(k) for k in tmp if not k[0]==k[1]]
-                #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
+                #relation_logits[i] = torch.mul(mask,relation_logits[i])
+                #rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
+                tmp = list(product(indices,indices)) 
+                tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
             
             #indices_list.append(indices)
             
@@ -199,9 +209,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         ################################################################################################
         rel_list = torch.cat(relation_logits, dim= 0)
         rel_list = normalize_states(rel_list)       
+        #rel_list = torch.mul(mask,rel_list)
 
         node_list = torch.cat(object_logits, dim= 0)
         node_list = normalize_states(node_list)
+        #node_list = torch.mul(mask,node_list)
 
         #node_list = torch.mul(node_list, confident.reshape(-1,1))
             ################################################################################################
@@ -264,7 +276,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         
         #print(node_list)
         #print(torch.max(node_list,dim=1))
-        #import pdb; pdb.set_trace()
+    
     return node_list, rel_list, pair_list, batch_list, edge_batch_list
 
 def get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var):
@@ -296,6 +308,7 @@ def get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var):
     node_list.data.add_(node_noise)
 
     rel_list = to_onehot(torch.cat(rel_list, dim=0), num_rel_classes)
+    #rel_list[:,0] = 1. 
     rel_noise = torch.rand_like(rel_list).normal_(0, noise_var)
     rel_list.data.add_(rel_noise)
     batch_list = torch.tensor(batch_list).to(node_list.device)
@@ -367,12 +380,12 @@ def detection2graph(targets, cfg, node_states, images, detections, base_model, n
     
     if 0:
         bboxes = encode_box_info(detections[-1])
-        bboxes = bboxes.split(30, dim=0)
-        tmp_boxes = []
-        for k in range(len(bboxes)):
-            tmp = bboxes[k]
-            tmp_boxes.append(tmp[indices_list[k],:])
-        bboxes = torch.cat(tmp_boxes,dim=0)
+        #bboxes = bboxes.split(30, dim=0)
+        #tmp_boxes = []
+        #for k in range(len(bboxes)):
+        #    tmp = bboxes[k]
+        #    tmp_boxes.append(tmp[indices_list[k],:])
+        #bboxes = torch.cat(tmp_boxes,dim=0)
     else:
         bboxes = encode_box_info(detections[-1])
     #Iage graph generation

@@ -160,6 +160,12 @@ def train(cfg, local_rank, distributed, logger):
         losses_reduced = sum(loss for loss in loss_dict_reduced.values())
         meters.update(loss=losses_reduced, **loss_dict_reduced)
 
+
+        loss_dict = {**loss_dict}
+        log_dict = {k: v.item() for k, v  in loss_dict.items()}
+        wandb.log(log_dict)
+
+
         optimizer.zero_grad()
         losses.backward()
         # Note: If mixed precision is not used, this ends up doing nothing
@@ -240,7 +246,8 @@ def run_val(cfg, model, val_data_loaders, distributed, logger):
     if distributed:
         model = model.module
     torch.cuda.empty_cache()
-    iou_types = ("bbox",)
+    #iou_types = ("bbox",)
+    iou_types = ()
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
     if cfg.MODEL.KEYPOINT_ON:
@@ -282,7 +289,8 @@ def run_test(cfg, model, distributed, logger):
     if distributed:
         model = model.module
     torch.cuda.empty_cache()
-    iou_types = ("bbox",)
+    iou_types = ()
+    #iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
     if cfg.MODEL.KEYPOINT_ON:

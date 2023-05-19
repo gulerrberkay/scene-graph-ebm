@@ -78,7 +78,7 @@ class GraphEnergyModel(nn.Module):
         # position embedding
         self.pos_embed = nn.Sequential(*[
             nn.Linear(9, 32), nn.BatchNorm1d(32, momentum= 0.001),
-            nn.Linear(32, 512), nn.ReLU(inplace=True), nn.Dropout(0.7)
+            nn.Linear(32, 512), nn.ReLU(inplace=True),
         ])
         ##########################################################################################
 
@@ -137,7 +137,7 @@ class GraphEnergyModel(nn.Module):
         #if flag:
         pos_embed = self.pos_embed(bbox)
         #else:
-        #    pass
+         #   pass
         # =========================      IMAGE GRAPH CALCULATIONS =========================
         if self.config.MODEL.IMAGE_GRAPH_ON:
             im_node_states, _ = im_graph.get_states()
@@ -170,9 +170,10 @@ class GraphEnergyModel(nn.Module):
         if self.config.MODEL.WEAKLY_ON:
             sg_node_states = self.obj_label_embedding(sg_node_states)
             #if flag:
-            #    sg_node_states = pos_embed + sg_node_states
+           #     sg_node_states = pos_embed + sg_node_states
         else:
             sg_node_states = self.obj_label_embedding(cat((sg_node_states, pos_embed), -1))
+        
         sg_edge_states = self.rel_label_embedding(sg_edge_states)
 
         sg_edge_states = torch.sparse.FloatTensor(sg_adj_list.t(), sg_edge_states, torch.Size([sg_node_states.shape[0], sg_node_states.shape[0], sg_edge_states.shape[-1]])).to_dense()

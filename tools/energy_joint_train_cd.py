@@ -184,7 +184,9 @@ def train(cfg, local_rank, distributed, logger):
     end = time.time()
 
     print_first_grad = True
-    
+    #import pdb; pdb.set_trace() 
+   # a = 0
+    #counts = torch.zeros(51,device=device)
     for iteration, (images, targets, _) in enumerate(train_data_loader, start_iter):
 
         if any(len(target) < 1 for target in targets):
@@ -199,6 +201,20 @@ def train(cfg, local_rank, distributed, logger):
         energy_model.train()
         ########################################################################
         ########################################################################
+        
+        
+        #counts = torch.zeros(51,device=device)
+        #for target in targets:
+        #    temp = target.get_field('relation').unique().tolist()
+            
+        #    counts[temp] = counts[temp] + 1.
+        #print(a)
+        #print(counts)
+        #a = a+1
+        #if a == int(57723/4):
+        #    break
+        
+        #continue
         #FOrward
         images = images.to(device)
         targets = [target.to(device) for target in targets]
@@ -232,8 +248,9 @@ def train(cfg, local_rank, distributed, logger):
         ########################################################################
         #Loss Computation
         #if cfg.MODEL.WEAKLY_ON:
-
+        #flag = False
         positive_energy = energy_model(gt_im_graph, gt_scene_graph, gt_bbox)
+       # flag = True
         negative_energy = energy_model(pred_im_graph, pred_scene_graph, pred_bbox)
         #print(negative_energy,negative_energy.shape)
         #print(positive_energy,positive_energy.shape)
@@ -593,6 +610,7 @@ def main():
 
     base_model, energy_model, sampler = train(cfg, args.local_rank, args.distributed, logger)
     
+    print('training done.')
     #if not args.skip_test:
     run_test(cfg, base_model, energy_model, sampler, args.distributed, logger)
 

@@ -8,6 +8,7 @@ from torch.nn import functional as F
 from maskrcnn_benchmark.modeling.utils import cat
 from .utils_motifs import obj_edge_vectors, center_x, sort_by_score, to_onehot, get_dropout_mask, nms_overlaps, encode_box_info
 from .utils_relation import obj_prediction_nms
+from maskrcnn_benchmark.modeling.make_layers import make_fc
 
 class FrequencyBias(nn.Module):
     """
@@ -246,6 +247,8 @@ class LSTMContext(nn.Module):
             nn.Linear(9, 32), nn.BatchNorm1d(32, momentum= 0.001),
             nn.Linear(32, 128), nn.ReLU(inplace=True),
         ])
+        
+
 
         # object & relation context
         self.obj_dim = in_channels
@@ -273,6 +276,9 @@ class LSTMContext(nn.Module):
                 num_layers=self.nl_edge,
                 dropout=self.dropout_rate if self.nl_edge > 1 else 0,
                 bidirectional=True)
+
+       # self.obj_classifier = make_fc(self.obj_dim + self.embed_dim + 128, self.num_obj_classes)
+
         # map bidirectional hidden states of dimension self.hidden_dim*2 to self.hidden_dim
         self.lin_obj_h = nn.Linear(self.hidden_dim*2, self.hidden_dim)
         self.lin_edge_h = nn.Linear(self.hidden_dim*2, self.hidden_dim)
@@ -360,9 +366,10 @@ class LSTMContext(nn.Module):
                 #import pdb;pdb.set_trace()
             else:
                 if self.cfg.MODEL.BASE_ONLY:
-                    obj_preds = obj_labels
+                    #obj_preds = obj_labels
                     obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0) 
-                    
+                    obj_preds = obj_dists[:, 1:].max(1)[1] + 1
+
                     if (not self.training):
                         preds = []
                         for proposal in proposals:
@@ -372,9 +379,9 @@ class LSTMContext(nn.Module):
                         obj_preds = cat(preds,dim=0)
                     
                 else:
-                    obj_preds = obj_labels
+                    #obj_preds = obj_labels
                     obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0)
-                    
+                    obj_preds = obj_dists[:, 1:].max(1)[1] + 1
                     if (not self.training):
                         preds = []
                         for proposal in proposals:
