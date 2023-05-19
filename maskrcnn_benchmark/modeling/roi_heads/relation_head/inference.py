@@ -103,11 +103,14 @@ class PostProcessor(nn.Module):
             # sorting triples according to score production
             obj_scores0 = obj_scores[rel_pair_idx[:, 0]]
             obj_scores1 = obj_scores[rel_pair_idx[:, 1]]
-            #rel_logit = rel_logit[:,1:]
+            
+            rel_logit = rel_logit[:,1:]
             rel_class_prob = F.softmax(rel_logit, -1)
-            #rel_scores, rel_class = rel_class_prob.max(dim=1)
-            rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
-            rel_class = rel_class + 1
+            rel_scores, rel_class = rel_class_prob.max(dim=1)
+            #rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
+            
+            #rel_class = rel_class + 1
+            
             # TODO Kaihua: how about using weighted some here?  e.g. rel*1 + obj *0.8 + obj*0.8
             triple_scores = rel_scores * obj_scores0 * obj_scores1
             _, sorting_idx = torch.sort(triple_scores.view(-1), dim=0, descending=True)

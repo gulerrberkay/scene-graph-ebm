@@ -9,6 +9,7 @@ from itertools import product
 from maskrcnn_benchmark.modeling.energy_head.graph import Graph
 from maskrcnn_benchmark.modeling.roi_heads.relation_head.utils_motifs import (
     encode_box_info, to_onehot)
+import torch.nn.functional as F
 
 import logging
 logger = logging.getLogger(__name__)
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 def normalize_states(states):
     states = states - torch.min(states, dim=-1, keepdim=True)[0]
     states = states/torch.max(states, dim=1, keepdim=True)[0]
+
     return states
 
 def prepare_test_pairs( size_len ,dev):
@@ -208,11 +210,11 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
 
         ################################################################################################
         rel_list = torch.cat(relation_logits, dim= 0)
-        rel_list = normalize_states(rel_list)       
+        #rel_list = normalize_states(rel_list)       
         #rel_list = torch.mul(mask,rel_list)
 
         node_list = torch.cat(object_logits, dim= 0)
-        node_list = normalize_states(node_list)
+        #node_list = normalize_states(node_list)
         #node_list = torch.mul(mask,node_list)
 
         #node_list = torch.mul(node_list, confident.reshape(-1,1))
