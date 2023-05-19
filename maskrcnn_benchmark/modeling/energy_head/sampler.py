@@ -17,7 +17,7 @@ class SGLD(object):
 
     def normalize_states(self,states):
 
-        state_norm = F.sigmoid(states)
+        state_norm = torch.sigmoid(states)
         bg_score,indices = torch.max(state_norm,dim=1)
         bg_score = bg_score.reshape(state_norm.shape[0],-1)
         bg_score = 1-bg_score
@@ -68,7 +68,7 @@ class SGLD(object):
 
                 scene_graph.edge_states.data.add_(noise.data)
                 scene_graph.node_states.data.add_(noise2.data)
-                #import pdb;pdb.set_trace()
+                
                 edge_states_grads, node_states_grads = torch.autograd.grad(model(im_graph, scene_graph, bbox).sum(), [scene_graph.edge_states, scene_graph.node_states], retain_graph=True)
                 edge_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)
                 node_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)
