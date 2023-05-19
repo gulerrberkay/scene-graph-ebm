@@ -14,7 +14,11 @@ class SGLD(object):
         self.sgld_var = float(cfg.SAMPLER.VAR)
         self.grad_clip = float(cfg.SAMPLER.GRAD_CLIP)
         self.iters = cfg.SAMPLER.ITERS
-    def sample(self, model, im_graph, scene_graph, bbox, mode, set_grad=False):
+
+    def normalize_states(self,states):
+        return states
+    
+    def sample(self, cfg, model, im_graph, scene_graph, bbox, mode, set_grad=False):
 
         model.train()
         if set_grad:
@@ -38,7 +42,7 @@ class SGLD(object):
                 scene_graph.edge_states = (scene_graph.edge_states - torch.min(scene_graph.edge_states, dim=-1, keepdim=True)[0])
                 scene_graph.edge_states = scene_graph.edge_states/torch.max(scene_graph.edge_states, dim=1, keepdim=True)[0]
 
-            scene_graph.edge_states.detach_()
+            #scene_graph.edge_states.detach_()
 
         else:
             noise = torch.rand_like(scene_graph.edge_states)

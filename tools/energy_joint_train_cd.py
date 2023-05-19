@@ -240,7 +240,9 @@ def train(cfg, local_rank, distributed, logger):
         #MCMC Step for Contrastive Loss
         # start_time = timer()
         
-        pred_scene_graph = sampler.sample(energy_model, pred_im_graph, pred_scene_graph, pred_bbox.detach(), mode, set_grad=False)
+
+
+        pred_scene_graph = sampler.sample(cfg, energy_model, pred_im_graph, pred_scene_graph, pred_bbox.detach(), mode, set_grad=False)
         # end_time = timer()
         # print("sampler time {}".format(end_time - start_time))
         
