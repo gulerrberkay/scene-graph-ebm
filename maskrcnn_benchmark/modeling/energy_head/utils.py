@@ -168,7 +168,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 indices = indices.tolist()
                 indices.sort()
 
-            if 0:
+            if flag==-1:
                 #object_logits[i] = object_logits[i][indices,:]
 
                 new_idxs2=[]
@@ -185,9 +185,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             else:
                 #object_logits[i] = object_logits[i][indices,:] 
 
-                new_idxs2=[]
-                pair_list_loop = rel_pair_idxs[i].tolist()
-            
+                new_idxs2=[]            
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
                     if (pair[0] in indices) and (pair[1] in indices):
                         new_idxs2.append(j)
@@ -198,9 +196,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 tmp = list(product(indices,indices)) 
                 tgts = [list(k) for k in tmp if not k[0]==k[1]]
                 rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
-            
-            #indices_list.append(indices)
-            
+                        
         
         
         offset = 0
@@ -218,7 +214,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         #node_list = torch.mul(mask,node_list)
 
         #node_list = torch.mul(node_list, confident.reshape(-1,1))
-            ################################################################################################
+        ################################################################################################
 
         for i in range(len(rel_pair_idxs)):
             pair_list.append(rel_pair_idxs[i] + offset)
@@ -310,7 +306,6 @@ def get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var):
     node_list.data.add_(node_noise)
 
     rel_list = to_onehot(torch.cat(rel_list, dim=0), num_rel_classes)
-    #rel_list[:,0] = 1. 
     rel_noise = torch.rand_like(rel_list).normal_(0, noise_var)
     rel_list.data.add_(rel_noise)
     batch_list = torch.tensor(batch_list).to(node_list.device)

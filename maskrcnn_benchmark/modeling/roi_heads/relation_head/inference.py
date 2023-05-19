@@ -109,7 +109,7 @@ class PostProcessor(nn.Module):
             rel_scores, rel_class = rel_class_prob.max(dim=1)
             #rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
             
-            #rel_class = rel_class + 1
+            rel_class = rel_class + 1
             
             # TODO Kaihua: how about using weighted some here?  e.g. rel*1 + obj *0.8 + obj*0.8
             triple_scores = rel_scores * obj_scores0 * obj_scores1
