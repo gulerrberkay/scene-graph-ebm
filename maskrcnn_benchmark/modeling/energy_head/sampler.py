@@ -28,11 +28,15 @@ class SGLD(object):
         return out
     
     def normalize_nodes(self, states):
-        #states = states - torch.min(states, dim=-1, keepdim=True)[0]
-        #states = states/torch.max(states, dim=1, keepdim=True)[0]
-        state_norm = torch.sigmoid(states)
+        bg_score,indices = torch.max(states[:,1:],dim=1)
+        bg_score = bg_score.reshape(states.shape[0],-1)
+        bg_score = 1-bg_score
+        states = torch.cat((bg_score,states[:,1:] ),dim=1)
         
-        return state_norm
+        states = states - torch.min(states, dim=-1, keepdim=True)[0]
+        states = states/torch.max(states, dim=1, keepdim=True)[0]
+        
+        return states
     
 
     def sample(self, cfg, model, im_graph, scene_graph, bbox, mode, set_grad=False):
@@ -64,7 +68,7 @@ class SGLD(object):
         else:
             import pdb; pdb.set_trace()
             if cfg.MODEL.WEAKLY_ON:
-                scene_graph.node_states = self.normalize_states(scene_graph.node_states)
+                scene_graph.node_states = self.normalize_nodes(scene_graph.node_states)
                 scene_graph.edge_states = self.normalize_states(scene_graph.edge_states)
 
             noise = torch.rand_like(scene_graph.edge_states)
