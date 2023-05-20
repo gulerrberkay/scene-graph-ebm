@@ -33,8 +33,7 @@ class SGLD(object):
         bg_score = 1-bg_score
         states = torch.cat((bg_score,states[:,1:] ),dim=1)
         
-        states = states - torch.min(states, dim=-1, keepdim=True)[0]
-        states = states/torch.max(states, dim=1, keepdim=True)[0]
+        states = F.softmax(states,-1)
         
         return states
     
