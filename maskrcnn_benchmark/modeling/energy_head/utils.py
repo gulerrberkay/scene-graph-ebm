@@ -36,7 +36,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
     -----------
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
-    indices_list = []
     if cfg.MODEL.WEAKLY_ON and 1:
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
@@ -61,8 +60,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 else:
                     filtered_labels.append(0)
             
-
-
             rel = target.get_field('relation')
             rel_pair_idxs_tgts = torch.nonzero(rel).tolist()
             gt_labels_tgts = target.get_field('labels').tolist()
@@ -170,7 +167,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
 
             if flag==-1:
                 #object_logits[i] = object_logits[i][indices,:]
-
                 new_idxs2=[]
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
                     if pair in new_new_rel_pair_idxs:
@@ -184,7 +180,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 flag = 0
             else:
                 #object_logits[i] = object_logits[i][indices,:] 
-
                 new_idxs2=[]            
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
                     if (pair[0] in indices) and (pair[1] in indices):

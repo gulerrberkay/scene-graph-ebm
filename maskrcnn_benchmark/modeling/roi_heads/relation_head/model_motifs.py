@@ -300,7 +300,7 @@ class LSTMContext(nn.Module):
     
     def nms_per_cls_added(self, out_dists, out_commitments, boxes_per_nms):
         
-        is_overlap = nms_overlaps(boxes_for_nms).view(boxes_for_nms.size(0), boxes_for_nms.size(0), boxes_for_nms.size(1)).cpu().numpy() >= self.nms_thresh
+        is_overlap = nms_overlaps(boxes_per_nms).view(boxes_per_nms.size(0), boxes_per_nms.size(0), boxes_per_nms.size(1)).cpu().numpy() >= self.nms_thresh
         out_dists_sampled = F.softmax(torch.cat(out_dists,0), 1).cpu().numpy()
         out_dists_sampled[:,0] = 0
 
