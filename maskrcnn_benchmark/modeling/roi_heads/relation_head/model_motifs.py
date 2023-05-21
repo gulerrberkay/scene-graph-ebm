@@ -347,7 +347,7 @@ class LSTMContext(nn.Module):
         
         # Decode in order
         if self.mode != 'predcls':
-            if 0:
+            if not self.cfg.MODEL.WEAKLY_ON:
                 decoder_inp = PackedSequence(decoder_inp, ls_transposed)
                 obj_dists, obj_preds = self.decoder_rnn(
                     decoder_inp, #obj_dists[perm],
@@ -356,14 +356,6 @@ class LSTMContext(nn.Module):
                     )
                 obj_preds = obj_preds[inv_perm]
                 obj_dists = obj_dists[inv_perm]
-                #print("decoder obj preds:")
-                #print(obj_preds)
-                #print(obj_preds.shape)
-
-                #print("decoder  obj dist:")
-                #print(obj_dists)
-                #print(obj_dists.shape)
-                #import pdb;pdb.set_trace()
             else:
                 if self.cfg.MODEL.BASE_ONLY:
                     #obj_preds = obj_labels
@@ -392,14 +384,6 @@ class LSTMContext(nn.Module):
                     
                     obj_dists.requires_grad = True  # Needed for energy model sampler. Activate leaf nodes' grads. Normally you do not need this but not using DecoderRNN makes this necessary.
 
-                
-                #print("new obj preds:")
-                #print(obj_preds)
-                #print(obj_preds.shape)
-
-                #print("new obj dist:")
-                #print(obj_dists)
-                #print(obj_dists.shape)
         else:
             assert obj_labels is not None
             obj_preds = obj_labels
