@@ -113,7 +113,7 @@ class PostProcessor(nn.Module):
                 rel_logit[:,0] = 0.   
                 tmp = rel_logit[:,0]
            
-                rel_class_prob = torch.cat((tmp.reshape(rel_class_prob.shape[0]),rel_class_prob), dim=1)
+                rel_class_prob = torch.cat((tmp.reshape(rel_class_prob.shape[0],-1),rel_class_prob), dim=1)
             else:
                 rel_class_prob = F.softmax(rel_logit, -1)
                 rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
