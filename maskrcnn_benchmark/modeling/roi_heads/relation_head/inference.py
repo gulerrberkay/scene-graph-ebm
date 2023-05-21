@@ -21,6 +21,7 @@ class PostProcessor(nn.Module):
         attribute_on,
         use_gt_box=False,
         later_nms_pred_thres=0.3,
+        weakly_on=False,
     ):
         """
         Arguments:
@@ -30,7 +31,7 @@ class PostProcessor(nn.Module):
         self.attribute_on = attribute_on
         self.use_gt_box = use_gt_box
         self.later_nms_pred_thres = later_nms_pred_thres
-
+        self.weakly_on = weakly_on
     def forward(self, x, rel_pair_idxs, boxes):
         """
         Arguments:
@@ -104,11 +105,19 @@ class PostProcessor(nn.Module):
             obj_scores0 = obj_scores[rel_pair_idx[:, 0]]
             obj_scores1 = obj_scores[rel_pair_idx[:, 1]]
             
-            #rel_logit2 = rel_logit[:,1:]
-            rel_class_prob = F.softmax(rel_logit, -1)
-            #rel_scores, rel_class = rel_class_prob.max(dim=1)
-            rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
-            rel_class = rel_class + 1
+            if self.weakly_on:
+                rel_logit2 = rel_logit[:,1:]
+                rel_class_prob = F.softmax(rel_logit2, -1) 
+                rel_scores, rel_class = rel_class_prob.max(dim=1)
+                rel_class = rel_class + 1
+                rel_logit[:,0] = 0.   
+                tmp = rel_logit[:,0]
+           
+                rel_class_prob = torch.cat((tmp.reshape(rel_class_prob.shape[0]),rel_class_prob), dim=1)
+            else:
+                rel_class_prob = F.softmax(rel_logit, -1)
+                rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
+                rel_class = rel_class + 1
             
             # TODO Kaihua: how about using weighted some here?  e.g. rel*1 + obj *0.8 + obj*0.8
             triple_scores = rel_scores * obj_scores0 * obj_scores1
@@ -133,10 +142,11 @@ def make_roi_relation_post_processor(cfg):
     attribute_on = cfg.MODEL.ATTRIBUTE_ON
     use_gt_box = cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX
     later_nms_pred_thres = cfg.TEST.RELATION.LATER_NMS_PREDICTION_THRES
-
+    weakly_on = cfg.MODEL.WEAKLY_ON
     postprocessor = PostProcessor(
         attribute_on,
         use_gt_box,
         later_nms_pred_thres,
+        weakly_on,
     )
     return postprocessor
