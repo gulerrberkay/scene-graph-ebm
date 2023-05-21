@@ -122,8 +122,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
-                    if n_bg >= 250 and n != 0:
-                        new_rel_not_pair = new_rel_not_pair[0:250]
+                    if n_bg >= 10*n and n != 0:
+                        new_rel_not_pair = new_rel_not_pair[0:10*n]
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     else:
                         pass
