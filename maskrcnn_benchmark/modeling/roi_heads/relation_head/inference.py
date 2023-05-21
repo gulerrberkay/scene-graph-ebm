@@ -68,7 +68,7 @@ class PostProcessor(nn.Module):
                 att_logit = finetune_att_logits[i]
                 att_prob = torch.sigmoid(att_logit)
 
-            if self.weakly_on:
+            if 0:
                 obj_logit2 = obj_logit.detach()
                 obj_class_prob = F.softmax(obj_logit2[:,1:], -1)
                 obj_logit2[:,0] = 0.
