@@ -301,6 +301,11 @@ def get_gt_scene_graph(targets, num_obj_classes, num_rel_classes, noise_var):
     node_list.data.add_(node_noise)
 
     rel_list = to_onehot(torch.cat(rel_list, dim=0), num_rel_classes)
+
+    if 1:
+        node_list = node_list[:,1:]  # remove bg class
+        rel_list  =  rel_list[:,1:]  # remove bg class
+
     rel_noise = torch.rand_like(rel_list).normal_(0, noise_var)
     rel_list.data.add_(rel_noise)
     batch_list = torch.tensor(batch_list).to(node_list.device)

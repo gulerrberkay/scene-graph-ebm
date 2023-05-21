@@ -17,7 +17,7 @@ class SGLD(object):
 
     def normalize_edges(self,states): # edges
 
-        state_norm = torch.sigmoid(states)
+        state_norm = torch.sigmoid(states[:,1:])
         #bg_score,indices = torch.max(state_norm[:,1:],dim=1)
         #bg_score = bg_score.reshape(state_norm.shape[0],-1)
         #bg_score = 1-bg_score
@@ -29,10 +29,10 @@ class SGLD(object):
     def normalize_nodes(self, states):
         states = F.softmax(states[:,1:],-1)
         
-        bg_score,indices = torch.max(states,dim=1)
-        bg_score = bg_score.reshape(states.shape[0],-1)
-        bg_score = 1-bg_score
-        states = torch.cat((bg_score,states),dim=1)
+        # bg_score,indices = torch.max(states,dim=1)
+        # bg_score = bg_score.reshape(states.shape[0],-1)
+        # bg_score = 1-bg_score
+        # states = torch.cat((bg_score,states),dim=1)
         states = states - torch.min(states, dim=-1, keepdim=True)[0]
         states = states/torch.max(states, dim=1, keepdim=True)[0]
         
