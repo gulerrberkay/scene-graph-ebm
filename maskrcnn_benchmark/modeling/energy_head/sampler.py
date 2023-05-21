@@ -25,7 +25,7 @@ class SGLD(object):
         #print(state_norm[:,1:].shape)
 
         out = torch.cat((bg_score,state_norm[:,1:] ),dim=1)
-        return out
+        return state_norm
     
     def normalize_nodes(self, states):
         states = F.softmax(states[:,1:],-1)
