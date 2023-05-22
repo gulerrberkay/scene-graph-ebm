@@ -118,7 +118,9 @@ def main():
         #Load the detector
         _ = checkpointer.load(cfg.MODEL.WEIGHT)
 
-    iou_types = ("bbox",)
+    #iou_types = ("bbox",)
+    iou_types = ()
+
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
     if cfg.MODEL.KEYPOINT_ON:
