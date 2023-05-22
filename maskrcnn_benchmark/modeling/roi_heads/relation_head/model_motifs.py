@@ -454,7 +454,7 @@ class LSTMContext(nn.Module):
         # object level contextual feature
         obj_dists, obj_preds, obj_ctx, perm, inv_perm, ls_transposed = self.obj_ctx(obj_pre_rep, proposals, obj_labels, boxes_per_cls, ctx_average=ctx_average)
         # edge level contextual feature
-        obj_embed2 = self.obj_embed2(obj_preds.long())
+        obj_embed2 = self.obj_embed2(obj_preds.long())  # GLOVE WORD EMBEDDINGS ARE LOADED HERE!
         #import pdb; pdb.set_trace()
         if (all_average or ctx_average) and self.effect_analysis and (not self.training):
             obj_rel_rep = cat((self.untreated_edg_feat.view(1, -1).expand(batch_size, -1), obj_ctx), dim=-1)

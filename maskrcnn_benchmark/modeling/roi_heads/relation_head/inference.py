@@ -68,21 +68,21 @@ class PostProcessor(nn.Module):
                 att_logit = finetune_att_logits[i]
                 att_prob = torch.sigmoid(att_logit)
 
-            if 0:
-                obj_logit2 = obj_logit.detach()
-                obj_class_prob = F.softmax(obj_logit2[:,1:], -1)
-                obj_logit2[:,0] = 0.
-                tmp2 = rel_logit[:,0]
+            # if 0:
+            #     obj_logit2 = obj_logit.detach()
+            #     obj_class_prob = F.softmax(obj_logit2[:,1:], -1)
+            #     obj_logit2[:,0] = 0.
+            #     tmp2 = rel_logit[:,0]
 
-                obj_class_prob = torch.cat((tmp2.reshape(obj_class_prob.shape[0],-1),obj_class_prob), dim=1)
+            #     obj_class_prob = torch.cat((tmp2.reshape(obj_class_prob.shape[0],-1),obj_class_prob), dim=1)
                 
-                num_obj_bbox = obj_class_prob.shape[0]
-                num_obj_class = obj_class_prob.shape[1]
-            else:
-                obj_class_prob = F.softmax(obj_logit, -1)
-                obj_class_prob[:, 0] = 0  # set background score to 0
-                num_obj_bbox = obj_class_prob.shape[0]
-                num_obj_class = obj_class_prob.shape[1]
+            #     num_obj_bbox = obj_class_prob.shape[0]
+            #     num_obj_class = obj_class_prob.shape[1]
+            # else:
+            obj_class_prob = F.softmax(obj_logit, -1)
+            obj_class_prob[:, 0] = 0  # set background score to 0
+            num_obj_bbox = obj_class_prob.shape[0]
+            num_obj_class = obj_class_prob.shape[1]
 
             if self.use_gt_box:
                 obj_scores, obj_pred = obj_class_prob[:, 1:].max(dim=1)
