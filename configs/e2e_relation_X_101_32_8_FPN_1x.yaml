@@ -136,7 +136,7 @@ SOLVER:
 
 
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/CE_test53'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/CE_test57'
 
 TEST:
   BBOX_AUG:
