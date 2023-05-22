@@ -24,11 +24,13 @@ class SGLD(object):
         #print(values.shape)
         #print(state_norm[:,1:].shape)
         #out = torch.cat((bg_score,state_norm[:,1:] ),dim=1)
+        state_norm = state_norm - torch.min(state_norm, dim=-1, keepdim=True)[0]
+        state_norm = state_norm/torch.max(state_norm, dim=1, keepdim=True)[0]
         return state_norm
     
     def normalize_nodes(self, states):
-        states = F.softmax(states[:,1:],-1)
-        
+        states = F.softmax(states,-1)
+        states = states[:,1:]
         # bg_score,indices = torch.max(states,dim=1)
         # bg_score = bg_score.reshape(states.shape[0],-1)
         # bg_score = 1-bg_score

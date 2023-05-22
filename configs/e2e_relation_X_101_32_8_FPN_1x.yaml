@@ -111,10 +111,10 @@ DATASETS:
 DATALOADER:
   SIZE_DIVISIBILITY: 32
 SOLVER:
-  PRE_VAL: True
+  PRE_VAL: False
   IMS_PER_BATCH: 4
   BIAS_LR_FACTOR: 1
-  BASE_LR: 0.00025
+  BASE_LR: 0.0025
   WARMUP_FACTOR: 0.1
   WEIGHT_DECAY: 0.0001
   MOMENTUM: 0.9
@@ -136,7 +136,7 @@ SOLVER:
 
 
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/CE_test17'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/CE_test53'
 
 TEST:
   BBOX_AUG:
@@ -149,21 +149,3 @@ TEST:
     SYNC_GATHER: False      # turn on will slow down the evaluation to solve the sgdet test out of memory problem
     REQUIRE_OVERLAP: False
     LATER_NMS_PREDICTION_THRES: 0.5
-
-  # Equival schedules with...
-  # 1 GPU:
-  #   BASE_LR: 0.0025
-  #   MAX_ITER: 60000
-  #   STEPS: [0, 30000, 40000]
-  # 2 GPUs:
-  #   BASE_LR: 0.005
-  #   MAX_ITER: 30000
-  #   STEPS: [0, 15000, 20000]
-  # 4 GPUs:
-  #   BASE_LR: 0.01
-  #   MAX_ITER: 15000
-  #   STEPS: [0, 7500, 10000]
-  # 8 GPUs:
-  #   BASE_LR: 0.02
-  #   MAX_ITER: 7500
-  #   STEPS: [0, 3750, 5000]

@@ -40,8 +40,6 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
-        #mask = torch.ones(51,device=detections[0][0].device)
-        #mask[0]=0
         
         for i, (proposal,target) in enumerate(zip(detections[3],targets)):
             rel_pair_all = rel_pair_idxs
