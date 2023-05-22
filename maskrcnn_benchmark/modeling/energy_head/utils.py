@@ -93,7 +93,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             new_rel_not_pair = res
             
             shuffle(new_rel_not_pair)
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
 
             indices = []
             for j,k in enumerate(filtered_labels):
