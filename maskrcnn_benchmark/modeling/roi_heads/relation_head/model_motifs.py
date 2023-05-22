@@ -315,7 +315,7 @@ class LSTMContext(nn.Module):
         return out_commitments
 
 
-    def obj_ctx(self, obj_feats, proposals, obj_labels=None, boxes_per_cls=None, ctx_average=False):
+    def obj_ctx(self, obj_logits, obj_feats, proposals, obj_labels=None, boxes_per_cls=None, ctx_average=False):
         """
         Object context and object classification.
         :param obj_feats: [num_obj, img_dim + object embedding0 dim]
@@ -359,7 +359,7 @@ class LSTMContext(nn.Module):
             else:
                 if self.cfg.MODEL.BASE_ONLY:
                     #obj_preds = obj_labels
-                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0) 
+                    obj_dists = obj_logits
                     obj_preds = obj_dists[:, 1:].max(1)[1] + 1
 
                     if (not self.training):
@@ -372,7 +372,7 @@ class LSTMContext(nn.Module):
                     
                 else:
                     #obj_preds = obj_labels
-                    obj_dists = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0)
+                    obj_dists = obj_logits
                     obj_preds = obj_dists[:, 1:].max(1)[1] + 1
                     if (not self.training):
                         preds = []
@@ -452,7 +452,7 @@ class LSTMContext(nn.Module):
             boxes_per_cls = cat([proposal.get_field('boxes_per_cls') for proposal in proposals], dim=0) # comes from post process of box_head
 
         # object level contextual feature
-        obj_dists, obj_preds, obj_ctx, perm, inv_perm, ls_transposed = self.obj_ctx(obj_pre_rep, proposals, obj_labels, boxes_per_cls, ctx_average=ctx_average)
+        obj_dists, obj_preds, obj_ctx, perm, inv_perm, ls_transposed = self.obj_ctx(obj_logits, obj_pre_rep, proposals, obj_labels, boxes_per_cls, ctx_average=ctx_average)
         # edge level contextual feature
         obj_embed2 = self.obj_embed2(obj_preds.long())  # GLOVE WORD EMBEDDINGS ARE LOADED HERE!
         #import pdb; pdb.set_trace()
