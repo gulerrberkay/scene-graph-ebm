@@ -118,14 +118,14 @@ class PostProcessor(nn.Module):
             obj_scores1 = obj_scores[rel_pair_idx[:, 1]]
             
             if self.weakly_on:
-                rel_logit2 = rel_logit[:,1:]/3
+                rel_logit2 = rel_logit[:,1:]/6
                 rel_class_prob = torch.softmax(rel_logit2,-1)
                 rel_scores, rel_class = rel_class_prob.max(dim=1)
                 rel_class = rel_class + 1
                 rel_logit[:,0] = 0.
                 tmp = rel_logit[:,0]          
                 rel_class_prob = torch.cat((tmp.reshape(rel_class_prob.shape[0],-1),rel_class_prob), dim=1)
-                
+
             else:
                 rel_class_prob = F.softmax(rel_logit, -1)
                 rel_scores, rel_class = rel_class_prob[:, 1:].max(dim=1)
