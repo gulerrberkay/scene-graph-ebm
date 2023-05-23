@@ -119,10 +119,10 @@ class PostProcessor(nn.Module):
             
             if self.weakly_on:
                 rel_logit2 = rel_logit[:,1:]
-                rel_class_prob = torch.softmax(rel_logit2,-1) 
+                rel_class_prob = torch.softmax(rel_logit2,-1)
                 rel_scores, rel_class = rel_class_prob.max(dim=1)
                 rel_class = rel_class + 1
-                rel_logit[:,0] = 0.   
+                rel_logit[:,0] = 0.
                 tmp = rel_logit[:,0]
            
                 rel_class_prob = torch.cat((tmp.reshape(rel_class_prob.shape[0],-1),rel_class_prob), dim=1)

@@ -39,7 +39,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 30
+    DETECTIONS_PER_IMG: 10
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -120,7 +120,7 @@ SAMPLER:
 
 SOLVER:
   PRE_VAL: False
-  IMS_PER_BATCH: 4
+  IMS_PER_BATCH: 2
   BIAS_LR_FACTOR: 1
   BASE_LR: 0.0005          # 0.001/4 = 0.00025 For energy learning
   WARMUP_FACTOR: 0.1
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.1   #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test49'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test59'
 
 TEST:
   IMS_PER_BATCH: 1
