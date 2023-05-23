@@ -24,8 +24,8 @@ class SGLD(object):
         #print(values.shape)
         #print(state_norm[:,1:].shape)
         #out = torch.cat((bg_score,state_norm[:,1:] ),dim=1)
-        state_norm = state_norm - torch.min(state_norm, dim=-1, keepdim=True)[0]
-        state_norm = state_norm/torch.max(state_norm, dim=1, keepdim=True)[0]
+        #state_norm = state_norm - torch.min(state_norm, dim=-1, keepdim=True)[0]
+        #state_norm = state_norm/torch.max(state_norm, dim=1, keepdim=True)[0]
         return state_norm
     
     def normalize_nodes(self, states):
@@ -69,7 +69,7 @@ class SGLD(object):
             #scene_graph.edge_states.detach_()
 
         else:
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             if cfg.MODEL.WEAKLY_ON:
                 scene_graph.node_states = self.normalize_nodes(scene_graph.node_states)
                 scene_graph.edge_states = self.normalize_edges(scene_graph.edge_states)
@@ -91,8 +91,8 @@ class SGLD(object):
                 scene_graph.edge_states.data.add_(edge_states_grads, alpha=-self.sgld_lr)
                 scene_graph.node_states.data.add_(node_states_grads, alpha=-self.sgld_lr)
 
-                scene_graph.edge_states = (scene_graph.edge_states - torch.min(scene_graph.edge_states, dim=-1, keepdim=True)[0])
-                scene_graph.edge_states = scene_graph.edge_states/torch.max(scene_graph.edge_states, dim=1, keepdim=True)[0]
+                #scene_graph.edge_states = (scene_graph.edge_states - torch.min(scene_graph.edge_states, dim=-1, keepdim=True)[0])
+                #scene_graph.edge_states = scene_graph.edge_states/torch.max(scene_graph.edge_states, dim=1, keepdim=True)[0]
 
                 scene_graph.node_states = (scene_graph.node_states - torch.min(scene_graph.node_states, dim=-1, keepdim=True)[0])
                 scene_graph.node_states = scene_graph.node_states/torch.max(scene_graph.node_states, dim=1, keepdim=True)[0]
