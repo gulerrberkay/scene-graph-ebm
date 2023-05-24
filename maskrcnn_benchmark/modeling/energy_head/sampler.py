@@ -17,7 +17,7 @@ class SGLD(object):
 
     def normalize_edges(self,states): # edges
 
-        state_norm = torch.sigmoid(states[:, 1:])
+        state_norm = torch.sigmoid(states)
         bg_score,indices = torch.max(state_norm[:,1:],dim=1)
         bg_score = bg_score.reshape(state_norm.shape[0],-1)
         bg_score = 1-bg_score
