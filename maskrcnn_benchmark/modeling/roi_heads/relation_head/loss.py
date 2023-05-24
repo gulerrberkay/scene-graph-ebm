@@ -95,8 +95,8 @@ class RelationLossComputation(object):
             inpp = torch.cat(inp_per_img,0) # 4x51
             tgtt = torch.cat(tgt_per_img,0)
             
-            #loss_relation = self.criterion_loss_binary(inpp,tgtt.float())   
-            loss_relation = self.criterion_loss_binary(inpp[:,1:],tgtt[:,1:].float())      # NEW LOSS WITHOUT BACKGROUND CLASS 50
+            loss_relation = self.criterion_loss_binary(inpp,tgtt.float())   
+            #loss_relation = self.criterion_loss_binary(inpp[:,1:],tgtt[:,1:].float())      # NEW LOSS WITHOUT BACKGROUND CLASS 50
             #fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
             #refine_obj_logits = cat(refine_obj_logits, dim=0)
             loss_refine_obj = 0 #self.criterion_loss(refine_obj_logits, fg_labels.long())
