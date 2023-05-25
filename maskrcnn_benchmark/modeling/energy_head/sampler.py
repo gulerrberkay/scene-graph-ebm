@@ -17,7 +17,7 @@ class SGLD(object):
 
     def normalize_edges(self,states): # edges
 
-        state_norm = torch.sigmoid(states)
+        state_norm = torch.sigmoid(states) # 50 dim
         bg_score,indices = torch.max(state_norm[:,1:],dim=1)
         bg_score = bg_score.reshape(state_norm.shape[0],-1)
         bg_score = 1-bg_score
@@ -69,7 +69,7 @@ class SGLD(object):
             #scene_graph.edge_states.detach_()
 
         else:
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             if cfg.MODEL.WEAKLY_ON:
                 scene_graph.node_states = self.normalize_nodes(scene_graph.node_states)
                 scene_graph.edge_states = self.normalize_edges(scene_graph.edge_states)

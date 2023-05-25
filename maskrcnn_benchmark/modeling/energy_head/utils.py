@@ -164,7 +164,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 indices.sort()
 
             if flag==-1:
-                #object_logits[i] = object_logits[i][indices,:]
+                object_logits[i] = object_logits[i][indices,:]
                 new_idxs2=[]
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
                     if pair in new_new_rel_pair_idxs:
@@ -174,21 +174,20 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 #print(new_idxs2)
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
                 #relation_logits[i] = torch.mul(mask,relation_logits[i])
-                rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs, device=detections[0][0].device, dtype=torch.long)
+                rel_pair_idxs[i]   = torch.tensor(new_new_rel_pair_idxs2, device=detections[0][0].device, dtype=torch.long)
                 flag = 0
             else:
-                #object_logits[i] = object_logits[i][indices,:] 
+                object_logits[i] = object_logits[i][indices,:] 
                 new_idxs2=[]            
                 for j, pair in enumerate(rel_pair_all[i].tolist()):
                     if (pair[0] in indices) and (pair[1] in indices):
                         new_idxs2.append(j)
 
                 relation_logits[i] = relation_logits[i][new_idxs2,:]
-                #relation_logits[i] = torch.mul(mask,relation_logits[i])
-                #rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
-                tmp = list(product(indices,indices)) 
-                tgts = [list(k) for k in tmp if not k[0]==k[1]]
-                rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
+                rel_pair_idxs[i]   = prepare_test_pairs(object_logits[i].shape[0], detections[0][0].device)
+                #tmp = list(product(indices,indices)) 
+                #tgts = [list(k) for k in tmp if not k[0]==k[1]]
+                #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
                         
         
         
