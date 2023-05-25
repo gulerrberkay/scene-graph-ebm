@@ -371,6 +371,7 @@ class LSTMContext(nn.Module):
                         obj_preds = cat(preds,dim=0)
                     
                 else:
+                    import pdb; pdb.set_trace()
                     #obj_preds = obj_labels
                     obj_dists = obj_logits
                     obj_preds = obj_dists[:, 1:].max(1)[1] + 1
