@@ -6,7 +6,7 @@ RequestCpus    = 4
 #I need 8 GBytes of RAM (resident memory)
 RequestMemory  = 16G
 #It will not run longer than 1.5 day
-+RequestWalltime = 7200
++RequestWalltime = 86200
 #I need one GPU
 Request_GPUs = 1
 
