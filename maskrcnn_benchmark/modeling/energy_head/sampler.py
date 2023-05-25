@@ -69,7 +69,7 @@ class SGLD(object):
             #scene_graph.edge_states.detach_()
 
         else:
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
             if cfg.MODEL.WEAKLY_ON:
                 scene_graph.node_states = self.normalize_nodes(scene_graph.node_states)
                 scene_graph.edge_states = self.normalize_edges(scene_graph.edge_states)
