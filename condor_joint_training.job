@@ -26,8 +26,8 @@ initialdir = /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-s
 Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
 
 # These are the arguments
-Arguments = tools/energy_joint_train_cd.py
-#Arguments = tools/relation_train_net.py
+#Arguments = tools/energy_joint_train_cd.py
+Arguments = tools/relation_train_net.py
 
 #Arguments = tools/relation_test_net.py
 #Arguments = tools/energy_test_net.py

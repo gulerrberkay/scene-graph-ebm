@@ -371,11 +371,11 @@ class LSTMContext(nn.Module):
                         obj_preds = cat(preds,dim=0)
                     
                 else:
-                    import pdb; pdb.set_trace()
+                    
                     #obj_preds = obj_labels
                     obj_dists = obj_logits
                     obj_preds = obj_dists[:, 1:].max(1)[1] + 1
-                    if ( self.training):
+                    if (not self.training):
                         preds = []
                         for proposal in proposals:
                             boxes_clss = proposal.get_field('boxes_per_cls')
