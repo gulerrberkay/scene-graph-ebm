@@ -17,11 +17,11 @@ class SGLD(object):
 
     def normalize_edges(self,states): # edges
 
-        state_norm = states[:,1:] # 50 dim
-        # state_norm = torch.sigmoid(states[:,1:]) # 50 dim
-        # bg_score,indices = torch.max(state_norm[:,1:],dim=1)
-        # bg_score = bg_score.reshape(state_norm.shape[0],-1)
-        # bg_score = 1-bg_score
+        # state_norm = states[:,1:] # 50 dim
+        state_norm = torch.sigmoid(states) # 50 dim
+        bg_score,indices = torch.max(state_norm[:,1:],dim=1)
+        bg_score = bg_score.reshape(state_norm.shape[0],-1)
+        bg_score = 1-bg_score
         # #print(values.shape)
         # #print(state_norm[:,1:].shape)
         # state_norm = torch.cat((bg_score,state_norm[:,1:] ),dim=1)
@@ -70,7 +70,7 @@ class SGLD(object):
             #scene_graph.edge_states.detach_()
 
         else:
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
             if cfg.MODEL.WEAKLY_ON:
                 scene_graph.node_states = self.normalize_nodes(scene_graph.node_states)
                 scene_graph.edge_states = self.normalize_edges(scene_graph.edge_states)
@@ -86,6 +86,9 @@ class SGLD(object):
                 scene_graph.node_states.data.add_(noise2.data)
                 
                 edge_states_grads, node_states_grads = torch.autograd.grad(model(im_graph, scene_graph, bbox).sum(), [scene_graph.edge_states, scene_graph.node_states], retain_graph=True)
+                # edge_states_grads = torch.autograd.grad(model(im_graph, scene_graph, bbox).sum(), [scene_graph.edge_states], retain_graph=True)[0]
+
+
                 edge_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)
                 node_states_grads.data.clamp_(-self.grad_clip, self.grad_clip)
 
