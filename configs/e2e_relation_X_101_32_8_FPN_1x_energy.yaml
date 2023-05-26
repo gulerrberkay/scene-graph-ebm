@@ -14,7 +14,7 @@ MODEL:
     STRIDE_IN_1X1: False
     NUM_GROUPS: 32
     WIDTH_PER_GROUP: 8
-  WEAKLY_ON: True
+  WEAKLY_ON: False
   BASE_ONLY: False           # When training energy model set this to false.
   IMAGE_GRAPH_ON: False       # for ablation study
   RELATION_ON: True
@@ -39,7 +39,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 30
+    DETECTIONS_PER_IMG: 50
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -115,14 +115,14 @@ SAMPLER:
   NAME: 'SGLD'
   LR: 0.25                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
-  ITERS: 10
+  ITERS: 5
   GRAD_CLIP: 0.01
 
 SOLVER:
   PRE_VAL: False
   IMS_PER_BATCH: 4
   BIAS_LR_FACTOR: 1
-  BASE_LR: 0.001          # 0.001/4 = 0.00025 For energy learning
+  BASE_LR: 0.00025          # 0.001/4 = 0.00025 For energy learning
   WARMUP_FACTOR: 0.1
   WEIGHT_DECAY: 0.0001
   MOMENTUM: 0.9
@@ -139,14 +139,14 @@ SOLVER:
     PATIENCE: 2
     THRESHOLD: 0.001
     COOLDOWN: 0
-    FACTOR: 0.2   #0.1
+    FACTOR: 0.1   #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test61'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_fullySupervision'
 
 TEST:
   IMS_PER_BATCH: 1
-  DETECTIONS_PER_IMG: 30
+  DETECTIONS_PER_IMG: 50
   ALLOW_LOAD_FROM_CACHE: False
   RELATION:
     SYNC_GATHER: False      # turn on will slow down the evaluation to solve the sgdet test out of memory problem

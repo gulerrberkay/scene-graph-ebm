@@ -36,7 +36,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
     -----------
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
-    if cfg.MODEL.WEAKLY_ON and 1:
+    if cfg.MODEL.WEAKLY_ON:
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]

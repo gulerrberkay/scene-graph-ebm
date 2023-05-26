@@ -102,11 +102,11 @@ class RelationLossComputation(object):
             loss_refine_obj = 0 #self.criterion_loss(refine_obj_logits, fg_labels.long())
         else:
            # import pdb; pdb.set_trace()
-            relation_logits = cat(relation_logits, dim=0)
+            relation_logits   = cat(relation_logits, dim=0)
             refine_obj_logits = cat(refine_obj_logits, dim=0)
-            fg_labels = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
+            fg_labels  = cat([proposal.get_field("labels") for proposal in proposals], dim=0)
             rel_labels = cat(rel_labels, dim=0)
-            loss_relation = self.criterion_loss(relation_logits, rel_labels.long())
+            loss_relation   = self.criterion_loss(relation_logits, rel_labels.long())
             loss_refine_obj = self.criterion_loss(refine_obj_logits, fg_labels.long())
         
 
