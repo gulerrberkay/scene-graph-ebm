@@ -5,8 +5,8 @@ Universe = vanilla
 RequestCpus    = 4
 #I need 8 GBytes of RAM (resident memory)
 RequestMemory  = 16G
-#It will not run longer than 1.5 day
-+RequestWalltime = 86200
+#It will not run longer than 1.5 day  7200 86200
++RequestWalltime = 7200   
 #I need one GPU
 Request_GPUs = 1
 
@@ -26,11 +26,11 @@ initialdir = /users/students/r0879687/Documents/Master_thesis/ebm/energy-based-s
 Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
 
 # These are the arguments
-Arguments = tools/energy_joint_train_cd.py
+#Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 
 #Arguments = tools/relation_test_net.py
-#Arguments = tools/energy_test_net.py
+Arguments = tools/energy_test_net.py
 
 
 #Output of condors handling of the jobs, will be in 'initialdir'2

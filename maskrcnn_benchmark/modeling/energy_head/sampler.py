@@ -17,18 +17,20 @@ class SGLD(object):
 
     def normalize_edges(self,states): # edges
 
-        # state_norm = states[:,1:] # 50 dim
-        # state_norm = torch.sigmoid(states) # 50 dim
-        # bg_score,indices = torch.max(state_norm[:,1:],dim=1)
-        # bg_score = bg_score.reshape(state_norm.shape[0],-1)
-        # bg_score = 1-bg_score
-
-        state_norm = torch.softmax(states[:,1:],-1)
-        bg_score,indices   = torch.max(state_norm,dim=1)
+        state_norm = states[:,1:] # 50 dim
+        state_norm = torch.sigmoid(states) # 50 dim
+        bg_score,indices = torch.max(state_norm[:,1:],dim=1)
         bg_score = bg_score.reshape(state_norm.shape[0],-1)
         bg_score = 1-bg_score
-
         state_norm = torch.cat((bg_score,state_norm ),dim=1)
+
+
+        # state_norm = torch.softmax(states[:,1:],-1)
+        # bg_score,indices   = torch.max(state_norm,dim=1)
+        # bg_score = bg_score.reshape(state_norm.shape[0],-1)
+        # bg_score = 1-bg_score
+        # state_norm = torch.cat((bg_score,state_norm ),dim=1)
+        
         state_norm = state_norm - torch.min(state_norm, dim=-1, keepdim=True)[0]
         state_norm = state_norm/torch.max(state_norm, dim=1, keepdim=True)[0]
         return state_norm
