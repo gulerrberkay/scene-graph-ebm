@@ -124,8 +124,9 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         new_rel_not_pair = new_rel_not_pair[0:3*n]
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     elif n == 0:
+
                         new_rel_not_pair = new_rel_not_pair[0:30]
-                        
+                        print(f'{n_bg} bg rels decreased to 30 by ebm since no fg rel exists.')
                     else:
                         pass
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
