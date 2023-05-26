@@ -96,7 +96,7 @@ class ROIRelationHead(torch.nn.Module):
             return roi_features, result, {}
 
         loss_relation, loss_refine = self.loss_evaluator(proposals, rel_labels, relation_logits, refine_logits)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         if self.cfg.MODEL.ATTRIBUTE_ON and isinstance(loss_refine, (list, tuple)):
             output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine[0], loss_refine_att=loss_refine[1])
