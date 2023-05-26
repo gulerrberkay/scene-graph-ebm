@@ -73,7 +73,7 @@ class GraphEnergyModel(nn.Module):
         else:
             self.obj_label_embedding = nn.Linear(self.num_obj_classes + 128, self.obj_label_embed_dim) #128 is for the positional encoding which will be appended to the object lables
 
-        self.rel_label_embedding = nn.Linear(self.num_rel_classes, self.rel_label_embed_dim)
+        self.rel_label_embedding = nn.Linear(self.num_rel_classes-1, self.rel_label_embed_dim)
 
         # position embedding
         self.pos_embed = nn.Sequential(*[
