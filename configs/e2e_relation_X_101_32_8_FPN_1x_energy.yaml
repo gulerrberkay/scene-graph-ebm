@@ -14,7 +14,7 @@ MODEL:
     STRIDE_IN_1X1: False
     NUM_GROUPS: 32
     WIDTH_PER_GROUP: 8
-  WEAKLY_ON: False
+  WEAKLY_ON: True
   BASE_ONLY: False           # When training energy model set this to false.
   IMAGE_GRAPH_ON: False       # for ablation study
   RELATION_ON: True
