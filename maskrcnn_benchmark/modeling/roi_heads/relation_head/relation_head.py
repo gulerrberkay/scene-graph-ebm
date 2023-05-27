@@ -68,8 +68,6 @@ class ROIRelationHead(torch.nn.Module):
                 rel_binarys = None
                 rel_labels  = [target.get_field('relation') for target in targets]
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
-        
-
             else:
                 rel_labels, rel_binarys = None, None
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)

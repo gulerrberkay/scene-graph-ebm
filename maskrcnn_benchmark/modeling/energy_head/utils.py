@@ -6,6 +6,7 @@ from random import shuffle
 import torch
 from torch_scatter import scatter
 from itertools import product
+from maskrcnn_benchmark.modeling.roi_heads.relation_head.sampling import RelationSampling
 from maskrcnn_benchmark.modeling.energy_head.graph import Graph
 from maskrcnn_benchmark.modeling.roi_heads.relation_head.utils_motifs import (
     encode_box_info, to_onehot)
@@ -37,6 +38,16 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
     if cfg.MODEL.WEAKLY_ON:
+        # samp_processor = RelationSampling(
+        #     cfg.MODEL.ROI_HEADS.FG_IOU_THRESHOLD,
+        #     cfg.MODEL.ROI_RELATION_HEAD.REQUIRE_BOX_OVERLAP,
+        #     cfg.MODEL.ROI_RELATION_HEAD.NUM_SAMPLE_PER_GT_REL,
+        #     cfg.MODEL.ROI_RELATION_HEAD.BATCH_SIZE_PER_IMAGE, 
+        #     cfg.MODEL.ROI_RELATION_HEAD.POSITIVE_FRACTION,
+        #     cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX,
+        #     cfg.TEST.RELATION.REQUIRE_OVERLAP,
+        # )
+        # _, _, rel_pair_idxs_GT, _ = samp_processor.detect_relsample(detections[3], targets)
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
@@ -124,11 +135,17 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         new_rel_not_pair = new_rel_not_pair[0:3*n]
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                     elif n == 0:
+                        size_t1 = pred_scores[indices].size(dim=0)
+                        if size_t1 < 6:
+                            _, indices = torch.topk(pred_scores[indices],int(size_t1),dim=0)
+                        else:
+                            _, indices = torch.topk(pred_scores[indices],6,dim=0)
 
-                        new_rel_not_pair = new_rel_not_pair[0:30]
-                        print(f'{n_bg} bg rels decreased to 30 by ebm since no fg rel exists.')
+                        # new_rel_not_pair = new_rel_not_pair[0:30]
+                        # print(f'{n_bg} bg rels decreased to 30 by ebm since no fg rel exists.')
+                        flag = 0
                     else:
-                        pass
+                        flag = -1
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     new_new_rel_pair_idxs.sort()
                     # print(new_rel_pair)
@@ -154,7 +171,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         new_new_rel_pair_idxs2.append([a,b])
                     #print(new_new_rel_pair_idxs2 )
                     new_new_rel_pair_idxs2.sort()                
-                    flag = -1
+                    
 
                     #import pdb; pdb.set_trace()
 
