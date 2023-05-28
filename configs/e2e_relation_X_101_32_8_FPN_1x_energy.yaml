@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.2  #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test71'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test70'
 
 TEST:
   IMS_PER_BATCH: 1
