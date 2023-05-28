@@ -113,9 +113,9 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
 SAMPLER:
   NAME: 'SGLD'
-  LR: 0.25                  # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
+  LR: 1.                 # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
-  ITERS: 5
+  ITERS: 1
   GRAD_CLIP: 0.01
 
 SOLVER:
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.2  #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test69'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test70'
 
 TEST:
   IMS_PER_BATCH: 1
