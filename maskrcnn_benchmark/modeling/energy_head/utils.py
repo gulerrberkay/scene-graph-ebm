@@ -127,9 +127,9 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     #rel_pair_idxs.append(torch.tensor(tgts, device=features[0].device, dtype=torch.long))
                     #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
                 else:
-
+                    check = torch.tensor(new_rel_pair, device=detections[0][0].device).unique().tolist()
                     for t2_idx, pair in enumerate(new_rel_not_pair):
-                        if (pair[0] not in new_rel_pair) and (pair[1] not in new_rel_pair):
+                        if (pair[0] not in check) and (pair[1] not in check):
                             new_rel_not_pair.pop(t2_idx)
                     
                     n = int(len(new_rel_pair))
@@ -153,9 +153,9 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         flag = -1
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     #new_new_rel_pair_idxs.sort()
-                    print(new_rel_pair)
-                    print(new_new_rel_pair_idxs)
-                    print(filtered_labels)
+                    # print(new_rel_pair)
+                    # print(new_new_rel_pair_idxs)
+                    # print(filtered_labels)
                     # new_new_rel_pair_idxs2 = []
                     #print(deleted_idxs)
                     #print(new_new_rel_pair_idxs)
