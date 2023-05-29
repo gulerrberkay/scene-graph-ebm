@@ -38,16 +38,16 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
     if cfg.MODEL.WEAKLY_ON:
-        samp_processor = RelationSampling(
-            cfg.MODEL.ROI_HEADS.FG_IOU_THRESHOLD,
-            cfg.MODEL.ROI_RELATION_HEAD.REQUIRE_BOX_OVERLAP,
-            cfg.MODEL.ROI_RELATION_HEAD.NUM_SAMPLE_PER_GT_REL,
-            cfg.MODEL.ROI_RELATION_HEAD.BATCH_SIZE_PER_IMAGE, 
-            cfg.MODEL.ROI_RELATION_HEAD.POSITIVE_FRACTION,
-            cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX,
-            cfg.TEST.RELATION.REQUIRE_OVERLAP,
-        )
-        _, _, rel_pair_idxs_GT, _ = samp_processor.detect_relsample(detections[3], targets)
+        # samp_processor = RelationSampling(
+        #     cfg.MODEL.ROI_HEADS.FG_IOU_THRESHOLD,
+        #     cfg.MODEL.ROI_RELATION_HEAD.REQUIRE_BOX_OVERLAP,
+        #     cfg.MODEL.ROI_RELATION_HEAD.NUM_SAMPLE_PER_GT_REL,
+        #     cfg.MODEL.ROI_RELATION_HEAD.BATCH_SIZE_PER_IMAGE, 
+        #     cfg.MODEL.ROI_RELATION_HEAD.POSITIVE_FRACTION,
+        #     cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX,
+        #     cfg.TEST.RELATION.REQUIRE_OVERLAP,
+        # )
+        # _, _, rel_pair_idxs_GT, _ = samp_processor.detect_relsample(detections[3], targets)
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
@@ -73,6 +73,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             rel_pair_idxs_tgts = torch.nonzero(rel).tolist()
             gt_labels_tgts = target.get_field('labels').tolist()
             
+            # Find foreground o1-o2 pairs in GT rels.
             gt_obj_classes = []
             for tgt_pairs in rel_pair_idxs_tgts:
                 head_idx = tgt_pairs[0]
@@ -82,7 +83,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 new_element.append(gt_labels_tgts[tail_idx])
                 gt_obj_classes.append(new_element)
             
-            # import pdb; pdb.set_trace()
+            # Find foreground/background relations.
             new_rel_pair = []
             new_rel_not_pair = []
             for j,label1 in enumerate(filtered_labels):
@@ -98,14 +99,13 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             res = []
             [res.append(x) for x in new_rel_pair if x not in res and x[0]!=x[1]] 
             new_rel_pair = res 
-            
             res = []
             [res.append(x) for x in new_rel_not_pair if x not in res and x[0]!=x[1]]
             new_rel_not_pair = res
-            
             shuffle(new_rel_not_pair)
-            #import pdb; pdb.set_trace()
 
+
+            # Find filtered labels.
             indices = []
             for j,k in enumerate(filtered_labels): # [0 , 0 ,2 , 5, 0 ,2 ,4, 10 , 20] [2,5] [2,2], [2,4] not in GT relations
                 if int(k) != 0:
@@ -128,6 +128,10 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
                 else:
 
+                    for t2_idx, pair in enumerate(new_rel_not_pair):
+                        if (pair[0] not in new_rel_pair) and (pair[1] not in new_rel_pair):
+                            new_rel_not_pair.pop(t2_idx)
+                    
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
@@ -143,7 +147,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                             _, indices = torch.topk(pred_scores[indices],6,dim=0)
 
                         # new_rel_not_pair = new_rel_not_pair[0:30]
-                        print(f'{n_bg} bg rels decreased to 30 by ebm since no fg rel exists.')
+                        #print(f'{n_bg} bg rels decreased to 30 by ebm since no fg rel exists.')
                         flag = 0
                     else:
                         flag = -1
@@ -152,26 +156,26 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     print(new_rel_pair)
                     print(new_new_rel_pair_idxs)
                     print(filtered_labels)
-                    new_new_rel_pair_idxs2 = []
+                    # new_new_rel_pair_idxs2 = []
                     #print(deleted_idxs)
                     #print(new_new_rel_pair_idxs)
-                    for t2, pair in enumerate(new_new_rel_pair_idxs):
-                        a = pair[0]
-                        b = pair[1]
-                        for t1,idxs1 in enumerate(deleted_idxs):
-                            if  idxs1 < pair[0]:
-                                a = a - 1
-                            else:
-                                pass
+                    # for t2, pair in enumerate(new_new_rel_pair_idxs):
+                    #     a = pair[0]
+                    #     b = pair[1]
+                    #     for t1,idxs1 in enumerate(deleted_idxs):
+                    #         if  idxs1 < pair[0]:
+                    #             a = a - 1
+                    #         else:
+                    #             pass
 
-                            if idxs1 < pair[1]:
-                                b = b - 1
-                            else:
-                                pass
+                    #         if idxs1 < pair[1]:
+                    #             b = b - 1
+                    #         else:
+                    #             pass
 
-                        new_new_rel_pair_idxs2.append([a,b])
-                    #print(new_new_rel_pair_idxs2 )
-                    new_new_rel_pair_idxs2.sort()                
+                    #     new_new_rel_pair_idxs2.append([a,b])
+                    # #print(new_new_rel_pair_idxs2 )
+                    # new_new_rel_pair_idxs2.sort()                
                     
 
                     #import pdb; pdb.set_trace()
@@ -212,7 +216,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 tmp = list(product(indices,indices)) 
                 tgts = [list(k) for k in tmp if not k[0]==k[1]]
                 rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
                         
         
         
