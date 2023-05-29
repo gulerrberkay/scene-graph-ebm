@@ -149,8 +149,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         flag = -1
                     new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     new_new_rel_pair_idxs.sort()
-                    # print(new_rel_pair)
-                    # print(new_new_rel_pair_idxs)
+                    print(new_rel_pair)
+                    print(new_new_rel_pair_idxs)
 
                     new_new_rel_pair_idxs2 = []
                     #print(deleted_idxs)
