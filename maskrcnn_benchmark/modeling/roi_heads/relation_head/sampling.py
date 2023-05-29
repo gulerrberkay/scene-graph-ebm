@@ -236,6 +236,9 @@ class RelationSampling(object):
         if fg_rel_triplets.shape[0] == 0 and bg_rel_triplets.shape[0] == 0:
             bg_rel_triplets = torch.zeros((1, 3), dtype=torch.int64, device=device)
 
+        print(fg_rel_triplets)
+        print(bg_rel_triplets)
+
         return cat((fg_rel_triplets, bg_rel_triplets), dim=0), binary_rel
 
 
