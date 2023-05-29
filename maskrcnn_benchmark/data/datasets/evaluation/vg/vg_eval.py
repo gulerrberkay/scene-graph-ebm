@@ -134,13 +134,13 @@ def do_vg_evaluation(
         evaluator['eval_nog_recall'] = eval_nog_recall
 
         # test on different distribution
-        eval_zeroshot_recall = SGZeroShotRecall(result_dict)
-        eval_zeroshot_recall.register_container(mode)
-        evaluator['eval_zeroshot_recall'] = eval_zeroshot_recall
+        #eval_zeroshot_recall = SGZeroShotRecall(result_dict)
+        #eval_zeroshot_recall.register_container(mode)
+        #evaluator['eval_zeroshot_recall'] = eval_zeroshot_recall
         
-        eval_kshot_recall = SGKShotRecall(result_dict)
-        eval_kshot_recall.register_container(mode, k_values)
-        evaluator['eval_kshot_recall'] = eval_kshot_recall
+        #eval_kshot_recall = SGKShotRecall(result_dict)
+        #eval_kshot_recall.register_container(mode, k_values)
+        #evaluator['eval_kshot_recall'] = eval_kshot_recall
 
         # used by https://github.com/NVIDIA/ContrastiveLosses4VRD for sgcls and predcls
         eval_pair_accuracy = SGPairAccuracy(result_dict)
@@ -173,8 +173,8 @@ def do_vg_evaluation(
         # print result
         result_str += eval_recall.generate_print_string(mode)
         result_str += eval_nog_recall.generate_print_string(mode)
-        result_str += eval_zeroshot_recall.generate_print_string(mode)
-        result_str += eval_kshot_recall.generate_print_string(mode)
+        #result_str += eval_zeroshot_recall.generate_print_string(mode)
+        #result_str += eval_kshot_recall.generate_print_string(mode)
         result_str += eval_mean_recall.generate_print_string(mode)
         
         if cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
@@ -312,9 +312,9 @@ def evaluate_relation_of_one_image(groundtruth, prediction, global_container, ev
     # Mean Recall
     evaluator['eval_mean_recall'].collect_mean_recall_items(global_container, local_container, mode)
     # Zero shot Recall
-    evaluator['eval_zeroshot_recall'].calculate_recall(global_container, local_container, mode)
+    #evaluator['eval_zeroshot_recall'].calculate_recall(global_container, local_container, mode)
     # K shot Recall
-    evaluator['eval_kshot_recall'].calculate_recall(global_container, local_container, mode)
+    #evaluator['eval_kshot_recall'].calculate_recall(global_container, local_container, mode)
     return 
 
 

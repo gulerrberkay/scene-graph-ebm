@@ -25,7 +25,7 @@ class SGLD(object):
         # state_norm = torch.cat((bg_score,state_norm ),dim=1)
 
 
-        state_norm = torch.softmax(states[:,1:],-1)
+        state_norm = torch.softmax(states[:,1:],-1) # 51
         bg_score,indices   = torch.max(state_norm,dim=1)
         bg_score = bg_score.reshape(state_norm.shape[0],-1)
         bg_score = 1-bg_score

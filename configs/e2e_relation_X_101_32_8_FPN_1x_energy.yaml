@@ -39,7 +39,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 30
+    DETECTIONS_PER_IMG: 50
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.2  #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test66'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test65'
 
 TEST:
   IMS_PER_BATCH: 1

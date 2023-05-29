@@ -38,16 +38,16 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         detection: A tuple of (relation_logits, object_logits, rel_pair_idxs, proposals)
     '''
     if cfg.MODEL.WEAKLY_ON:
-        # samp_processor = RelationSampling(
-        #     cfg.MODEL.ROI_HEADS.FG_IOU_THRESHOLD,
-        #     cfg.MODEL.ROI_RELATION_HEAD.REQUIRE_BOX_OVERLAP,
-        #     cfg.MODEL.ROI_RELATION_HEAD.NUM_SAMPLE_PER_GT_REL,
-        #     cfg.MODEL.ROI_RELATION_HEAD.BATCH_SIZE_PER_IMAGE, 
-        #     cfg.MODEL.ROI_RELATION_HEAD.POSITIVE_FRACTION,
-        #     cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX,
-        #     cfg.TEST.RELATION.REQUIRE_OVERLAP,
-        # )
-        # _, _, rel_pair_idxs_GT, _ = samp_processor.detect_relsample(detections[3], targets)
+        samp_processor = RelationSampling(
+            cfg.MODEL.ROI_HEADS.FG_IOU_THRESHOLD,
+            cfg.MODEL.ROI_RELATION_HEAD.REQUIRE_BOX_OVERLAP,
+            cfg.MODEL.ROI_RELATION_HEAD.NUM_SAMPLE_PER_GT_REL,
+            cfg.MODEL.ROI_RELATION_HEAD.BATCH_SIZE_PER_IMAGE, 
+            cfg.MODEL.ROI_RELATION_HEAD.POSITIVE_FRACTION,
+            cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX,
+            cfg.TEST.RELATION.REQUIRE_OVERLAP,
+        )
+        _, _, rel_pair_idxs_GT, _ = samp_processor.detect_relsample(detections[3], targets)
         relation_logits = list(detections[0])
         object_logits = list(detections[1])
         rel_pair_idxs = detections[2]
@@ -107,7 +107,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             #import pdb; pdb.set_trace()
 
             indices = []
-            for j,k in enumerate(filtered_labels):
+            for j,k in enumerate(filtered_labels): # [0 , 0 ,2 , 5, 0 ,2 ,4, 10 , 20] [2,5] [2,2], [2,4] not in GT relations
                 if int(k) != 0:
                     indices.append(j)
                 else:
@@ -131,8 +131,8 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     n = int(len(new_rel_pair))
                     n_bg = int(len(new_rel_not_pair))
 
-                    if n_bg >= 50*n and n != 0:
-                        new_rel_not_pair = new_rel_not_pair[0:50*n]
+                    if n_bg >= 3*n and n != 0:
+                        new_rel_not_pair = new_rel_not_pair[0:3*n] 
                         #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
                         flag==-1
                     elif n == 0:
@@ -147,7 +147,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                         flag = 0
                     else:
                         flag = -1
-                    new_new_rel_pair_idxs = new_rel_pair #+ new_rel_not_pair
+                    new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
                     new_new_rel_pair_idxs.sort()
                     print(new_rel_pair)
                     print(new_new_rel_pair_idxs)
@@ -212,6 +212,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 tmp = list(product(indices,indices)) 
                 tgts = [list(k) for k in tmp if not k[0]==k[1]]
                 rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
+            import pdb; pdb.set_trace()
                         
         
         
