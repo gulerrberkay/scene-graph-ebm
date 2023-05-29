@@ -120,7 +120,7 @@ SAMPLER:
 
 SOLVER:
   PRE_VAL: False
-  IMS_PER_BATCH: 2
+  IMS_PER_BATCH: 1
   BIAS_LR_FACTOR: 1
   BASE_LR: 0.001          # 0.001/4 = 0.00025 For energy learning
   WARMUP_FACTOR: 0.1
