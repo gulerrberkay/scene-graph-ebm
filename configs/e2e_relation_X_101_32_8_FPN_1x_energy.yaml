@@ -20,7 +20,7 @@ MODEL:
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
-  ENERGY_LOSS_WEIGHT: 3.
+  ENERGY_LOSS_WEIGHT: 1.
   RPN:
     USE_FPN: True
     ANCHOR_SIZES: (32, 64, 128, 256, 512)
@@ -115,7 +115,7 @@ SAMPLER:
   NAME: 'SGLD'
   LR: 1.                 # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
-  ITERS: 1
+  ITERS: 5
   GRAD_CLIP: 0.01
 
 SOLVER:
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.2  #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test75'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test76'
 
 TEST:
   IMS_PER_BATCH: 1
