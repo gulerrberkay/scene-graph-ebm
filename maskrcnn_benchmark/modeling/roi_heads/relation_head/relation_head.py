@@ -93,7 +93,8 @@ class ROIRelationHead(torch.nn.Module):
                 result = self.post_processor((relation_logits, refine_logits), rel_pair_idxs, proposals)
             else:
                 result = (relation_logits, refine_logits, rel_pair_idxs, proposals)
-            return roi_features, result, {}
+                new_tgts = None
+            return roi_features, result, {}, new_tgts
 
         loss_relation, loss_refine = self.loss_evaluator(proposals, rel_labels, relation_logits, refine_logits)
         #import pdb; pdb.set_trace()

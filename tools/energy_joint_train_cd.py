@@ -219,8 +219,9 @@ def train(cfg, local_rank, distributed, logger):
         images = images.to(device)
         targets = [target.to(device) for target in targets]
 
-        task_loss_dict, detections, roi_features = base_model(images,targets)
+        task_loss_dict, detections, roi_features, new_tgts = base_model(images,targets)
 
+        
         if mode != 'sgdet':
             gt_node_states = roi_features
             pred_node_states = roi_features
@@ -228,11 +229,11 @@ def train(cfg, local_rank, distributed, logger):
             gt_node_states = None
             pred_node_states = roi_features
 
-        gt_im_graph, gt_scene_graph, gt_bbox = gt2graph(cfg, gt_node_states, images, targets, base_model_module, 
+        gt_im_graph, gt_scene_graph, gt_bbox = gt2graph(cfg, gt_node_states, images, new_tgts, base_model_module, 
                                                         cfg.DATASETS.NUM_OBJ_CLASSES, cfg.DATASETS.NUM_REL_CLASSES, 
                                                         cfg.ENERGY_MODEL.DATA_NOISE_VAR)
 
-        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(targets, cfg, pred_node_states, images, detections, base_model_module, 
+        pred_im_graph, pred_scene_graph, pred_bbox = detection2graph(new_tgts, cfg, pred_node_states, images, detections, base_model_module, 
                                                                     cfg.DATASETS.NUM_OBJ_CLASSES, mode, 
                                                                     cfg.ENERGY_MODEL.DATA_NOISE_VAR)
         # end_time = timer()
