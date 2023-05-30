@@ -259,8 +259,8 @@ def evaluate_relation_of_one_image(groundtruth, prediction, global_container, ev
         evaluator['eval_pair_accuracy'].prepare_gtpair(local_container)
 
     # to calculate the prior label based on statistics
-    evaluator['eval_zeroshot_recall'].prepare_zeroshot(global_container, local_container)
-    evaluator['eval_kshot_recall'].prepare_zeroshot(global_container, local_container)
+    #evaluator['eval_zeroshot_recall'].prepare_zeroshot(global_container, local_container)
+    #evaluator['eval_kshot_recall'].prepare_zeroshot(global_container, local_container)
 
     if mode == 'predcls':
         local_container['pred_boxes'] = local_container['gt_boxes']
