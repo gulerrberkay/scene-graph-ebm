@@ -142,7 +142,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     # print(new_rel_pair)
                     # print(new_rel_not_pair)
                     if n != 0:
-                        print(f'{n_bg} bg rels decreased to {3*math.ceil((n_check*(n_filtered-1))/2)} by ebm.')
+                        #print(f'{n_bg} bg rels decreased to {math.ceil((n_check*(n_filtered-1))/2)} by ebm.')
                         new_rel_not_pair = new_rel_not_pair2[0:math.ceil((n_check*(n_filtered-1))/2)] 
                         flag==-1
                     elif n == 0:
