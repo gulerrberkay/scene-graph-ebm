@@ -14,7 +14,9 @@ class SGLD(object):
         self.sgld_var = float(cfg.SAMPLER.VAR)
         self.grad_clip = float(cfg.SAMPLER.GRAD_CLIP)
         self.iters = cfg.SAMPLER.ITERS
-
+    def softmax_with_temp(self, x,temp=1):
+        return torch.softmax(x/temp,-1)
+    
     def normalize_edges(self,states): # edges
 
         # state_norm = states[:,1:] # 50 dim
@@ -36,7 +38,8 @@ class SGLD(object):
         return state_norm
     
     def normalize_nodes(self, states):
-        states = F.softmax(states,-1)
+        # states = F.softmax(states,-1)
+        states = self.softmax_with_temp(states, 0.4)
         # states = states[:,1:]
         # bg_score,indices = torch.max(states,dim=1)
         # bg_score = bg_score.reshape(states.shape[0],-1)
