@@ -220,7 +220,7 @@ def train(cfg, local_rank, distributed, logger):
         targets = [target.to(device) for target in targets]
 
         task_loss_dict, detections, roi_features = base_model(images,targets)
-        
+
         if mode != 'sgdet':
             gt_node_states = roi_features
             pred_node_states = roi_features

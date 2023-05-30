@@ -60,7 +60,7 @@ class GeneralizedRCNN(nn.Module):
         proposals, proposal_losses = self.rpn(images, features, targets)
         #import pdb; pdb.set_trace()
         if self.roi_heads:
-            x, result, detector_losses = self.roi_heads(features, proposals, targets, logger)
+            x, result, detector_losses, new_tgts = self.roi_heads(features, proposals, targets, logger)
         else:
             # RPN-only models don't have roi_heads
             x = features
@@ -75,6 +75,6 @@ class GeneralizedRCNN(nn.Module):
                 losses.update(proposal_losses)
                 return losses
 
-            return losses, result, x
+            return losses, result, x, new_tgts
 
         return result

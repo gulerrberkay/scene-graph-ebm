@@ -108,7 +108,8 @@ class ROIRelationHead(torch.nn.Module):
 
         output_losses.update(add_losses)
 
-        return roi_features, (relation_logits, refine_logits, rel_pair_idxs, proposals), output_losses
+        new_tgts = targets
+        return roi_features, (relation_logits, refine_logits, rel_pair_idxs, proposals), output_losses, new_tgts
     
     def postprocess_proposals(self, features, proposals, targets):
         """
