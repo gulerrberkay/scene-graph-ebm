@@ -11,7 +11,8 @@ from maskrcnn_benchmark.modeling.energy_head.graph import Graph
 from maskrcnn_benchmark.modeling.roi_heads.relation_head.utils_motifs import (
     encode_box_info, to_onehot)
 import torch.nn.functional as F
-
+import math
+import numpy as np
 import logging
 logger = logging.getLogger(__name__)
 
@@ -128,17 +129,21 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                     #rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
                 else:
                     check = torch.tensor(new_rel_pair, device=detections[0][0].device).unique().tolist()
+                    n_check    = len(check)
+                    n_filtered = int(np.count_nonzero(filtered_labels))
+
+                    new_rel_not_pair2 = []
                     for t2_idx, pair in enumerate(new_rel_not_pair):
-                        if (pair[0] not in check) and (pair[1] not in check):
-                            new_rel_not_pair.pop(t2_idx)
+                        if not ((pair[0] not in check) and (pair[1] not in check)):
+                            new_rel_not_pair2.append(pair)
                     
-                    n = int(len(new_rel_pair))
-                    n_bg = int(len(new_rel_not_pair))
+                    n    = int(len(new_rel_pair))
+                    n_bg = int(len(new_rel_not_pair2))
                     # print(new_rel_pair)
                     # print(new_rel_not_pair)
-                    if n_bg >= 3*n and n != 0:
-                        new_rel_not_pair = new_rel_not_pair[0:3*n] 
-                        #print(f'{n_bg} bg rels decreased to {3*n} by ebm.')
+                    if n != 0:
+                        print(f'{n_bg} bg rels decreased to {3*math.ceil((n_check*(n_filtered-1))/2)} by ebm.')
+                        new_rel_not_pair = new_rel_not_pair2[0:math.ceil((n_check*(n_filtered-1))/2)] 
                         flag==-1
                     elif n == 0:
                         size_t1 = pred_scores[indices].size(dim=0)
