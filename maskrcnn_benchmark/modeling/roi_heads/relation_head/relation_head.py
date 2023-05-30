@@ -144,6 +144,8 @@ class ROIRelationHead(torch.nn.Module):
                 features_new.append(features[i])
                 proposals_new.append(proposals[i])
                 targets_new.append(targets[i])
+            else:
+                print('Problematic image removed!')
         
         return features_new, proposals_new, targets_new
 
