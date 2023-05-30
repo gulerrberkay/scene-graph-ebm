@@ -20,7 +20,7 @@ MODEL:
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
-  ENERGY_LOSS_WEIGHT: 3.
+  ENERGY_LOSS_WEIGHT: 1.
   RPN:
     USE_FPN: True
     ANCHOR_SIZES: (32, 64, 128, 256, 512)
