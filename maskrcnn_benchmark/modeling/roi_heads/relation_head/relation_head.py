@@ -13,6 +13,7 @@ from .loss import make_roi_relation_loss_evaluator
 from .sampling import make_roi_relation_samp_processor
 
 from collections import Counter
+from maskrcnn_benchmark.modeling.energy_head.utils import find_bg_fg_pairs
 class ROIRelationHead(torch.nn.Module):
     """
     Generic Relation Head class.
@@ -66,6 +67,7 @@ class ROIRelationHead(torch.nn.Module):
             #import pdb; pdb.set_trace()
             if self.training and self.cfg.MODEL.WEAKLY_ON:
                 rel_binarys = None
+                features, proposals, targets = self.postprocess_proposals(features, proposals, targets)
                 rel_labels  = [target.get_field('relation') for target in targets]
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
             else:
@@ -107,6 +109,43 @@ class ROIRelationHead(torch.nn.Module):
         output_losses.update(add_losses)
 
         return roi_features, (relation_logits, refine_logits, rel_pair_idxs, proposals), output_losses
+    
+    def postprocess_proposals(self, features, proposals, targets):
+        """
+        Removes problematic images for weak supervision. Image is problematic if:
+        1) Detector cannot find any object in targets.
+        2) If detector only finds 1 object from targets. -> 1 obj basically means no relation since there is no other obj.
+        3) If the detected object pairs has no fg relation according to GT rels - rel matrix
+        """
+        # Find filtered labels.
+        features_new = []
+        proposals_new = []
+        targets_new = []
+        for i,proposal in enumerate(proposals):
+            pred_labels = proposal.get_field("pred_labels")
+            tgt_labels  = targets[i].get_field("labels")
+            filtered_labels = []
+            for p,label in enumerate(pred_labels):
+                if label in tgt_labels:
+                    filtered_labels.append(label)
+                else:
+                    filtered_labels.append(0)
+            keep_indices = []
+            deleted_idxs = []
+            for label_idx,label in enumerate(filtered_labels): #  not in GT relations
+                if int(label) != 0:
+                    keep_indices.append(label_idx)
+                else:
+                    deleted_idxs.append(label_idx)
+            rel_matrix = targets[i].get_field('relation')
+            gt_labels_tgts = targets[i].get_field('labels').tolist()
+            new_rel_pair, _ = find_bg_fg_pairs(filtered_labels,rel_matrix, gt_labels_tgts)
+            if not (len(keep_indices)==0 or len(keep_indices)==1 or  int(len(new_rel_pair))==0):
+                features_new.append(features[i])
+                proposals_new.append(proposals[i])
+                targets_new.append(targets[i])
+        
+        return features_new, proposals_new, targets_new
 
 
 def build_roi_relation_head(cfg, in_channels):
