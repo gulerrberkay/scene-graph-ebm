@@ -216,7 +216,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
                 tmp = list(product(indices,indices)) 
                 tgts = [list(k) for k in tmp if not k[0]==k[1]]
                 rel_pair_idxs[i] = torch.tensor(tgts, device=detections[0][0].device, dtype=torch.long)
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
                         
         
         
