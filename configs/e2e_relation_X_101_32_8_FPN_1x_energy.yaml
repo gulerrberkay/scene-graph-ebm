@@ -20,7 +20,7 @@ MODEL:
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
-  ENERGY_LOSS_WEIGHT: 2.
+  ENERGY_LOSS_WEIGHT: 1.
   RPN:
     USE_FPN: True
     ANCHOR_SIZES: (32, 64, 128, 256, 512)
@@ -39,7 +39,7 @@ MODEL:
     POSITIVE_FRACTION: 0.5
     BG_IOU_THRESHOLD: 0.3
     BATCH_SIZE_PER_IMAGE: 256
-    DETECTIONS_PER_IMG: 50
+    DETECTIONS_PER_IMG: 30
     NMS_FILTER_DUPLICATES: True
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
@@ -120,7 +120,7 @@ SAMPLER:
 
 SOLVER:
   PRE_VAL: False
-  IMS_PER_BATCH: 4
+  IMS_PER_BATCH: 1
   BIAS_LR_FACTOR: 1
   BASE_LR: 0.001          # 0.001/4 = 0.00025 For energy learning
   WARMUP_FACTOR: 0.1
@@ -142,7 +142,7 @@ SOLVER:
     FACTOR: 0.2  #0.1
     MAX_DECAY_STEP: 3
 
-OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test80'
+OUTPUT_DIR: '/users/students/r0879687/amager/vg/output/energy_test76'
 
 TEST:
   IMS_PER_BATCH: 1
