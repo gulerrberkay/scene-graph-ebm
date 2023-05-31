@@ -108,7 +108,7 @@ class ROIRelationHead(torch.nn.Module):
                 output_losses = dict(loss_rel=loss_relation, loss_refine_obj=loss_refine)
 
         output_losses.update(add_losses)
-
+        
         new_tgts = targets
         return roi_features, (relation_logits, refine_logits, rel_pair_idxs, proposals), output_losses, new_tgts
     
