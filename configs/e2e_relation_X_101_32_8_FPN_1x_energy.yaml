@@ -116,7 +116,7 @@ SAMPLER:
   NAME: 'SGLD'
   LR: 1.                 # For 4GPU -> 1,  1gpu -> 0.25  default:0.1
   VAR: 0.001
-  ITERS: 1
+  ITERS: 5
   GRAD_CLIP: 0.01
 
 SOLVER:
