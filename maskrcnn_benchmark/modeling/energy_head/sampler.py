@@ -39,7 +39,7 @@ class SGLD(object):
     
     def normalize_nodes(self, states):
         # states = F.softmax(states,-1)
-        states = self.softmax_with_temp(states,1)
+        states = self.softmax_with_temp(states,0.5)
         # states = states[:,1:]
         # bg_score,indices = torch.max(states,dim=1)
         # bg_score = bg_score.reshape(states.shape[0],-1)
