@@ -128,7 +128,7 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
             new_rel_not_pair = new_rel_not_pair2[0:math.ceil((n_check*(n_filtered-1))/2)] 
 
             new_new_rel_pair_idxs = new_rel_pair + new_rel_not_pair
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             new_idxs2=[]
             for j, pair in enumerate(rel_pair_all[i].tolist()):
                 if pair in new_new_rel_pair_idxs:
