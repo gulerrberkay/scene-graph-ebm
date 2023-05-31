@@ -124,7 +124,9 @@ class ROIRelationHead(torch.nn.Module):
         proposals_new = []
         targets_new = []
         for i,proposal in enumerate(proposals):
-            pred_labels = proposal.get_field("pred_labels")
+            # pred_labels = proposal.get_field("pred_labels")
+            obj_dists    = proposal.get_field("predict_logits")
+            pred_labels  = obj_dists.max(1)[1]
             tgt_labels  = targets[i].get_field("labels")
             filtered_labels = []
             for p,label in enumerate(pred_labels):

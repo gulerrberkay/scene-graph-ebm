@@ -20,6 +20,7 @@ MODEL:
   RELATION_ON: True
   ATTRIBUTE_ON: False
   FLIP_AUG: False            # if there is any left-right relation, FLIP AUG should be false
+  TASK_LOSS_WEIGHT: 1.
   ENERGY_LOSS_WEIGHT: 1.
   RPN:
     USE_FPN: True

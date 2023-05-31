@@ -263,7 +263,7 @@ def train(cfg, local_rank, distributed, logger):
 
         task_losses = sum(loss for loss in task_loss_dict.values())
         energy_losses = sum(loss for loss in energy_loss_dict.values())
-        total_losses = task_losses + energy_losses*(cfg.MODEL.ENERGY_LOSS_WEIGHT)
+        total_losses = task_losses*(cfg.MODEL.TASK_LOSS_WEIGHT) + energy_losses*(cfg.MODEL.ENERGY_LOSS_WEIGHT)
         loss_dict = {**task_loss_dict, **energy_loss_dict}
         
         if get_rank() == 0:

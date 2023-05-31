@@ -371,7 +371,7 @@ class LSTMContext(nn.Module):
                         obj_preds = cat(preds,dim=0)
                     
                 else:
-                    
+                     
                     #obj_preds = obj_labels
                     obj_dists = obj_logits
                     obj_preds = obj_dists.max(1)[1]

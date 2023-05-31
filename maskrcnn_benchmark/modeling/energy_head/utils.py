@@ -91,7 +91,9 @@ def get_predicted_sg(targets,cfg, detections, num_obj_classes, mode, noise_var):
         rel_pair_all = rel_pair_idxs
         
         for i, (proposal,target) in enumerate(zip(detections[3],targets)):
-            pred_labe = proposal.get_field('pred_labels').tolist()
+            # pred_labe = proposal.get_field('pred_labels').tolist()
+            pred_labe = object_logits[i].max(1)[1] # Find BG objects too.
+            pred_labe = pred_labe.tolist()
             tgt_label = target.get_field('labels').tolist()
 
             # Find filtered labels.
