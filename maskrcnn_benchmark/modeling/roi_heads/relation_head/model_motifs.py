@@ -374,7 +374,7 @@ class LSTMContext(nn.Module):
                      
                     #obj_preds = obj_labels
                     obj_dists = obj_logits
-                    obj_preds = obj_dists.max(1)[1]
+                    obj_preds = obj_dists[:, 1:].max(1)[1] + 1
                     if (not self.training):
                         preds = []
                         for proposal in proposals:
