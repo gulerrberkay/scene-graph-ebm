@@ -127,7 +127,8 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
         all_obj_scores = predictions[i].get_field('pred_scores').detach()
         all_rel_pairs = predictions[i].get_field('rel_pair_idxs').detach()
         all_rel_prob = predictions[i].get_field('pred_rel_scores').detach()
-        all_rel_scores, all_rel_labels = all_rel_prob.max(-1)
+        all_rel_scores, all_rel_labels = all_rel_prob[:,1:].max(-1)
+        all_rel_labels = all_rel_labels + 1
         
         # filter objects and relationships
         all_obj_scores[all_obj_scores < obj_thres] = 0.0
