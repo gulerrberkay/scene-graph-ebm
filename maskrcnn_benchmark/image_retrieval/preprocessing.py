@@ -121,10 +121,10 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
         image_id = det_info[i]['img_file'].split('/')[-1].split('.')[0]
         if int(image_id) not in valid_ids:
             continue
-        all_obj_labels = predictions[i].get_field('pred_labels')
-        all_obj_scores = predictions[i].get_field('pred_scores')
-        all_rel_pairs = predictions[i].get_field('rel_pair_idxs')
-        all_rel_prob = predictions[i].get_field('pred_rel_scores')
+        all_obj_labels = predictions[i].get_field('pred_labels').detach()
+        all_obj_scores = predictions[i].get_field('pred_scores').detach()
+        all_rel_pairs = predictions[i].get_field('rel_pair_idxs').detach()
+        all_rel_prob = predictions[i].get_field('pred_rel_scores').detach()
         all_rel_scores, all_rel_labels = all_rel_prob.max(-1)
         
         # filter objects and relationships
