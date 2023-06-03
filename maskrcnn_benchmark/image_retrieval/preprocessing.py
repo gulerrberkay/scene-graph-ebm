@@ -37,7 +37,8 @@ from maskrcnn_benchmark.utils.metric_logger import MetricLogger
 # where to load detected scene graph
 detected_path = '/users/students/r0879687/amager/vg/output/energy_test65/inference/VG_stanford_filtered_with_attribute_test/'
 # where to save the generated annotation
-output_path = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/sg_of_causal_sgdet_ctx_only.json'
+output_path = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/predicted_sg.json'
+output_path2 = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/gt_sg.json'
 
 cap_graph = json.load(open('/users/students/r0879687/thesis/maskrcnn_benchmark/data/datasets/evaluation/vg/vg_capgraphs_anno.json')) 
 vg_data = h5py.File('/users/students/r0879687/amager/vg/VG-SGG-with-attri.h5', 'r')
@@ -105,7 +106,6 @@ def generate_gt_sg():
             img_to_sg[str(coco_id)] = [{'entities' : gt_boxes, 'relations' : gt_triplet}, ]
     return img_to_sg
 
-#gt_scene_graph = generate_gt_sg()
 
 # generate scene graph from test results
 def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres = 0.1):
@@ -201,9 +201,16 @@ for img_id, val in zip(cap_graph['vg_image_ids'], cap_graph['vg_valids']):
 print('predicted sgg generating...')
 output = generate_detect_sg(detected_result, detected_info, valid_ids, img_coco, obj_thres = 0.1)
 
-print('text img sgg generating...')
-txt_img_sg = generate_txt_img_sg(output, cap_graph['vg_coco_id_to_capgraphs'])
+print('gt sgg generating...')
+gt_scene_graph = generate_gt_sg()
+
+# print('text img sgg generating...')
+# txt_img_sg = generate_txt_img_sg(output, cap_graph['vg_coco_id_to_capgraphs'])
 
 print('saving result.')
 with open(output_path, 'w') as outfile:
-    json.dump(txt_img_sg, outfile)
+    json.dump(output, outfile)
+
+with open(output_path2, 'w') as outfile:
+    json.dump(gt_scene_graph, outfile)
+print('finished.')
