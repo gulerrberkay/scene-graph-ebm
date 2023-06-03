@@ -35,10 +35,10 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir, save_config
 from maskrcnn_benchmark.utils.metric_logger import MetricLogger
 
 # where to load detected scene graph
-detected_path = '/users/students/r0879687/amager/vg/output/energy_test65/inference/VG_stanford_filtered_with_attribute_test/'
+detected_path = '/users/students/r0879687/amager/vg/output/CE_test63/inference/VG_stanford_filtered_with_attribute_test/'
 # where to save the generated annotation
-output_path = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/predicted_sg.json'
-output_path2 = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/gt_sg.json'
+output_path = '/users/students/r0879687/amager/vg/output/CE_test63/image_retrieval/predicted_sg.json'
+output_path2 = '/users/students/r0879687/amager/vg/output/CE_test63/image_retrieval/gt_sg.json'
 
 cap_graph = json.load(open('/users/students/r0879687/thesis/maskrcnn_benchmark/data/datasets/evaluation/vg/vg_capgraphs_anno.json')) 
 vg_data = h5py.File('/users/students/r0879687/amager/vg/VG-SGG-with-attri.h5', 'r')
