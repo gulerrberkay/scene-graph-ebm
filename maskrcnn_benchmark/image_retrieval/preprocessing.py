@@ -139,7 +139,7 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
         vals,ind = torch.topk(triplet_score,20)
         c[ind] = True
 
-        rel_mask = ((all_rel_labels > 0) + c) > 0
+        rel_mask = (c) > 0
         # rel_mask = ((all_rel_labels > 0) + (triplet_score > 0)) > 0
         
         # generate filterred result
