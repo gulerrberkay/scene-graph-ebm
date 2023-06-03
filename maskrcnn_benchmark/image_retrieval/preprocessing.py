@@ -35,14 +35,14 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir, save_config
 from maskrcnn_benchmark.utils.metric_logger import MetricLogger
 
 # where to load detected scene graph
-detected_path = '/home/kaihua/checkpoints/causal_sgdet_ctx_only/inference/VG_stanford_filtered_wth_attribute_test/'
+detected_path = '/users/students/r0879687/amager/vg/output/energy_test65/inference/VG_stanford_filtered_with_attribute_test/'
 # where to save the generated annotation
-output_path = '/data1/image_retrieval/sg_of_causal_sgdet_ctx_only.json'
+output_path = '/users/students/r0879687/amager/vg/output/energy_test65/image_retrieval/sg_of_causal_sgdet_ctx_only.json'
 
-cap_graph = json.load(open('/data1/vg_capgraphs_anno.json'))
-vg_data = h5py.File('/home/kaihua/projects/maskrcnn-benchmark/datasets/vg/VG-SGG-with-attri.h5', 'r')
-vg_dict = json.load(open('/home/kaihua/projects/maskrcnn-benchmark/datasets/vg/VG-SGG-dicts-with-attri.json'))
-vg_info = json.load(open('/home/kaihua/projects/maskrcnn-benchmark/datasets/vg/image_data.json'))
+cap_graph = json.load(open('/users/students/r0879687/thesis/maskrcnn_benchmark/data/datasets/evaluation/vg/vg_capgraphs_anno.json')) 
+vg_data = h5py.File('/users/students/r0879687/amager/vg/VG-SGG-with-attri.h5', 'r')
+vg_dict = json.load(open('/users/students/r0879687/amager/vg/VG-SGG-dicts-with-attri.json'))
+vg_info = json.load(open('/users/students/r0879687/amager/vg/image_data.json'))
 
 # generate union predicate vocabulary
 sgg_rel_vocab = list(set(cap_graph['idx_to_meta_predicate'].values()))
@@ -184,6 +184,7 @@ def img_coco_mapping():
         img_coco_map[int(img_id)] = int(coco_id)
     return img_coco_map
 
+print('loading detections.')
 
 detected_result = torch.load(detected_path + 'eval_results.pytorch')
 detected_info = json.load(open(detected_path + 'visual_info.json'))
@@ -195,9 +196,12 @@ for img_id, val in zip(cap_graph['vg_image_ids'], cap_graph['vg_valids']):
     if val > 0:
         valid_ids.append(img_id)
 
+print('predicted sgg generating...')
 output = generate_detect_sg(detected_result, detected_info, valid_ids, img_coco, obj_thres = 0.1)
 
+print('text img sgg generating...')
 txt_img_sg = generate_txt_img_sg(output, cap_graph['vg_coco_id_to_capgraphs'])
 
+print('saving result.')
 with open(output_path, 'w') as outfile:
     json.dump(txt_img_sg, outfile)
