@@ -91,10 +91,11 @@ class ROIRelationHead(torch.nn.Module):
         if not self.training:
             if self.cfg.MODEL.BASE_ONLY:
                 result = self.post_processor((relation_logits, refine_logits), rel_pair_idxs, proposals)
+                new_tgts = None
             else:
                 result = (relation_logits, refine_logits, rel_pair_idxs, proposals)
                 new_tgts = None
-            return roi_features, result, {}
+            return roi_features, result, {}, new_tgts
 
         loss_relation, loss_refine = self.loss_evaluator(proposals, rel_labels, relation_logits, refine_logits)
         #import pdb; pdb.set_trace()
