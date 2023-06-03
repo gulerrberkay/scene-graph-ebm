@@ -29,9 +29,9 @@ Executable = /esat/amager/r0879687/miniconda/envs/myenv/bin/python
 #Arguments = tools/energy_joint_train_cd.py
 #Arguments = tools/relation_train_net.py
 
-#Arguments = tools/relation_test_net.py
+Arguments = tools/relation_test_net.py
 #Arguments = tools/energy_test_net.py
-Arguments = maskrcnn_benchmark/image_retrieval/preprocessing.py
+#Arguments = maskrcnn_benchmark/image_retrieval/preprocessing.py
 
 
 #Output of condors handling of the jobs, will be in 'initialdir'2
