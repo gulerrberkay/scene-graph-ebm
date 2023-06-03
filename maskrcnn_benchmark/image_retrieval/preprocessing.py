@@ -134,7 +134,13 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
         all_obj_scores[all_obj_scores < obj_thres] = 0.0
         obj_mask = all_obj_scores >= obj_thres
         triplet_score = all_obj_scores[all_rel_pairs[:, 0]] * all_obj_scores[all_rel_pairs[:, 1]] * all_rel_scores
-        rel_mask = ((all_rel_labels > 0) + (triplet_score > 0)) > 0
+        
+        c        = torch.zeros(triplet_score.shape[0], dtype=torch.bool)
+        vals,ind = torch.topk(triplet_score,20)
+        c[ind] = True
+
+        rel_mask = ((all_rel_labels > 0) + c) > 0
+        # rel_mask = ((all_rel_labels > 0) + (triplet_score > 0)) > 0
         
         # generate filterred result
         num_obj = obj_mask.shape[0]
