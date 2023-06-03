@@ -117,6 +117,8 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
     
     output = {}
     for i in range(num_img):
+        if i%100==0:
+            print(i)
         # load detect result
         image_id = det_info[i]['img_file'].split('/')[-1].split('.')[0]
         if int(image_id) not in valid_ids:
