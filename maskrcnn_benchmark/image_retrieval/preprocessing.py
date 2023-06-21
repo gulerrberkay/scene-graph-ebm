@@ -136,7 +136,7 @@ def generate_detect_sg(det_result, det_info, valid_ids, img_coco_map, obj_thres 
         triplet_score = all_obj_scores[all_rel_pairs[:, 0]] * all_obj_scores[all_rel_pairs[:, 1]] * all_rel_scores
         
         c        = torch.zeros(triplet_score.shape[0], dtype=torch.bool)
-        vals,ind = torch.topk(triplet_score,100)
+        vals,ind = torch.topk(triplet_score,20)
         c[ind] = True
 
         rel_mask = (c) > 0
