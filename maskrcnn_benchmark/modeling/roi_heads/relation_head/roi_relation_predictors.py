@@ -360,7 +360,7 @@ class MotifPredictor(nn.Module):
 
         rel_dists = self.rel_compress(prod_rep)
 
-        if self.use_bias:
+        if 0: #self.use_bias:
             rel_dists = rel_dists + self.freq_bias.index_with_labels(pair_pred.long())
 
         obj_dists = obj_dists.split(num_objs, dim=0)
