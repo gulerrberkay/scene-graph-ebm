@@ -67,7 +67,7 @@ class ROIRelationHead(torch.nn.Module):
             #import pdb; pdb.set_trace()
             if self.training and self.cfg.MODEL.WEAKLY_ON:
                 rel_binarys = None
-                #features, proposals, targets = self.postprocess_proposals(features, proposals, targets)
+                features, proposals, targets = self.postprocess_proposals(features, proposals, targets)
                 rel_labels  = [target.get_field('relation') for target in targets]
                 rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
             else:
