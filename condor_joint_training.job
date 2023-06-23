@@ -13,7 +13,7 @@ Request_GPUs = 1
 # Run only on Visics machines with a GPU with 3GB of RAM or more
 #requirements =  (GPUs_GlobalMemoryMb >= 4096)
 #requirements =  (GPUs_GlobalMemoryMb >= 7792)
-requirements  =  (GPUs_GlobalMemoryMb >= 21384 && GPUs_GlobalMemoryMb < 41384)
+requirements  =  (GPUs_GlobalMemoryMb >= 21384)
 
 
 #Mail me only if something is wrong
