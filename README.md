@@ -2,6 +2,7 @@
 
 A repo that uses the formulation of [mod33](https://github.com/mods333/energy-based-scene-graph) to convert scene graph problem into a weak supervision problem. Some modifications on relation and energy losses applied with additional flags.
 
+PDF files for the whole thesis and IEEE format short version are also available.
 
 ## Installation
 
